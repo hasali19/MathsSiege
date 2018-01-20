@@ -4,4 +4,35 @@
     ViewData["Title"] = "Home page";
 }
 
-<h1 class="display-4">@ViewData["Title"]</h1>
+<div class="row h-100 align-items-center">
+    <div class="col-md col-sm-12">
+        <div class="card home-nav-card">
+            <a asp-page="/Users/Index">
+                <img class="card-img-top home-nav-card" src="~/images/account-circle.svg" />
+            </a>
+            <div class="card-body">
+                <h5 class="card-title text-center">Users</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-md col-sm-12">
+        <div class="card home-nav-card">
+            <a asp-page="/Questions/Index">
+                <img class="card-img-top home-nav-card" src="~/images/help.svg" />
+            </a>
+            <div class="card-body">
+                <h5 class="card-title text-center">Questions</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-md col-sm-12">
+        <div class="card home-nav-card">
+            <a asp-page="/GameSessions/Index">
+                <img class="card-img-top home-nav-card" src="~/images/google-controller.svg" />
+            </a>
+            <div class="card-body">
+                <h5 class="card-title text-center">Game Sessions</h5>
+            </div>
+        </div>
+    </div>
+</div>
