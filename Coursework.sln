@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathsSiege.Server", "MathsSiege.Server\MathsSiege.Server.csproj", "{CADEF03A-3A76-4688-AC2A-A4CD549C8938}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathsSiege.Models", "MathsSiege.Models\MathsSiege.Models.csproj", "{AE7119B0-536C-46B2-9425-C6751AE6EA9C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{CADEF03A-3A76-4688-AC2A-A4CD549C8938}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CADEF03A-3A76-4688-AC2A-A4CD549C8938}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CADEF03A-3A76-4688-AC2A-A4CD549C8938}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE7119B0-536C-46B2-9425-C6751AE6EA9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE7119B0-536C-46B2-9425-C6751AE6EA9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE7119B0-536C-46B2-9425-C6751AE6EA9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE7119B0-536C-46B2-9425-C6751AE6EA9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
