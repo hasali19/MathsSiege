@@ -15,14 +15,32 @@
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">MathsSiege.Server</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" asp-page="/Index">MathsSiege</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-nav ml-auto">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a class="nav-item nav-link @(ViewContext.RouteData.Values["page"].ToString() == "/GameSessions/Index" ? "active" : "")" asp-page="/GameSessions/Index">Game Sessions</a>
+                    <a class="nav-item nav-link @(ViewContext.RouteData.Values["page"].ToString() == "/Questions/Index" ? "active" : "")" asp-page="/Questions/Index">Questions</a>
+                    <a class="nav-item nav-link @(ViewContext.RouteData.Values["page"].ToString() == "/Users/Index" ? "active" : "")" asp-page="/Users/Index">Users</a>
+                    <a class="nav-item nav-link" asp-page="/Account/Logout">Logout</a>
+                }
+                else
+                {
+                    <a class="nav-item nav-link" asp-page="/Account/Login">Login</a>
+                }
+            </div>
+        </div>
     </nav>
     <div class="container content-root">
         @RenderBody()
     </div>
 
-    <script src="~/lib/jquery/jquery-3.2.1.js"></script>    
+    <script src="~/lib/jquery/jquery-3.2.1.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
 
     <environment include="Development">
