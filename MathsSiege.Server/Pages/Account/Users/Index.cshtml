@@ -1,0 +1,50 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h1 class="display-4">List Users</h1>
+
+<div class="row">
+    <div class="col-sm-12">
+        <a class="btn btn-primary float-right mb-4" asp-page="/Account/Users/Create">Add User</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3 col-sm-12">
+        <div class="list-group">
+            <a class="list-group-item list-group-item-action" asp-page="/Account/Index">Account Overview</a>
+            <a class="list-group-item list-group-item-action active" asp-page="/Account/Users/Index">All Users</a>
+        </div>
+    </div>
+    <div class="col-md-9 col-sm-12">
+        <div class="card">
+            <table class="table table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th><!--Empty column header--></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model.Users)
+                    {
+                        <tr>
+                            <td>@user.Id</td>
+                            <td>@user.Username</td>
+                            <td>@user.Role.ToString()</td>
+                            <td>
+                                <a class="text-danger ml-2 mr-2 float-right" asp-page="/Account/Users/Delete" asp-route-id="@user.Id"><i class="material-icons">&#xE872;</i></a>
+                                <a class="text-warning mr-2 float-right" asp-page="/Account/Users/Edit" asp-route-id="@user.Id"><i class="material-icons">&#xE3C9;</i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
