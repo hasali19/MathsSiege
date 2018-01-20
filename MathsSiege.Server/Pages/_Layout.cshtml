@@ -26,7 +26,7 @@
                 {
                     <a class="nav-item nav-link @(ViewContext.RouteData.Values["page"].ToString() == "/GameSessions/Index" ? "active" : "")" asp-page="/GameSessions/Index">Game Sessions</a>
                     <a class="nav-item nav-link @(ViewContext.RouteData.Values["page"].ToString() == "/Questions/Index" ? "active" : "")" asp-page="/Questions/Index">Questions</a>
-                    <a class="nav-item nav-link @(ViewContext.RouteData.Values["page"].ToString() == "/Users/Index" ? "active" : "")" asp-page="/Users/Index">Users</a>
+                    <a class="nav-item nav-link @(ViewContext.RouteData.Values["page"].ToString() == "/Account/Index" ? "active" : "")" asp-page="/Account/Index">Account</a>
                     <a class="nav-item nav-link" asp-page="/Account/Logout">Logout</a>
                 }
                 else
