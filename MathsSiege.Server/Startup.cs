@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MathsSiege.Models;
 using MathsSiege.Server.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +31,22 @@ namespace MathsSiege.Server
                 options.UseSqlServer(connectionString);
             });
 
-            services.AddMvc();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(PolicyTypes.AdminOnly, policy => policy.RequireRole(Role.Admin.ToString()));
+                options.DefaultPolicy = options.GetPolicy(PolicyTypes.AdminOnly);
+            });
+
+            services.AddMvc()
+                .AddRazorPagesOptions(options =>
+                {
+                    options.Conventions
+                        .AuthorizeFolder("/")
+                        .AllowAnonymousToPage("/Account/Login");
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +63,8 @@ namespace MathsSiege.Server
             }
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvc();
         }
