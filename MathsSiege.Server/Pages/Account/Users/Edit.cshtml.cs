@@ -53,6 +53,8 @@ namespace MathsSiege.Server.Pages.Account.Users
 
             await userRepository.UpdateUserAsync(UserModel.Id, UserModel);
 
+            ViewData["UpdateSuccess"] = true;
+
             return Page();
         }
     }
