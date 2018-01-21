@@ -15,7 +15,7 @@ namespace MathsSiege.Server.Data
         Task<Question> GetQuestionAsync(int id);
         Task<ICollection<Question>> GetQuestionsAndChoicesAsync();
         Task<ICollection<Question>> GetQuestionsAsync();
-        Task UpdateChoiceAsync(int id, Choice updated);
-        Task UpdateQuestionAsync(int id, Question updated);
+        Task<Choice> UpdateChoiceAsync(int id, Choice updated);
+        Task<Question> UpdateQuestionAsync(int id, Question updated);
     }
 }

@@ -66,7 +66,7 @@ namespace MathsSiege.Server.Data
             }
         }
 
-        public async Task UpdateQuestionAsync(int id, Question updated)
+        public async Task<Question> UpdateQuestionAsync(int id, Question updated)
         {
             Question question = await GetQuestionAsync(id);
 
@@ -76,10 +76,14 @@ namespace MathsSiege.Server.Data
                 question.Difficulty = updated.Difficulty;
 
                 await context.SaveChangesAsync();
+
+                return question;
             }
+
+            return null;
         }
 
-        public async Task UpdateChoiceAsync(int id, Choice updated)
+        public async Task<Choice> UpdateChoiceAsync(int id, Choice updated)
         {
             Choice choice = await GetChoiceAsync(id);
 
@@ -89,7 +93,11 @@ namespace MathsSiege.Server.Data
                 choice.IsCorrect = updated.IsCorrect;
 
                 await context.SaveChangesAsync();
+
+                return choice;
             }
+
+            return null;
         }
 
         public async Task DeleteQuestionAsync(int id)
