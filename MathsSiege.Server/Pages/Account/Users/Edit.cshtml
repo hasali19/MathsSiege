@@ -1,0 +1,30 @@
+﻿@page "{id:int}"
+@model EditModel
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<h1 class="display-4 mb-5">Edit User</h1>
+
+<div class="row">
+    <div class="col-md-6 col-sm-12">
+        <form method="post">
+            <div class="text-danger" asp-validation-summary="All"></div>
+            <input type="hidden" asp-for="UserModel.Id" />
+            <div class="form-group mt-4">
+                <label asp-for="UserModel.Username"></label>
+                <input class="form-control" asp-for="UserModel.Username" placeholder="Enter username" />
+            </div>
+            <div class="form-group mt-4">
+                <label asp-for="UserModel.Password"></label>
+                <input class="form-control" asp-for="UserModel.Password" placeholder="Enter a password" />
+            </div>
+            <div class="form-group mt-4">
+                <label asp-for="UserModel.Role"></label>
+                <select class="form-control" asp-for="UserModel.Role" asp-items="@Html.GetEnumSelectList<Models.Role>()"></select>
+            </div>
+            <button type="submit" class="btn btn-primary float-right mt-4">Save</button>
+            <a class="btn btn-warning float-right mt-4 mr-4" asp-page="/Account/Users/Index">Back</a>
+        </form>
+    </div>
+</div>
