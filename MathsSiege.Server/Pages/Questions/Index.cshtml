@@ -1,0 +1,44 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Questions";
+}
+
+<h1 class="display-4">List Questions</h1>
+
+<div class="row">
+    <div class="col-sm-12">
+        <a class="btn btn-primary float-right mb-4" asp-page="/Questions/Create">Add Question</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <table class="table table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Question</th>
+                        <th>Difficulty</th>
+                        <th><!--Empty column header--></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var question in Model.Questions)
+                    {
+                        <tr>
+                            <td>@question.Id</td>
+                            <td>@question.Text</td>
+                            <td>@question.Difficulty.ToString()</td>
+                            <td>
+                                <a class="text-danger ml-2 mr-2 float-right" asp-page="/Questions/Delete" asp-route-id="@question.Id"><i class="material-icons">&#xE872;</i></a>
+                                <a class="text-warning mr-2 float-right" asp-page="/Questions/Edit" asp-route-id="@question.Id"><i class="material-icons">&#xE3C9;</i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

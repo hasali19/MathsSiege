@@ -11,6 +11,7 @@ namespace MathsSiege.Server.Data
         public static void SeedAll(AppDbContext context)
         {
             SeedUsers(context);
+            SeedQuestions(context);
         }
 
         public static void SeedUsers(AppDbContext context)
@@ -23,6 +24,19 @@ namespace MathsSiege.Server.Data
             ICollection<User> seedUsers = GetSeedUsers();
 
             context.Users.AddRange(seedUsers);
+            context.SaveChanges();
+        }
+
+        public static void SeedQuestions(AppDbContext context)
+        {
+            if (context.Questions.Any())
+            {
+                return;
+            }
+
+            ICollection<Question> seedQuestions = GetSeedQuestions();
+
+            context.Questions.AddRange(seedQuestions);
             context.SaveChanges();
         }
 
@@ -40,6 +54,51 @@ namespace MathsSiege.Server.Data
             };
 
             return users;
+        }
+
+        public static IList<Question> GetSeedQuestions()
+        {
+            return new List<Question>
+            {
+                new Question
+                {
+                    Text = "What is 1 + 1?",
+                    Difficulty = Difficulty.Easy,
+                    Choices = new List<Choice>
+                    {
+                        new Choice { Text = "2", IsCorrect = true },
+                        new Choice { Text = "12" },
+                        new Choice { Text = "38" },
+                        new Choice { Text = "-2" }
+                    }
+                },
+
+                new Question
+                {
+                    Text = "What is 12 ^ 2?",
+                    Difficulty = Difficulty.Medium,
+                    Choices = new List<Choice>
+                    {
+                        new Choice { Text = "144", IsCorrect = true },
+                        new Choice { Text = "168" },
+                        new Choice { Text = "128" },
+                        new Choice { Text = "208" }
+                    }
+                },
+
+                new Question
+                {
+                    Text = "What is the square root of 196?",
+                    Difficulty = Difficulty.Hard,
+                    Choices = new List<Choice>
+                    {
+                        new Choice { Text = "14", IsCorrect = true },
+                        new Choice { Text = "13" },
+                        new Choice { Text = "12" },
+                        new Choice { Text = "15" }
+                    }
+                }
+            };
         }
     }
 }
