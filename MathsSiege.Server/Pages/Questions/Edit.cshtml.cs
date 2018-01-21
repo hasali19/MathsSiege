@@ -41,6 +41,7 @@ namespace MathsSiege.Server.Pages.Questions
             }
 
             await questionRepository.UpdateQuestionAsync(id, Question);
+            Question = await questionRepository.GetQuestionAndChoicesAsync(id);
 
             ViewData["UpdateSuccess"] = true;
 
