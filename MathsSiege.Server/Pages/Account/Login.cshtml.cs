@@ -13,14 +13,14 @@ namespace MathsSiege.Server.Pages.Account
 {
     public class LoginModel : PageModel
     {
-        private readonly AppDbContext context;
+        private readonly IUserRepository userRepository;
 
         [BindProperty]
         public User UserModel { get; set; }
 
-        public LoginModel(AppDbContext context)
+        public LoginModel(IUserRepository userRepository)
         {
-            this.context = context;
+            this.userRepository = userRepository;
         }
 
         public IActionResult OnGet()
@@ -44,7 +44,7 @@ namespace MathsSiege.Server.Pages.Account
             }
 
             // Search the database for the username
-            User user = context.Users.FirstOrDefault(u => u.Username == UserModel.Username);
+            User user = await userRepository.GetUserAsync(UserModel.Username);
 
             // Check that the user exists
             if (user == null)

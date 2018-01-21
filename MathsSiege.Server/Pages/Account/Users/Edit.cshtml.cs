@@ -11,19 +11,19 @@ namespace MathsSiege.Server.Pages.Account.Users
 {
     public class EditModel : PageModel
     {
-        private readonly AppDbContext context;
+        private readonly IUserRepository userRepository;
 
         [BindProperty]
         public User UserModel { get; set; }
 
-        public EditModel(AppDbContext context)
+        public EditModel(IUserRepository userRepository)
         {
-            this.context = context;
+            this.userRepository = userRepository;
         }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            UserModel = await context.Users.FindAsync(id);
+            UserModel = await userRepository.GetUserAsync(id);
 
             if (UserModel == null)
             {
@@ -46,15 +46,12 @@ namespace MathsSiege.Server.Pages.Account.Users
             {
                 return Page();
             }
-
-            User user = await context.Users.FindAsync(UserModel.Id);
-
-            user.Username = UserModel.Username;
-            user.Password = string.IsNullOrEmpty(UserModel.Password)
-                ? user.Password
+            
+            UserModel.Password = string.IsNullOrEmpty(UserModel.Password)
+                ? null
                 : BCryptHasher.HashPassword(UserModel.Password);
 
-            await context.SaveChangesAsync();
+            await userRepository.UpdateUserAsync(UserModel.Id, UserModel);
 
             return Page();
         }

@@ -9,14 +9,14 @@ namespace MathsSiege.Server.Pages.Account.Users
 {
     public class CreateModel : PageModel
     {
-        private readonly AppDbContext context;
+        private readonly IUserRepository userRepository;
 
         [BindProperty]
         public User UserModel { get; set; }
 
-        public CreateModel(AppDbContext context)
+        public CreateModel(IUserRepository userRepository)
         {
-            this.context = context;
+            this.userRepository = userRepository;
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -28,8 +28,7 @@ namespace MathsSiege.Server.Pages.Account.Users
 
             UserModel.Password = BCryptHasher.HashPassword(UserModel.Password);
 
-            await context.Users.AddAsync(UserModel);
-            await context.SaveChangesAsync();
+            await userRepository.AddUserAsync(UserModel);
 
             return RedirectToPage("/Account/Users/Edit", new { UserModel.Id });
         }

@@ -10,19 +10,19 @@ namespace MathsSiege.Server.Pages.Account
 {
     public class IndexModel : PageModel
     {
-        private readonly AppDbContext context;
+        private readonly IUserRepository userRepository;
 
         [BindProperty]
         public User UserModel { get; set; }
 
-        public IndexModel(AppDbContext context)
+        public IndexModel(IUserRepository userRepository)
         {
-            this.context = context;
+            this.userRepository = userRepository;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
-            UserModel = context.Users.FirstOrDefault(u => u.Username == User.Identity.Name);
+            UserModel = await userRepository.GetUserAsync(User.Identity.Name);
 
             if (UserModel == null)
             {
@@ -44,12 +44,11 @@ namespace MathsSiege.Server.Pages.Account
                 return Page();
             }
 
-            User user = await context.Users.FindAsync(UserModel.Id);
+            UserModel.Password = string.IsNullOrEmpty(UserModel.Password)
+                ? null
+                : BCryptHasher.HashPassword(UserModel.Password);
 
-            user.Username = UserModel.Username;
-            user.Password = BCryptHasher.HashPassword(UserModel.Password);
-
-            await context.SaveChangesAsync();
+            await userRepository.UpdateUserAsync(UserModel.Id, UserModel);
 
             return Page();
         }

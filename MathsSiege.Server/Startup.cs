@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MathsSiege.Models;
 using MathsSiege.Server.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -47,6 +43,8 @@ namespace MathsSiege.Server
                         .AuthorizeFolder("/")
                         .AllowAnonymousToPage("/Account/Login");
                 });
+
+            services.AddScoped<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

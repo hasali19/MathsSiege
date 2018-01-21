@@ -1,7 +1,6 @@
 using MathsSiege.Models;
 using MathsSiege.Server.Data;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,20 +9,20 @@ namespace MathsSiege.Server.Pages.Account.Users
 {
     public class IndexModel : PageModel
     {
-        private readonly AppDbContext context;
+        private readonly IUserRepository userRepository;
 
         public ICollection<User> Users { get; private set; }
 
-        public IndexModel(AppDbContext context)
+        public IndexModel(IUserRepository userRepository)
         {
-            this.context = context;
+            this.userRepository = userRepository;
         }
 
         public async Task OnGetAsync()
         {
-            Users = await context.Users
-                .Where(u => u.Username != User.Identity.Name)
-                .ToListAsync();
+            Users = (await userRepository.GetUsersAsync())
+                .Where(user => user.Username != User.Identity.Name)
+                .ToList();
         }
     }
 }
