@@ -18,3 +18,15 @@ img.home-nav-card {
     padding-bottom: 36px;
     background-color: #F2F2F2;
 }
+
+.bg-correct {
+    background-color: #48FF73;
+}
+
+.bg-incorrect {
+    background-color: #FF5868;
+}
+
+.flex-column.flex-fill {
+    flex-grow: 1;
+}

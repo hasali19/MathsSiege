@@ -37,6 +37,7 @@ namespace MathsSiege.Server.Data
                 .Where(answer => answer.GameSessionId == id)
                 .Include(answer => answer.Choice)
                 .ThenInclude(choice => choice.Question)
+                .ThenInclude(question => question.Choices)
                 .ToListAsync();
         }
 

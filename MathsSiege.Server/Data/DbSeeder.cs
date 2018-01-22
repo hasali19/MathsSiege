@@ -129,7 +129,13 @@ namespace MathsSiege.Server.Data
                         {
                             new Answer { ChoiceId = 1 },
                             new Answer { ChoiceId = 2 },
-                            new Answer { ChoiceId = 3 }
+                            new Answer { ChoiceId = 3 },
+                            new Answer { ChoiceId = 4 },
+                            new Answer { ChoiceId = 5 },
+                            new Answer { ChoiceId = 6 },
+                            new Answer { ChoiceId = 7 },
+                            new Answer { ChoiceId = 8 },
+                            new Answer { ChoiceId = 9 }
                         }
                     },
 

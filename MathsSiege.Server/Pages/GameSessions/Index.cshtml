@@ -27,7 +27,7 @@
                             <td>@gameSession.EndTime.ToString()</td>
                             <td>
                                 <a class="text-danger ml-2 mr-2 float-right" asp-page="/GameSessions/Delete" asp-route-id="@gameSession.Id"><i class="material-icons">&#xE872;</i></a>
-                                <a class="text-primary mr-2 float-right" asp-page="/GameSessions/Details" asp-route-id="@gameSession"><i class="material-icons">&#xE417;</i></a>
+                                <a class="text-primary mr-2 float-right" asp-page="/GameSessions/Details" asp-route-id="@gameSession.Id"><i class="material-icons">&#xE417;</i></a>
                             </td>
                         </tr>
                     }

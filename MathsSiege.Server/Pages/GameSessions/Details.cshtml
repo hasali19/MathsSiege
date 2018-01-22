@@ -1,0 +1,59 @@
+﻿@page "{id:int}"
+@model DetailsModel
+@{
+    ViewData["Title"] = "Game Session Details";
+}
+
+<h1 class="display-4 mb-5">Game Session Details</h1>
+
+<div class="row">
+    <div class="col-md-8 col-sm-12">
+        <h3 class="mb-5">@Model.GameSession.User.Username</h3>
+    </div>
+    <div class="col-md-4 col-sm-12">
+        <dl class="row">
+            <dt class="col-sm-4">Start Time</dt>
+            <dd class="col-sm-8">@Model.GameSession.StartTime.ToString()</dd>
+
+            <dt class="col-sm-4">Duration</dt>
+            <dd class="col-sm-8">@Math.Round(Model.Duration.TotalMinutes, MidpointRounding.AwayFromZero).ToString() Minutes</dd>
+
+            <dt class="col-sm-4">Score</dt>
+            <dd class="col-sm-8">@Model.Score / @Model.Total</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        @for (int i = 0; i < Model.Answers.Count; i++)
+        {
+            <div class="card mt-4 mb-4 @(Model.Answers.ElementAt(i).Choice.IsCorrect ? "bg-correct" : "bg-incorrect")">
+                <div class="card-body">
+                    <div class="d-flex">
+                        <h5 class="flex-column mr-3">@(i + 1)</h5>
+                        <div class="flex-column flex-fill">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p>@Model.Answers.ElementAt(i).Choice.Question.Text</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 col-sm-12">
+                                    <strong>Answer: </strong>@Model.Answers.ElementAt(i).Choice.Text
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    <strong>Correct Answer: </strong>@Model.Answers.ElementAt(i).Choice.Question.Choices.First(choice => choice.IsCorrect).Text
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    <strong>Difficulty: </strong>@Model.Answers.ElementAt(i).Choice.Question.Difficulty.ToString()
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
