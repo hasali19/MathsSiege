@@ -1,0 +1,38 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Game Sessions";
+}
+
+<h1 class="display-4 mb-5">List Game Sessions</h1>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <table class="table table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>User</th>
+                        <th>Time</th>
+                        <th><!--Empty column header--></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var gameSession in Model.GameSessions)
+                    {
+                        <tr>
+                            <td>@gameSession.Id</td>
+                            <td>@gameSession.User.Username</td>
+                            <td>@gameSession.EndTime.ToString()</td>
+                            <td>
+                                <a class="text-danger ml-2 mr-2 float-right" asp-page="/GameSessions/Delete" asp-route-id="@gameSession.Id"><i class="material-icons">&#xE872;</i></a>
+                                <a class="text-primary mr-2 float-right" asp-page="/GameSessions/Details" asp-route-id="@gameSession"><i class="material-icons">&#xE417;</i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

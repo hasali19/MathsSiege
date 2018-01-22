@@ -1,4 +1,5 @@
 ﻿using MathsSiege.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,6 +13,7 @@ namespace MathsSiege.Server.Data
         {
             SeedUsers(context);
             SeedQuestions(context);
+            SeedGameSessions(context);
         }
 
         public static void SeedUsers(AppDbContext context)
@@ -37,6 +39,19 @@ namespace MathsSiege.Server.Data
             ICollection<Question> seedQuestions = GetSeedQuestions();
 
             context.Questions.AddRange(seedQuestions);
+            context.SaveChanges();
+        }
+
+        public static void SeedGameSessions(AppDbContext context)
+        {
+            if (context.GameSessions.Any())
+            {
+                return;
+            }
+
+            ICollection<GameSession> seedGameSessions = GetSeedGameSessions();
+
+            context.GameSessions.AddRange(seedGameSessions);
             context.SaveChanges();
         }
 
@@ -99,6 +114,38 @@ namespace MathsSiege.Server.Data
                     }
                 }
             };
+        }
+
+        public static IList<GameSession> GetSeedGameSessions()
+        {
+            return new List<GameSession>
+                {
+                    new GameSession
+                    {
+                        UserId = 1,
+                        StartTime = new DateTime(2018, 01, 22, 14, 33, 00),
+                        EndTime = new DateTime(2018, 01, 22, 15, 20, 00),
+                        Answers = new List<Answer>
+                        {
+                            new Answer { ChoiceId = 1 },
+                            new Answer { ChoiceId = 2 },
+                            new Answer { ChoiceId = 3 }
+                        }
+                    },
+
+                    new GameSession
+                    {
+                        UserId = 2,
+                        StartTime = new DateTime(2018, 03, 11, 12, 17, 00),
+                        EndTime = new DateTime(2018, 03, 11, 12, 45, 32),
+                        Answers = new List<Answer>
+                        {
+                            new Answer { ChoiceId = 7 },
+                            new Answer { ChoiceId = 4 },
+                            new Answer { ChoiceId = 10 }
+                        }
+                    }
+                };
         }
     }
 }

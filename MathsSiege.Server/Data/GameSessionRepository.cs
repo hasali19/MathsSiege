@@ -18,14 +18,17 @@ namespace MathsSiege.Server.Data
         public async Task<ICollection<GameSession>> GetGameSessionsAsync()
         {
             return await context.GameSessions
-                .OrderBy(game => game.EndTime)
+                .OrderByDescending(game => game.EndTime)
+                .Include(game => game.User)
                 .AsNoTracking()
                 .ToListAsync();
         }
 
         public async Task<GameSession> GetGameSessionAsync(int id)
         {
-            return await context.GameSessions.FindAsync(id);
+            return await context.GameSessions
+                .Include(game => game.User)
+                .FirstOrDefaultAsync(game => game.Id == id);
         }
 
         public async Task<ICollection<Answer>> GetGameSessionQuestionsAndAnswersAsync(int id)
