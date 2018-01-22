@@ -50,7 +50,6 @@ namespace MathsSiege.Server
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(PolicyTypes.AdminOnly, policy => policy.RequireRole(Role.Admin.ToString()));
-                options.DefaultPolicy = options.GetPolicy(PolicyTypes.AdminOnly);
             });
 
             services.AddMvc()
@@ -62,7 +61,13 @@ namespace MathsSiege.Server
                 {
                     options.Conventions
                         .AuthorizeFolder("/")
-                        .AllowAnonymousToPage("/Account/Login");
+                        .AuthorizePage("/Index", PolicyTypes.AdminOnly)
+                        .AuthorizeFolder("/Account/Users", PolicyTypes.AdminOnly)
+                        .AuthorizeFolder("/Questions", PolicyTypes.AdminOnly)
+                        .AuthorizeFolder("/GameSessions", PolicyTypes.AdminOnly)
+                        .AllowAnonymousToPage("/Account/Error")
+                        .AllowAnonymousToPage("/Account/Login")
+                        .AllowAnonymousToPage("/Account/AccessDenied");
                 });
 
             services.AddScoped<IUserRepository, UserRepository>();
