@@ -4,11 +4,20 @@
     ViewData["Title"] = "Questions";
 }
 
-<h1 class="display-4">List Questions</h1>
+<h1 class="display-4 mb-4">List Questions</h1>
 
 <div class="row">
     <div class="col-sm-12">
-        <a class="btn btn-primary float-right mb-4" asp-page="/Questions/Create">Add Question</a>
+        <a class="btn btn-primary float-right mb-4 ml-4" asp-page="/Questions/Create">Add Question</a>
+
+        @if ((bool)ViewData["InActive"])
+        {
+            <a class="btn btn-primary float-right mb-4" asp-route-inActive="false">Hide Inactive</a>
+        }
+        else
+        {
+            <a class="btn btn-primary float-right mb-4" asp-route-inActive="true">Show Inactive</a>
+        }
     </div>
 </div>
 
@@ -21,21 +30,23 @@
                         <th>#</th>
                         <th>Question</th>
                         <th>Difficulty</th>
+                        @((bool)ViewData["InActive"] ? Html.Raw("<th>Active</th>") : Html.Raw(""))
                         <th><!--Empty column header--></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var question in Model.Questions)
                     {
-                        <tr>
-                            <td>@question.Id</td>
-                            <td>@question.Text</td>
-                            <td>@question.Difficulty.ToString()</td>
-                            <td>
-                                <a class="text-danger ml-2 mr-2 float-right" asp-page="/Questions/Delete" asp-route-id="@question.Id"><i class="material-icons">&#xE872;</i></a>
-                                <a class="text-warning mr-2 float-right" asp-page="/Questions/Edit" asp-route-id="@question.Id"><i class="material-icons">&#xE3C9;</i></a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>@question.Id</td>
+                        <td>@question.Text</td>
+                        <td>@question.Difficulty.ToString()</td>
+                        @((bool)ViewData["InActive"] ? Html.Raw($"<td>{(question.IsActive ? "Yes" : "No")}</td>") : Html.Raw(""))
+                        <td>
+                            <a class="text-danger ml-2 mr-2 float-right" asp-page="/Questions/Delete" asp-route-id="@question.Id"><i class="material-icons">&#xE872;</i></a>
+                            <a class="text-warning mr-2 float-right" asp-page="/Questions/Edit" asp-route-id="@question.Id"><i class="material-icons">&#xE3C9;</i></a>
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>

@@ -12,6 +12,8 @@ namespace MathsSiege.Server.Pages.Questions
     {
         private readonly IQuestionRepository questionRepository;
 
+        public int Id { get; private set; }
+
         public DeleteModel(IQuestionRepository questionRepository)
         {
             this.questionRepository = questionRepository;
@@ -25,6 +27,8 @@ namespace MathsSiege.Server.Pages.Questions
             {
                 return NotFound();
             }
+
+            Id = id;
 
             return Page();
         }

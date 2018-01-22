@@ -74,6 +74,7 @@ namespace MathsSiege.Server.Data
             {
                 question.Text = updated.Text ?? question.Text;
                 question.Difficulty = updated.Difficulty;
+                question.IsActive = updated.IsActive;
 
                 await context.SaveChangesAsync();
 

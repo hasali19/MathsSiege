@@ -79,6 +79,7 @@ namespace MathsSiege.Server.Data
                 {
                     Text = "What is 1 + 1?",
                     Difficulty = Difficulty.Easy,
+                    IsActive = true,
                     Choices = new List<Choice>
                     {
                         new Choice { Text = "2", IsCorrect = true },
@@ -92,6 +93,7 @@ namespace MathsSiege.Server.Data
                 {
                     Text = "What is 12 ^ 2?",
                     Difficulty = Difficulty.Medium,
+                    IsActive = true,
                     Choices = new List<Choice>
                     {
                         new Choice { Text = "144", IsCorrect = true },
@@ -105,6 +107,7 @@ namespace MathsSiege.Server.Data
                 {
                     Text = "What is the square root of 196?",
                     Difficulty = Difficulty.Hard,
+                    IsActive = true,
                     Choices = new List<Choice>
                     {
                         new Choice { Text = "14", IsCorrect = true },

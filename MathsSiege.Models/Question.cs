@@ -12,6 +12,7 @@ namespace MathsSiege.Models
         public string Text { get; set; }
 
         public Difficulty Difficulty { get; set; }
+        public bool IsActive { get; set; }
 
         public ICollection<Choice> Choices { get; set; }
     }
