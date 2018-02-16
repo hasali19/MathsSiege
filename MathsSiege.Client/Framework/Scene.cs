@@ -162,7 +162,7 @@ namespace MathsSiege.Client.Framework
             this.DrawBackground();
             this.SpriteBatch.End();
 
-            this.SpriteBatch.Begin(transformMatrix: this.Camera.GetViewMatrix());
+            this.SpriteBatch.Begin(SpriteSortMode.FrontToBack, transformMatrix: this.Camera.GetViewMatrix());
 
             // Draw visible entities.
             foreach (var entity in this.entities.Where(entity => entity.IsVisible))

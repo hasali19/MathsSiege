@@ -1,5 +1,6 @@
 ﻿using MathsSiege.Client.Framework;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Graphics;
 using System.Linq;
@@ -13,6 +14,11 @@ namespace MathsSiege.Client.Entities
         private Tile[,] tiles;
 
         public TiledMap TiledMap { get; }
+
+        /// <summary>
+        /// The currently hovered tile.
+        /// </summary>
+        public Tile HoveredTile { get; private set; }
 
         public GameMap(TiledMap tiledMap)
         {
@@ -78,6 +84,40 @@ namespace MathsSiege.Client.Entities
             }
         }
 
+        /// <summary>
+        /// Gets the map coordinates of the specified screen position.
+        /// </summary>
+        /// <param name="coordinates"></param>
+        /// <returns></returns>
+        public Vector2 ScreenToMap(Vector2 coordinates)
+        {
+            var tileWidthHalf = this.TiledMap.TileWidth / 2f;
+            var tileHeightHalf = this.TiledMap.TileHeight / 2f;
+
+            return new Vector2
+            {
+                X = (coordinates.X / tileWidthHalf + coordinates.Y / tileHeightHalf) / 2,
+                Y = (coordinates.Y / tileHeightHalf - (coordinates.X / tileWidthHalf)) / 2
+            };
+        }
+
+        /// <summary>
+        /// Gets the screen position of the specified map coordinates.
+        /// </summary>
+        /// <param name="coordinates"></param>
+        /// <returns></returns>
+        public Vector2 MapToScreen(Vector2 coordinates)
+        {
+            var tileWidthHalf = this.TiledMap.TileWidth / 2f;
+            var tileHeightHalf = this.TiledMap.TileHeight / 2f;
+
+            return new Vector2
+            {
+                X = (coordinates.X - coordinates.Y) * tileWidthHalf,
+                Y = (coordinates.X + coordinates.Y) * tileHeightHalf
+            };
+        }
+
         public override void OnAddedToScene()
         {
             this.renderer = new TiledMapRenderer(this.Scene.GraphicsDevice);
@@ -86,6 +126,11 @@ namespace MathsSiege.Client.Entities
         public override void Update(GameTime gameTime)
         {
             this.renderer.Update(this.TiledMap, gameTime);
+
+            var mouseState = Mouse.GetState();
+            var worldPosition = this.Scene.Camera.ScreenToWorld(mouseState.Position.ToVector2());
+            var tilePosition = this.ScreenToMap(worldPosition);
+            this.HoveredTile = this[(int)tilePosition.X, (int)tilePosition.Y];
         }
 
         public override void Draw(GameTime gameTime)

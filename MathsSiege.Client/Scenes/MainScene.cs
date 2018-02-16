@@ -3,6 +3,7 @@ using MathsSiege.Client.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended.Input.InputListeners;
 using MonoGame.Extended.Tiled;
 
 namespace MathsSiege.Client.Scenes
@@ -29,18 +30,38 @@ namespace MathsSiege.Client.Scenes
             var background = this.Content.Load<Texture2D>(ContentPaths.Textures.Background);
             var map = this.Content.Load<TiledMap>(ContentPaths.TiledMap.Map);
             var tileOverlay = this.Content.Load<Texture2D>(ContentPaths.Textures.TileOverlay);
+            var wall = this.Content.Load<Texture2D>(ContentPaths.Textures.Wall);
             #endregion
 
             this.BackgroundImage = background;
             
             var gameMap = new GameMap(map);
-            var hoveredTileOverlay = new HoveredTileOverlay(gameMap, tileOverlay);
+            var hoveredTileOverlay = new HoveredTileOverlay(tileOverlay);
+            var wallManager = new WallManager(wall);
+
+            this.Services.AddService(gameMap);
+            this.Services.AddService(wallManager);
 
             this.AddEntity(gameMap);
             this.AddEntity(hoveredTileOverlay);
+            this.AddEntity(wallManager);
 
             // Center the camera.
             this.Camera.LookAt(Vector2.Zero);
+
+            var mouseListener = this.Game.Services.GetService<MouseListener>();
+
+            mouseListener.MouseClicked += (sender, args) =>
+            {
+                if (args.Button == MouseButton.Left && gameMap.HoveredTile != null)
+                {
+                    wallManager.CreateWall(gameMap.HoveredTile);
+                }
+                else if (args.Button == MouseButton.Right && gameMap.HoveredTile != null)
+                {
+                    wallManager.RemoveWall(gameMap.HoveredTile);
+                }
+            };
         }
 
         public override void Update(GameTime gameTime)

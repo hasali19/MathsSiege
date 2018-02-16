@@ -2,41 +2,42 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended.Sprites;
 
 namespace MathsSiege.Client.Entities
 {
     public class HoveredTileOverlay : DrawableEntity
     {
         private GameMap map;
-        private Texture2D texture;
+        private Sprite sprite;
 
-        public Tile CurrentTile { get; set; }
-
-        public HoveredTileOverlay(GameMap map, Texture2D texture)
+        public HoveredTileOverlay(Texture2D texture)
         {
-            this.map = map;
-            this.texture = texture;
+            this.sprite = new Sprite(texture)
+            {
+                Origin = new Vector2(texture.Width / 2, 0)
+            };
         }
 
-        public override void Update(GameTime gameTime)
+        public override void OnAddedToScene()
         {
-            var mouseState = Mouse.GetState();
-            var worldPosition = this.Scene.Camera.ScreenToWorld(mouseState.Position.ToVector2());
-            var tilePosition = this.map.TiledMap.ScreenToMap(worldPosition);
-            this.CurrentTile = this.map[(int)tilePosition.X, (int)tilePosition.Y];
+            this.map = this.Scene.Services.GetService<GameMap>();
         }
 
         public override void Draw(GameTime gameTime)
         {
-            if (this.CurrentTile != null)
+            if (this.map.HoveredTile != null)
             {
-                var position = this.map.TiledMap.MapToScreen(this.CurrentTile.Position);
+                var position = this.map.MapToScreen(this.map.HoveredTile.Position);
 
-                var color = this.CurrentTile.IsPlaceable
+                var color = this.map.HoveredTile.IsPlaceable
                     ? Color.White * 0.5f
                     : Color.Red * 0.5f;
 
-                this.Scene.SpriteBatch.Draw(this.texture, position, color);
+                this.sprite.Position = position;
+                this.sprite.Color = color;
+
+                this.Scene.SpriteBatch.Draw(this.sprite);
             }
         }
     }
