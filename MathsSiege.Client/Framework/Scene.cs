@@ -64,6 +64,11 @@ namespace MathsSiege.Client.Framework
         /// </summary>
         public Color ClearColor { get; set; } = Color.Transparent;
 
+        /// <summary>
+        /// The background image for the scene.
+        /// </summary>
+        public Texture2D BackgroundImage { get; set; }
+
         private Bag<DrawableEntity> entities = new Bag<DrawableEntity>();
 
         public Scene(Game game)
@@ -152,6 +157,11 @@ namespace MathsSiege.Client.Framework
             // Clear the render target.
             this.GraphicsDevice.Clear(this.ClearColor);
 
+            // Draw background content.
+            this.SpriteBatch.Begin();
+            this.DrawBackground();
+            this.SpriteBatch.End();
+
             this.SpriteBatch.Begin(transformMatrix: this.Camera.GetViewMatrix());
 
             // Draw visible entities.
@@ -161,6 +171,31 @@ namespace MathsSiege.Client.Framework
             }
 
             this.SpriteBatch.End();
+
+            // Draw foreground content.
+            this.SpriteBatch.Begin();
+            this.DrawForeground();
+            this.SpriteBatch.End();
+        }
+
+        /// <summary>
+        /// Draws content in the background in screen space, before
+        /// the scene's entities are drawn.
+        /// </summary>
+        protected virtual void DrawBackground()
+        {
+            if (this.BackgroundImage != null)
+            {
+                this.SpriteBatch.Draw(this.BackgroundImage, this.GraphicsDevice.Viewport.Bounds, Color.White);
+            }
+        }
+
+        /// <summary>
+        /// Draws content in the foreground in screen space, after
+        /// the scene's entities are drawn.
+        /// </summary>
+        protected virtual void DrawForeground()
+        {
         }
     }
 }
