@@ -1,4 +1,5 @@
 ﻿using MathsSiege.Client.Framework;
+using MathsSiege.Client.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Input.InputListeners;
@@ -35,9 +36,8 @@ namespace MathsSiege.Client
         protected override void Initialize()
         {
             base.Initialize();
-
-            var scene = new Scene(this) { ClearColor = Color.RoyalBlue };
-            this.sceneManager.PushScene(scene);
+            
+            this.sceneManager.PushScene(new MainScene(this));
         }
 
         protected override void Update(GameTime gameTime)
