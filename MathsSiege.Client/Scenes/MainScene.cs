@@ -28,12 +28,16 @@ namespace MathsSiege.Client.Scenes
             #region Load content
             var background = this.Content.Load<Texture2D>(ContentPaths.Textures.Background);
             var map = this.Content.Load<TiledMap>(ContentPaths.TiledMap.Map);
+            var tileOverlay = this.Content.Load<Texture2D>(ContentPaths.Textures.TileOverlay);
             #endregion
 
             this.BackgroundImage = background;
+            
+            var gameMap = new GameMap(map);
+            var hoveredTileOverlay = new HoveredTileOverlay(gameMap, tileOverlay);
 
-            // Initialise the game map.
-            this.AddEntity(new GameMap(map));
+            this.AddEntity(gameMap);
+            this.AddEntity(hoveredTileOverlay);
 
             // Center the camera.
             this.Camera.LookAt(Vector2.Zero);

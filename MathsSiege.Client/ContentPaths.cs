@@ -11,6 +11,7 @@
         public static class Textures
         {
             public const string Background = "Textures/Background";
+            public const string TileOverlay = "Textures/TileOverlay";
         }
 
         public static class TiledMap
