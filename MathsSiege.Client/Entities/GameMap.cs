@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Graphics;
+using System.Linq;
 
 namespace MathsSiege.Client.Entities
 {
@@ -28,6 +29,30 @@ namespace MathsSiege.Client.Entities
                         if (this.tiles[x, y] == null)
                         {
                             this.tiles[x, y] = new Tile(this, x, y);
+                        }
+
+                        layer.TryGetTile(x, y, out TiledMapTile? tiledMapTile);
+
+                        TiledMapTile layerTile = tiledMapTile.Value;
+
+                        if (layerTile.IsBlank)
+                        {
+                            continue;
+                        }
+
+                        TiledMapTileset tileset = this.TiledMap.GetTilesetByTileGlobalIdentifier(layerTile.GlobalIdentifier);
+                        TiledMapTilesetTile tilesetTile = tileset.Tiles.FirstOrDefault(
+                            t => t.LocalTileIdentifier == layerTile.GlobalIdentifier - tileset.FirstGlobalIdentifier);
+
+                        if (tilesetTile != null)
+                        {
+                            tilesetTile.Properties.TryGetValue("IsWalkable", out string isWalkable);
+                            tilesetTile.Properties.TryGetValue("IsPlaceable", out string isPlaceable);
+                            tilesetTile.Properties.TryGetValue("IsSpawnable", out string isSpawnable);
+
+                            this.tiles[x, y].IsWalkable = isWalkable == "true";
+                            this.tiles[x, y].IsPlaceable = isPlaceable == "true";
+                            this.tiles[x, y].IsSpawnable = isSpawnable == "true";
                         }
                     }
                 }
@@ -74,6 +99,10 @@ namespace MathsSiege.Client.Entities
     {
         public GameMap Map { get; }
         public Vector2 Position { get; }
+
+        public bool IsWalkable { get; set; }
+        public bool IsPlaceable { get; set; }
+        public bool IsSpawnable { get; set; }
 
         public Tile(GameMap map, int x, int y)
         {

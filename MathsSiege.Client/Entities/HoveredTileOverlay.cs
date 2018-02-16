@@ -31,7 +31,12 @@ namespace MathsSiege.Client.Entities
             if (this.CurrentTile != null)
             {
                 var position = this.map.TiledMap.MapToScreen(this.CurrentTile.Position);
-                this.Scene.SpriteBatch.Draw(this.texture, position, Color.White * 0.5f);
+
+                var color = this.CurrentTile.IsPlaceable
+                    ? Color.White * 0.5f
+                    : Color.Red * 0.5f;
+
+                this.Scene.SpriteBatch.Draw(this.texture, position, color);
             }
         }
     }
