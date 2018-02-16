@@ -43,6 +43,10 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Content.cs" />
+    <Compile Include="Framework\DrawableEntity.cs" />
+    <Compile Include="Framework\Scene.cs" />
+    <Compile Include="Framework\SceneManager.cs" />
     <Compile Include="MainGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -123,6 +127,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Textures\cannon.png" />
     <Content Include="Content\Fonts\montserrat-32_0.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
