@@ -57,6 +57,21 @@
     <Compile Include="Scenes\MainScene.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="MonoGame.Extended, Version=1.0.617.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Extended.1.0.617\lib\portable-net45+win8+wpa81\MonoGame.Extended.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Extended.Animations, Version=1.0.617.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Extended.Animations.1.0.617\lib\portable-net45+win8+wpa81\MonoGame.Extended.Animations.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Extended.Graphics, Version=1.0.617.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Extended.Graphics.1.0.617\lib\portable-net45+win8+wpa81\MonoGame.Extended.Graphics.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Extended.Input, Version=1.0.617.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Extended.Input.1.0.617\lib\portable-net45+win8+wpa81\MonoGame.Extended.Input.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Extended.Tiled, Version=1.0.617.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Extended.Tiled.1.0.617\lib\portable-net45+win8+wpa81\MonoGame.Extended.Tiled.dll</HintPath>
+    </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
     </Reference>
@@ -121,20 +136,6 @@
     <None Include="Content\Fonts\montserrat-32.fnt" />
     <None Include="Content\TiledMap\Map.tmx" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MonoGame.Extended\Source\MonoGame.Extended.Input\MonoGame.Extended.Input.csproj">
-      <Project>{49C87598-994C-49B5-BBB3-7FFC342635D3}</Project>
-      <Name>MonoGame.Extended.Input</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MonoGame.Extended\Source\MonoGame.Extended.Tiled\MonoGame.Extended.Tiled.csproj">
-      <Project>{07B2ADE2-73E3-41C4-AEA1-D5566A5AB902}</Project>
-      <Name>MonoGame.Extended.Tiled</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MonoGame.Extended\Source\MonoGame.Extended\MonoGame.Extended.csproj">
-      <Project>{41724c52-3d50-45bb-81eb-3c8a247eafd1}</Project>
-      <Name>MonoGame.Extended</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Fonts\montserrat-32_0.png" />
