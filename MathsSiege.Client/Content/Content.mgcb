@@ -12,6 +12,7 @@
 
 /reference:..\..\packages\MonoGame.Extended.Content.Pipeline.1.0.617\tools\MonoGame.Extended.Content.Pipeline.dll
 /reference:..\..\packages\GeonBit.UI.3.1.0.1\lib\geonbitui\DataTypes.dll
+/reference:..\..\MathsSiege.Client.Content.DataTypes\bin\MathsSiege.Client.Content.DataTypes.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -1681,4 +1682,48 @@
 /importer:XmlImporter
 /processor:PassThroughProcessor
 /build:GeonBit.UI/themes/custom/ThemeData.xml
+
+#begin AnimatedSprites/GoblinAnimations.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:AnimatedSprites/GoblinAnimations.xml
+
+#begin AnimatedSprites/GoblinAtlas.json
+/importer:TexturePackerJsonImporter
+/processor:TexturePackerProcessor
+/build:AnimatedSprites/GoblinAtlas.json
+
+#begin AnimatedSprites/GoblinSheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:AnimatedSprites/GoblinSheet.png
+
+#begin AnimatedSprites/SkeletonAnimations.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:AnimatedSprites/SkeletonAnimations.xml
+
+#begin AnimatedSprites/SkeletonAtlas.json
+/importer:TexturePackerJsonImporter
+/processor:TexturePackerProcessor
+/build:AnimatedSprites/SkeletonAtlas.json
+
+#begin AnimatedSprites/SkeletonSheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:AnimatedSprites/SkeletonSheet.png
 

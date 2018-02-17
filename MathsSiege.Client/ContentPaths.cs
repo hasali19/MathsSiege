@@ -2,6 +2,14 @@
 {
     public static class ContentPaths
     {
+        public static class AnimatedSprites
+        {
+            public const string GoblinAnimations = "AnimatedSprites/GoblinAnimations";
+            public const string GoblinAtlas = "AnimatedSprites/GoblinAtlas";
+            public const string SkeletonAnimations = "AnimatedSprites/SkeletonAnimations";
+            public const string SkeletonAtlas = "AnimatedSprites/SkeletonAtlas";
+        }
+
         public static class Fonts
         {
             public const string montserrat_32 = "Fonts/montserrat-32";

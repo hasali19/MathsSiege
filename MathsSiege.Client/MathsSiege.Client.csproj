@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="ContentPaths.cs" />
     <Compile Include="DefenceTypes.cs" />
+    <Compile Include="Entities\Enemy.cs" />
+    <Compile Include="Entities\EnemyManager.cs" />
     <Compile Include="Entities\GameMap.cs" />
     <Compile Include="Entities\HoveredTileOverlay.cs" />
     <Compile Include="Entities\Wall.cs" />
@@ -141,6 +143,8 @@
     </None>
     <None Include="app.config" />
     <None Include="app.manifest" />
+    <None Include="Content\AnimatedSprites\GoblinAtlas.json" />
+    <None Include="Content\AnimatedSprites\SkeletonAtlas.json" />
     <None Include="Content\Fonts\montserrat-32.fnt" />
     <None Include="Content\GeonBit.UI\themes\custom\fonts\Bold.spritefont" />
     <None Include="Content\GeonBit.UI\themes\custom\fonts\Italic.spritefont" />
@@ -158,6 +162,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\AnimatedSprites\GoblinAnimations.xml" />
+    <Content Include="Content\AnimatedSprites\GoblinSheet.png" />
+    <Content Include="Content\AnimatedSprites\SkeletonAnimations.xml" />
+    <Content Include="Content\AnimatedSprites\SkeletonSheet.png" />
     <Content Include="Content\Fonts\montserrat-32_0.png" />
     <Content Include="Content\GeonBit.UI\themes\custom\effects\disabled.fx" />
     <Content Include="Content\GeonBit.UI\themes\custom\effects\silhouette.fx" />
@@ -933,6 +941,12 @@
     <Content Include="Content\TiledMap\TileMarker.png" />
     <Content Include="Content\TiledMap\Tileset.png" />
     <Content Include="Content\Textures\Wall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MathsSiege.Client.Content.DataTypes\MathsSiege.Client.Content.DataTypes.csproj">
+      <Project>{CCEE37E9-8914-4238-94BA-6D1C327824DC}</Project>
+      <Name>MathsSiege.Client.Content.DataTypes</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

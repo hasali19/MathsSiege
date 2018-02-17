@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="Animation[]">
+    <Item>
+      <Name>IdleUp</Name>
+      <FrameIndices>144 145 146 147 146 145 144</FrameIndices>
+    </Item>
+    <Item>
+      <Name>IdleDown</Name>
+      <FrameIndices>336 337 338 339 338 337 336</FrameIndices>
+    </Item>
+    <Item>
+      <Name>IdleLeft</Name>
+      <FrameIndices>48 49 50 51 50 49 48</FrameIndices>
+    </Item>
+    <Item>
+      <Name>IdleRight</Name>
+      <FrameIndices>240 241 242 243 242 241 240</FrameIndices>
+    </Item>
+    <Item>
+      <Name>MovingUp</Name>
+      <FrameIndices>156 157 158 159 160 161 162 163</FrameIndices>
+    </Item>
+    <Item>
+      <Name>MovingDown</Name>
+      <FrameIndices>348 349 350 351 352 353 354 355</FrameIndices>
+    </Item>
+    <Item>
+      <Name>MovingLeft</Name>
+      <FrameIndices>60 61 62 63 64 65 66 67</FrameIndices>
+    </Item>
+    <Item>
+      <Name>MovingRight</Name>
+      <FrameIndices>252 253 254 255 256 257 258 259</FrameIndices>
+    </Item>
+    <Item>
+      <Name>AttackingUp</Name>
+      <IsLooping>false</IsLooping>
+      <FrameIndices>164 165 166 167 166 165 164</FrameIndices>
+    </Item>
+    <Item>
+      <Name>AttackingDown</Name>
+      <IsLooping>false</IsLooping>
+      <FrameIndices>356 357 358 359 358 357 356</FrameIndices>
+    </Item>
+    <Item>
+      <Name>AttackingLeft</Name>
+      <IsLooping>false</IsLooping>
+      <FrameIndices>68 69 70 71 70 69 68</FrameIndices>
+    </Item>
+    <Item>
+      <Name>AttackingRight</Name>
+      <IsLooping>false</IsLooping>
+      <FrameIndices>260 261 262 263 262 261 260</FrameIndices>
+    </Item>
+  </Asset>
+</XnaContent>

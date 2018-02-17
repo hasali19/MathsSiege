@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathsSiege.Models", "MathsS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathsSiege.Client", "MathsSiege.Client\MathsSiege.Client.csproj", "{9BFDCA4E-E5E9-48DB-BB76-0D9C12D27D62}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathsSiege.Client.Content.DataTypes", "MathsSiege.Client.Content.DataTypes\MathsSiege.Client.Content.DataTypes.csproj", "{CCEE37E9-8914-4238-94BA-6D1C327824DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{9BFDCA4E-E5E9-48DB-BB76-0D9C12D27D62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BFDCA4E-E5E9-48DB-BB76-0D9C12D27D62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BFDCA4E-E5E9-48DB-BB76-0D9C12D27D62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCEE37E9-8914-4238-94BA-6D1C327824DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCEE37E9-8914-4238-94BA-6D1C327824DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCEE37E9-8914-4238-94BA-6D1C327824DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCEE37E9-8914-4238-94BA-6D1C327824DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
