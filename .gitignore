@@ -321,3 +321,6 @@ ASALocalRun/
 # MSBuild Binary and Structured Log
 *.binlog
 
+MathsSiege\.Client/Content/GeonBit\.UI/themes/editor/
+MathsSiege\.Client/Content/GeonBit\.UI/themes/hd/
+MathsSiege\.Client/Content/GeonBit\.UI/themes/lowres/

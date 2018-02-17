@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GeonBit.UI;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
@@ -55,6 +56,11 @@ namespace MathsSiege.Client.Framework
         public Camera2D Camera { get; }
 
         /// <summary>
+        /// The scene's <see cref="UserInterface"/>.
+        /// </summary>
+        public UserInterface UserInterface { get; protected set; }
+
+        /// <summary>
         /// The <see cref="RenderTarget2D"/> to which the scene's content is drawn.
         /// </summary>
         public RenderTarget2D RenderTarget { get; private set; }
@@ -80,6 +86,7 @@ namespace MathsSiege.Client.Framework
             this.SpriteBatch = new SpriteBatch(this.GraphicsDevice);
             this.SceneManager = game.Services.GetService<SceneManager>();
             this.Camera = new Camera2D(this.GraphicsDevice);
+            this.UserInterface = new UserInterface();
         }
 
         public void AddEntity(DrawableEntity entity)
@@ -101,6 +108,8 @@ namespace MathsSiege.Client.Framework
         /// </summary>
         public virtual void Initialise()
         {
+            UserInterface.Active = this.UserInterface;
+
             this.RenderTarget = new RenderTarget2D(
                 this.GraphicsDevice,
                 this.GraphicsDevice.PresentationParameters.BackBufferWidth,
@@ -115,6 +124,8 @@ namespace MathsSiege.Client.Framework
         /// </summary>
         public virtual void Destroy()
         {
+            UserInterface.Active = null;
+
             this.RenderTarget.Dispose();
         }
 
@@ -125,6 +136,8 @@ namespace MathsSiege.Client.Framework
         {
             this.IsActive = false;
             this.IsVisible = false;
+
+            UserInterface.Active = null;
         }
 
         /// <summary>
@@ -134,6 +147,8 @@ namespace MathsSiege.Client.Framework
         {
             this.IsActive = true;
             this.IsVisible = true;
+
+            UserInterface.Active = this.UserInterface;
         }
 
         /// <summary>
@@ -142,6 +157,8 @@ namespace MathsSiege.Client.Framework
         /// <param name="gameTime"></param>
         public virtual void Update(GameTime gameTime)
         {
+            this.UserInterface.Update(gameTime);
+
             foreach (var entity in this.entities.Where(entity => entity.IsActive))
             {
                 entity.Update(gameTime);
@@ -154,6 +171,12 @@ namespace MathsSiege.Client.Framework
         /// <param name="gameTime"></param>
         public virtual void Draw(GameTime gameTime)
         {
+            if (this.UserInterface.UseRenderTarget)
+            {
+                this.UserInterface.Draw(this.SpriteBatch);
+                this.GraphicsDevice.SetRenderTarget(this.RenderTarget);
+            }
+
             // Clear the render target.
             this.GraphicsDevice.Clear(this.ClearColor);
 
@@ -173,9 +196,7 @@ namespace MathsSiege.Client.Framework
             this.SpriteBatch.End();
 
             // Draw foreground content.
-            this.SpriteBatch.Begin();
             this.DrawForeground();
-            this.SpriteBatch.End();
         }
 
         /// <summary>
@@ -196,6 +217,14 @@ namespace MathsSiege.Client.Framework
         /// </summary>
         protected virtual void DrawForeground()
         {
+            if (this.UserInterface.UseRenderTarget)
+            {
+                this.UserInterface.DrawMainRenderTarget(this.SpriteBatch);
+            }
+            else
+            {
+                this.UserInterface.Draw(this.SpriteBatch);
+            }
         }
     }
 }

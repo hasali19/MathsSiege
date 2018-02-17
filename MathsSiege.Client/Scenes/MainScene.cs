@@ -1,5 +1,6 @@
 ﻿using MathsSiege.Client.Entities;
 using MathsSiege.Client.Framework;
+using MathsSiege.Client.Gui;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -19,7 +20,7 @@ namespace MathsSiege.Client.Scenes
         {
             this.ClearColor = Color.White;
 
-            this.Game.IsMouseVisible = true;
+            this.UserInterface.UseRenderTarget = true;
         }
 
         public override void Initialise()
@@ -49,13 +50,22 @@ namespace MathsSiege.Client.Scenes
             // Center the camera.
             this.Camera.LookAt(Vector2.Zero);
 
+            #region Initialise defence menu
+            var menu = new DefenceMenu(new Vector2(200, this.GraphicsDevice.Viewport.Height));
+            menu.AddItem(DefenceTypes.Wall, wall);
+            this.UserInterface.AddEntity(menu);
+            #endregion
+
             var mouseListener = this.Game.Services.GetService<MouseListener>();
 
             mouseListener.MouseClicked += (sender, args) =>
             {
                 if (args.Button == MouseButton.Left && gameMap.HoveredTile != null)
                 {
-                    wallManager.CreateWall(gameMap.HoveredTile);
+                    if (menu.SelectedItem?.Name == DefenceTypes.Wall)
+                    {
+                        wallManager.CreateWall(gameMap.HoveredTile);
+                    }
                 }
                 else if (args.Button == MouseButton.Right && gameMap.HoveredTile != null)
                 {

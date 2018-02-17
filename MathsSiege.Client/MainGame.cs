@@ -1,4 +1,5 @@
-﻿using MathsSiege.Client.Framework;
+﻿using GeonBit.UI;
+using MathsSiege.Client.Framework;
 using MathsSiege.Client.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -35,6 +36,8 @@ namespace MathsSiege.Client
 
         protected override void Initialize()
         {
+            UserInterface.Initialize(this.Content, "custom");
+
             base.Initialize();
             
             this.sceneManager.PushScene(new MainScene(this));
