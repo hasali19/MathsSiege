@@ -19,6 +19,9 @@
         public static class Textures
         {
             public const string Background = "Textures/Background";
+            public const string Cannon = "Textures/Cannon";
+            public const string CannonAtlas = "Textures/CannonAtlas";
+            public const string Cannonball = "Textures/Cannonball";
             public const string TileOverlay = "Textures/TileOverlay";
             public const string Wall = "Textures/Wall";
         }

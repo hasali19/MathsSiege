@@ -19,7 +19,6 @@ namespace MathsSiege.Client.Scenes
         public MainScene(Game game) : base(game)
         {
             this.ClearColor = Color.White;
-
             this.UserInterface.UseRenderTarget = true;
         }
 
@@ -29,6 +28,7 @@ namespace MathsSiege.Client.Scenes
 
             #region Load content
             var background = this.Content.Load<Texture2D>(ContentPaths.Textures.Background);
+            var cannon = this.Content.Load<Texture2D>(ContentPaths.Textures.Cannon);
             var map = this.Content.Load<TiledMap>(ContentPaths.TiledMap.Map);
             var tileOverlay = this.Content.Load<Texture2D>(ContentPaths.Textures.TileOverlay);
             var wall = this.Content.Load<Texture2D>(ContentPaths.Textures.Wall);
@@ -39,15 +39,18 @@ namespace MathsSiege.Client.Scenes
             var gameMap = new GameMap(map);
             var hoveredTileOverlay = new HoveredTileOverlay(tileOverlay);
             var wallManager = new WallManager(wall);
+            var defenceManager = new DefenceManager();
             var enemyManager = new EnemyManager();
 
             this.Services.AddService(gameMap);
             this.Services.AddService(wallManager);
+            this.Services.AddService(defenceManager);
             this.Services.AddService(enemyManager);
 
             this.AddEntity(gameMap);
             this.AddEntity(hoveredTileOverlay);
             this.AddEntity(wallManager);
+            this.AddEntity(defenceManager);
             this.AddEntity(enemyManager);
 
             // Center the camera.
@@ -55,7 +58,10 @@ namespace MathsSiege.Client.Scenes
 
             #region Initialise defence menu
             var menu = new DefenceMenu(new Vector2(200, this.GraphicsDevice.Viewport.Height));
+
             menu.AddItem(DefenceTypes.Wall, wall);
+            menu.AddItem(DefenceTypes.Cannon, cannon);
+
             this.UserInterface.AddEntity(menu);
             #endregion
 
@@ -71,10 +77,17 @@ namespace MathsSiege.Client.Scenes
                     {
                         wallManager.CreateWall(gameMap.HoveredTile);
                     }
+                    else if (menu.SelectedItem?.Name == DefenceTypes.Cannon)
+                    {
+                        defenceManager.CreateDefence(DefenceTypes.Cannon, gameMap.HoveredTile);
+                    }
                 }
                 else if (args.Button == MouseButton.Right && gameMap.HoveredTile != null)
                 {
-                    wallManager.RemoveWall(gameMap.HoveredTile);
+                    if (!wallManager.RemoveWall(gameMap.HoveredTile))
+                    {
+                        defenceManager.RemoveDefence(gameMap.HoveredTile);
+                    }
                 }
             };
         }

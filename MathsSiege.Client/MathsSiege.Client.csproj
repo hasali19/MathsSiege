@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="ContentPaths.cs" />
     <Compile Include="DefenceTypes.cs" />
+    <Compile Include="Entities\Defence.cs" />
+    <Compile Include="Entities\DefenceManager.cs" />
     <Compile Include="Entities\Enemy.cs" />
     <Compile Include="Entities\EnemyManager.cs" />
     <Compile Include="Entities\GameMap.cs" />
@@ -145,6 +147,7 @@
     <None Include="app.manifest" />
     <None Include="Content\AnimatedSprites\GoblinAtlas.json" />
     <None Include="Content\AnimatedSprites\SkeletonAtlas.json" />
+    <None Include="Content\Textures\CannonAtlas.json" />
     <None Include="Content\Fonts\montserrat-32.fnt" />
     <None Include="Content\GeonBit.UI\themes\custom\fonts\Bold.spritefont" />
     <None Include="Content\GeonBit.UI\themes\custom\fonts\Italic.spritefont" />
@@ -166,6 +169,9 @@
     <Content Include="Content\AnimatedSprites\GoblinSheet.png" />
     <Content Include="Content\AnimatedSprites\SkeletonAnimations.xml" />
     <Content Include="Content\AnimatedSprites\SkeletonSheet.png" />
+    <Content Include="Content\Textures\Cannon.png" />
+    <Content Include="Content\Textures\Cannonball.png" />
+    <Content Include="Content\Textures\CannonSheet.png" />
     <Content Include="Content\Fonts\montserrat-32_0.png" />
     <Content Include="Content\GeonBit.UI\themes\custom\effects\disabled.fx" />
     <Content Include="Content\GeonBit.UI\themes\custom\effects\silhouette.fx" />
