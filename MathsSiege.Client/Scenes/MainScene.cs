@@ -119,7 +119,6 @@ namespace MathsSiege.Client.Scenes
         public override void Update(GameTime gameTime)
         {
             this.UpdateCamera();
-            base.Update(gameTime);
 
             if (this.stopwatch.ElapsedMilliseconds > EnemySpawnInterval)
             {
@@ -128,6 +127,8 @@ namespace MathsSiege.Client.Scenes
                 this.enemyManager.CreateRandomEnemy(tile);
                 this.stopwatch.Restart();
             }
+
+            base.Update(gameTime);
         }
 
         /// <summary>
