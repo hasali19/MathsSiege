@@ -46,7 +46,7 @@ namespace MathsSiege.Client.Entities
             this.defences.Add(tile, defence);
             defence.OnAddedToScene();
 
-            defence.Destroyed += (attackable) => this.defences.Remove(tile);
+            defence.Destroyed += (attackable) => this.RemoveDefence(tile);
 
             this.DefenceAdded?.Invoke(defence);
 

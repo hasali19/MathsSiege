@@ -3,6 +3,7 @@ using MonoGame.Extended;
 using MonoGame.Extended.Animations;
 using MonoGame.Extended.Animations.SpriteSheets;
 using MonoGame.Extended.Sprites;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -84,6 +85,9 @@ namespace MathsSiege.Client.Entities
 
             this.defenceManager.DefenceAdded += this.DefenceManager_DefenceAdded;
             this.defenceManager.DefenceRemoved += this.DefenceManager_DefenceRemoved;
+
+            this.wallManager.WallAdded += this.WallManager_WallAdded;
+            this.wallManager.WallRemoved += this.WallManager_WallRemoved;
         }
 
         private void DefenceManager_DefenceAdded(Defence defence)
@@ -112,7 +116,38 @@ namespace MathsSiege.Client.Entities
                 this.target = null;
                 this.path = null;
                 this.State = EnemyState.Idle;
-                this.sprite.Play(this.GetAnimationName(EnemyState.Idle, this.Facing));
+                this.PlayAnimationFor(EnemyState.Idle, this.Facing);
+                this.stopwatch.Reset();
+            }
+        }
+
+        private void WallManager_WallAdded(Wall wall)
+        {
+            // If not currently attacking, reset the path.
+            if (this.State != EnemyState.Attacking)
+            {
+                this.path = null;
+                this.State = EnemyState.Idle;
+            }
+        }
+
+        private void WallManager_WallRemoved(Wall wall)
+        {
+            // Reset the target if it is currently set to
+            // the wall that was just removed.
+            if (this.target == wall)
+            {
+                this.target = null;
+                this.path = null;
+                this.State = EnemyState.Idle;
+                this.PlayAnimationFor(EnemyState.Idle, this.Facing);
+                this.stopwatch.Reset();
+            }
+            // If not currently attacking, reset the path.
+            else if (this.State != EnemyState.Attacking)
+            {
+                this.path = null;
+                this.State = EnemyState.Idle;
             }
         }
 
@@ -183,7 +218,7 @@ namespace MathsSiege.Client.Entities
 
                     this.State = EnemyState.Moving;
                     this.Facing = Utilities.GetDirectionFromVector(this.velocity);
-                    this.sprite.Play(this.GetAnimationName(EnemyState.Moving, this.Facing));
+                    this.PlayAnimationFor(EnemyState.Moving, this.Facing);
                 }
             }
             // Start attacking the target.
@@ -220,7 +255,7 @@ namespace MathsSiege.Client.Entities
                 this.path = null;
                 this.stopwatch.Reset();
 
-                this.sprite.Play(this.GetAnimationName(EnemyState.Idle, this.Facing));
+                this.PlayAnimationFor(EnemyState.Idle, this.Facing);
                 this.State = EnemyState.Idle;
             }
             // Do an attack if enough time has passed since the last one.
@@ -237,27 +272,25 @@ namespace MathsSiege.Client.Entities
         /// </summary>
         private void DoAttack()
         {
-            this.sprite.Play(this.GetAnimationName(EnemyState.Attacking, this.Facing), () =>
+            this.PlayAnimationFor(EnemyState.Attacking, this.Facing, () =>
             {
                 if (!this.target.IsDestroyed)
                 {
                     this.target.Attack(this.AttackDamage);
-                    this.sprite.Play(this.GetAnimationName(EnemyState.Idle, this.Facing));
+                    this.PlayAnimationFor(EnemyState.Idle, this.Facing);
                     this.stopwatch.Start();
                 }
             });
         }
 
         /// <summary>
-        /// Gets the name of the animation for a particular state
-        /// and direction.
+        /// Plays the animation for the given state and direction.
         /// </summary>
         /// <param name="state"></param>
         /// <param name="direction"></param>
-        /// <returns></returns>
-        private string GetAnimationName(EnemyState state, Direction direction)
+        private void PlayAnimationFor(EnemyState state, Direction direction, Action onCompleted = null)
         {
-            return state.ToString() + direction.ToString();
+            this.sprite.Play(state.ToString() + direction.ToString(), onCompleted);
         }
     }
 }

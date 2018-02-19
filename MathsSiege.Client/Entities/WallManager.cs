@@ -1,12 +1,16 @@
 ﻿using MathsSiege.Client.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 
 namespace MathsSiege.Client.Entities
 {
     public class WallManager : DrawableEntity
     {
+        public event Action<Wall> WallAdded;
+        public event Action<Wall> WallRemoved;
+
         private IDictionary<Tile, Wall> walls = new Dictionary<Tile, Wall>();
 
         private Texture2D texture;
@@ -37,7 +41,9 @@ namespace MathsSiege.Client.Entities
             this.walls.Add(tile, wall);
             wall.OnAddedToScene();
 
-            wall.Destroyed += (attackable) => this.walls.Remove(tile);
+            wall.Destroyed += (attackable) => this.RemoveWall(tile);
+
+            this.WallAdded?.Invoke(wall);
 
             return true;
         }
@@ -54,9 +60,12 @@ namespace MathsSiege.Client.Entities
                 return false;
             }
 
-            this.walls[tile].Scene = null;
-            this.walls[tile].OnRemovedFromScene();
+            var wall = this.walls[tile];
+            wall.Scene = null;
+            wall.OnRemovedFromScene();
             this.walls.Remove(tile);
+
+            this.WallRemoved?.Invoke(wall);
 
             return true;
         }
