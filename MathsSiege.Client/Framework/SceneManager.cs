@@ -17,7 +17,7 @@ namespace MathsSiege.Client.Framework
 
         public override void Initialize()
         {
-            this.spriteBatch = new SpriteBatch(this.Game.GraphicsDevice);
+            this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
         }
 
         /// <summary>
@@ -110,16 +110,16 @@ namespace MathsSiege.Client.Framework
                 {
                     scene.GraphicsDevice.SetRenderTarget(scene.RenderTarget);
                     scene.Draw(gameTime);
-                    scene.GraphicsDevice.SetRenderTarget(null);
                 }
             }
 
             // Clear the screen.
-            this.Game.GraphicsDevice.Clear(Color.Black);
+            this.GraphicsDevice.SetRenderTarget(null);
+            this.GraphicsDevice.Clear(Color.Black);
 
             this.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
-            // Draw all the render targets.
+            // Draw all the render targets to the back buffer.
             for (int i = 0; i < this.scenes.Count; i++)
             {
                 var scene = this.scenes[i];

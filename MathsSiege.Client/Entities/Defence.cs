@@ -1,11 +1,10 @@
-﻿using MathsSiege.Client.Framework;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.TextureAtlases;
 
 namespace MathsSiege.Client.Entities
 {
-    public class Defence : DrawableEntity
+    public class Defence : AttackableEntity
     {
         public Vector2 Position { get; set; }
 

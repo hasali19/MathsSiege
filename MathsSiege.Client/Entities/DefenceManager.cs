@@ -42,6 +42,8 @@ namespace MathsSiege.Client.Entities
             this.defences.Add(tile, defence);
             defence.OnAddedToScene();
 
+            defence.Destroyed += (attackable) => this.defences.Remove(tile);
+
             return true;
         }
 
@@ -72,6 +74,30 @@ namespace MathsSiege.Client.Entities
         public bool CheckContainsDefence(Tile tile)
         {
             return this.defences.ContainsKey(tile);
+        }
+
+        /// <summary>
+        /// Gets the nearest defence to a particular position.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public Defence GetNearestDefence(Vector2 position)
+        {
+            Defence nearest = null;
+            float nearestDistance = float.MaxValue;
+
+            foreach (var defence in this.defences.Values)
+            {
+                // Use the square of length to avoid square roots.
+                float distance = (defence.Position - position).LengthSquared();
+                if (nearest == null || distance < nearestDistance)
+                {
+                    nearest = defence;
+                    nearestDistance = distance;
+                }
+            }
+
+            return nearest;
         }
 
         public override void OnAddedToScene()
