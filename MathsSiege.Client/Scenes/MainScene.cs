@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Input.InputListeners;
 using MonoGame.Extended.Tiled;
+using System;
+using System.Diagnostics;
 
 namespace MathsSiege.Client.Scenes
 {
@@ -15,6 +17,17 @@ namespace MathsSiege.Client.Scenes
     public class MainScene : Scene
     {
         private const int CameraMovementSpeed = 10;
+        private const int EnemySpawnInterval = 10_000;
+
+        private Stopwatch stopwatch = new Stopwatch();
+        private Random random = new Random();
+
+        private GameMap gameMap;
+        private WallManager wallManager;
+        private DefenceManager defenceManager;
+        private EnemyManager enemyManager;
+
+        private DefenceMenu defenceMenu;
 
         public MainScene(Game game) : base(game)
         {
@@ -56,53 +69,64 @@ namespace MathsSiege.Client.Scenes
             this.AddEntity(enemyManager);
             this.AddEntity(projectileManager);
 
+            this.gameMap = gameMap;
+            this.wallManager = wallManager;
+            this.defenceManager = defenceManager;
+            this.enemyManager = enemyManager;
+
             // Center the camera.
             this.Camera.LookAt(Vector2.Zero);
 
             #region Initialise defence menu
-            var menu = new DefenceMenu(new Vector2(200, this.GraphicsDevice.Viewport.Height));
+            this.defenceMenu = new DefenceMenu(new Vector2(200, this.GraphicsDevice.Viewport.Height));
 
-            menu.AddItem(DefenceTypes.Wall, wall);
-            menu.AddItem(DefenceTypes.Cannon, cannon);
+            this.defenceMenu.AddItem(DefenceTypes.Wall, wall);
+            this.defenceMenu.AddItem(DefenceTypes.Cannon, cannon);
 
-            this.UserInterface.AddEntity(menu);
+            this.UserInterface.AddEntity(this.defenceMenu);
             #endregion
-
-            enemyManager.CreateRandomEnemy(gameMap[2, 2]);
-            enemyManager.CreateRandomEnemy(gameMap[18, 3]);
-            enemyManager.CreateRandomEnemy(gameMap[3, 18]);
-            enemyManager.CreateRandomEnemy(gameMap[2, 14]);
-            enemyManager.CreateRandomEnemy(gameMap[14, 2]);
 
             var mouseListener = this.Game.Services.GetService<MouseListener>();
 
-            mouseListener.MouseClicked += (sender, args) =>
+            mouseListener.MouseClicked += this.MouseListener_MouseClicked;
+
+            this.stopwatch.Start();
+        }
+
+        private void MouseListener_MouseClicked(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButton.Left && this.gameMap.HoveredTile != null)
             {
-                if (args.Button == MouseButton.Left && gameMap.HoveredTile != null)
+                if (this.defenceMenu.SelectedItem?.Name == DefenceTypes.Wall)
                 {
-                    if (menu.SelectedItem?.Name == DefenceTypes.Wall)
-                    {
-                        wallManager.CreateWall(gameMap.HoveredTile);
-                    }
-                    else if (menu.SelectedItem?.Name == DefenceTypes.Cannon)
-                    {
-                        defenceManager.CreateDefence(DefenceTypes.Cannon, gameMap.HoveredTile);
-                    }
+                    this.wallManager.CreateWall(this.gameMap.HoveredTile);
                 }
-                else if (args.Button == MouseButton.Right && gameMap.HoveredTile != null)
+                else if (this.defenceMenu.SelectedItem?.Name == DefenceTypes.Cannon)
                 {
-                    if (!wallManager.RemoveWall(gameMap.HoveredTile))
-                    {
-                        defenceManager.RemoveDefence(gameMap.HoveredTile);
-                    }
+                    this.defenceManager.CreateDefence(DefenceTypes.Cannon, this.gameMap.HoveredTile);
                 }
-            };
+            }
+            else if (e.Button == MouseButton.Right && this.gameMap.HoveredTile != null)
+            {
+                if (!this.wallManager.RemoveWall(this.gameMap.HoveredTile))
+                {
+                    this.defenceManager.RemoveDefence(this.gameMap.HoveredTile);
+                }
+            }
         }
 
         public override void Update(GameTime gameTime)
         {
             this.UpdateCamera();
             base.Update(gameTime);
+
+            if (this.stopwatch.ElapsedMilliseconds > EnemySpawnInterval)
+            {
+                var i = this.random.Next(this.gameMap.SpawnableTiles.Count);
+                var tile = this.gameMap.SpawnableTiles[i];
+                this.enemyManager.CreateRandomEnemy(tile);
+                this.stopwatch.Restart();
+            }
         }
 
         /// <summary>

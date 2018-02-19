@@ -14,8 +14,10 @@ namespace MathsSiege.Client.Entities
         private TiledMapRenderer renderer;
 
         private Tile[,] tiles;
+        private List<Tile> spawnableTiles = new List<Tile>();
 
         public TiledMap TiledMap { get; }
+        public IReadOnlyList<Tile> SpawnableTiles => this.spawnableTiles;
 
         private WallManager wallManager;
         private DefenceManager defenceManager;
@@ -64,6 +66,11 @@ namespace MathsSiege.Client.Entities
                             this.tiles[x, y].IsWalkable = isWalkable == "true";
                             this.tiles[x, y].IsPlaceable = isPlaceable == "true";
                             this.tiles[x, y].IsSpawnable = isSpawnable == "true";
+
+                            if (this.tiles[x, y].IsSpawnable)
+                            {
+                                this.spawnableTiles.Add(this.tiles[x, y]);
+                            }
                         }
                     }
                 }
