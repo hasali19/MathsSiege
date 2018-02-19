@@ -280,8 +280,7 @@ namespace MathsSiege.Client.Entities
         /// <returns></returns>
         private float HeuristicCostEstimate(Tile from, Tile to)
         {
-            var displacement = to.Position - from.Position;
-            return Math.Abs(displacement.X) + Math.Abs(displacement.Y);
+            return (to.Position - from.Position).LengthSquared();
         }
 
         /// <summary>
