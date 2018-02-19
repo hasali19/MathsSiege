@@ -57,6 +57,9 @@
     <Compile Include="Entities\IWallOrDefence.cs" />
     <Compile Include="Entities\Projectile.cs" />
     <Compile Include="Entities\ProjectileManager.cs" />
+    <Compile Include="Entities\SpikesTrap.cs" />
+    <Compile Include="Entities\Trap.cs" />
+    <Compile Include="Entities\TrapManager.cs" />
     <Compile Include="Entities\Wall.cs" />
     <Compile Include="Entities\WallManager.cs" />
     <Compile Include="Framework\DrawableEntity.cs" />

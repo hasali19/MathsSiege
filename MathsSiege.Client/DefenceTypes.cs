@@ -4,5 +4,6 @@
     {
         public const string Wall = "Wall";
         public const string Cannon = "Cannon";
+        public const string Spikes = "Spikes";
     }
 }

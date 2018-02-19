@@ -25,6 +25,7 @@ namespace MathsSiege.Client.Scenes
         private GameMap gameMap;
         private WallManager wallManager;
         private DefenceManager defenceManager;
+        private TrapManager trapManager;
         private EnemyManager enemyManager;
 
         private DefenceMenu defenceMenu;
@@ -43,6 +44,7 @@ namespace MathsSiege.Client.Scenes
             var background = this.Content.Load<Texture2D>(ContentPaths.Textures.Background);
             var cannon = this.Content.Load<Texture2D>(ContentPaths.Textures.Cannon);
             var map = this.Content.Load<TiledMap>(ContentPaths.TiledMap.Map);
+            var spikes = this.Content.Load<Texture2D>(ContentPaths.Textures.SpikesTrap);
             var tileOverlay = this.Content.Load<Texture2D>(ContentPaths.Textures.TileOverlay);
             var wall = this.Content.Load<Texture2D>(ContentPaths.Textures.Wall);
             #endregion
@@ -53,12 +55,14 @@ namespace MathsSiege.Client.Scenes
             var hoveredTileOverlay = new HoveredTileOverlay(tileOverlay);
             var wallManager = new WallManager(wall);
             var defenceManager = new DefenceManager();
+            var trapManager = new TrapManager();
             var enemyManager = new EnemyManager();
             var projectileManager = new ProjectileManager();
 
             this.Services.AddService(gameMap);
             this.Services.AddService(wallManager);
             this.Services.AddService(defenceManager);
+            this.Services.AddService(trapManager);
             this.Services.AddService(enemyManager);
             this.Services.AddService(projectileManager);
 
@@ -66,12 +70,14 @@ namespace MathsSiege.Client.Scenes
             this.AddEntity(hoveredTileOverlay);
             this.AddEntity(wallManager);
             this.AddEntity(defenceManager);
+            this.AddEntity(trapManager);
             this.AddEntity(enemyManager);
             this.AddEntity(projectileManager);
 
             this.gameMap = gameMap;
             this.wallManager = wallManager;
             this.defenceManager = defenceManager;
+            this.trapManager = trapManager;
             this.enemyManager = enemyManager;
 
             // Center the camera.
@@ -82,6 +88,7 @@ namespace MathsSiege.Client.Scenes
 
             this.defenceMenu.AddItem(DefenceTypes.Wall, wall);
             this.defenceMenu.AddItem(DefenceTypes.Cannon, cannon);
+            this.defenceMenu.AddItem(DefenceTypes.Spikes, spikes);
 
             this.UserInterface.AddEntity(this.defenceMenu);
             #endregion
@@ -106,12 +113,19 @@ namespace MathsSiege.Client.Scenes
                 {
                     this.defenceManager.CreateDefence(DefenceTypes.Cannon, this.gameMap.HoveredTile);
                 }
+                else if (this.defenceMenu.SelectedItem?.Name == DefenceTypes.Spikes)
+                {
+                    this.trapManager.CreateTrap(DefenceTypes.Spikes, this.gameMap.HoveredTile);
+                }
             }
             else if (e.Button == MouseButton.Right && this.gameMap.HoveredTile != null)
             {
                 if (!this.wallManager.RemoveWall(this.gameMap.HoveredTile))
                 {
-                    this.defenceManager.RemoveDefence(this.gameMap.HoveredTile);
+                    if (!this.defenceManager.RemoveDefence(this.gameMap.HoveredTile))
+                    {
+                        this.trapManager.RemoveTrap(this.gameMap.HoveredTile);
+                    }
                 }
             }
         }
