@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using MonoGame.Extended;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.TextureAtlases;
 
@@ -28,6 +29,12 @@ namespace MathsSiege.Client.Entities
         public override void Draw(GameTime gameTime)
         {
             this.Scene.SpriteBatch.Draw(this.sprite);
+
+            if (this.Health < this.MaxHealth)
+            {
+                var healthbar = new RectangleF(this.sprite.Position.X - 40, this.sprite.Position.Y - 32, 80, 10);
+                this.DrawHealthbar(healthbar, Color.Red);
+            }
         }
     }
 }

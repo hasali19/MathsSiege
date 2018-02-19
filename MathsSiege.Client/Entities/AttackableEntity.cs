@@ -1,5 +1,6 @@
 ﻿using MathsSiege.Client.Framework;
 using Microsoft.Xna.Framework;
+using MonoGame.Extended;
 using System;
 
 namespace MathsSiege.Client.Entities
@@ -67,6 +68,15 @@ namespace MathsSiege.Client.Entities
         protected virtual void OnDestroyed()
         {
             this.Destroyed?.Invoke(this);
+        }
+
+        protected virtual void DrawHealthbar(RectangleF rectangle, Color color)
+        {
+            var normalisedHealth = (float)this.Health / this.MaxHealth;
+
+            this.Scene.SpriteBatch.DrawRectangle(rectangle, color, 1);
+            this.Scene.SpriteBatch.FillRectangle(new RectangleF(rectangle.X, rectangle.Y,
+                normalisedHealth * rectangle.Width, rectangle.Height), color, 1);
         }
     }
 }
