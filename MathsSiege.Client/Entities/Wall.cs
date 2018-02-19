@@ -1,11 +1,11 @@
-﻿using MathsSiege.Client.Framework;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended;
 using MonoGame.Extended.Sprites;
 
 namespace MathsSiege.Client.Entities
 {
-    public class Wall : DrawableEntity
+    public class Wall : AttackableEntity, IWallOrDefence
     {
         public Vector2 Position { get; set; }
         
@@ -29,6 +29,12 @@ namespace MathsSiege.Client.Entities
         public override void Draw(GameTime gameTime)
         {
             this.Scene.SpriteBatch.Draw(this.sprite);
+
+            if (this.Health < this.MaxHealth)
+            {
+                var healthbar = new RectangleF(this.sprite.Position.X - 40, this.sprite.Position.Y - 32, 80, 10);
+                this.DrawHealthbar(healthbar, Color.Red);
+            }
         }
     }
 }

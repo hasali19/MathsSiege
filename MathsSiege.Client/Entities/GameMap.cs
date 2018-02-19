@@ -269,7 +269,7 @@ namespace MathsSiege.Client.Entities
                 && (!this.defenceManager.CheckContainsDefence(tile) || tile == finish)
                 // The tile must not contain a wall if they should
                 // be avoided.
-                && (!shouldAvoidWalls || !this.wallManager.CheckContainsWall(tile));
+                && (!shouldAvoidWalls || !this.wallManager.CheckContainsWall(tile, out _));
         }
 
         /// <summary>

@@ -23,7 +23,7 @@ namespace MathsSiege.Client.Entities
         /// <returns>True if the wall was created successfully.</returns>
         public bool CreateWall(Tile tile)
         {
-            if (!tile.IsPlaceable || this.CheckContainsWall(tile))
+            if (!tile.IsPlaceable || this.CheckContainsWall(tile, out _))
             {
                 return false;
             }
@@ -37,6 +37,8 @@ namespace MathsSiege.Client.Entities
             this.walls.Add(tile, wall);
             wall.OnAddedToScene();
 
+            wall.Destroyed += (attackable) => this.walls.Remove(tile);
+
             return true;
         }
 
@@ -47,7 +49,7 @@ namespace MathsSiege.Client.Entities
         /// <returns>True if a wall was successfully removed.</returns>
         public bool RemoveWall(Tile tile)
         {
-            if (!this.CheckContainsWall(tile))
+            if (!this.CheckContainsWall(tile, out _))
             {
                 return false;
             }
@@ -64,9 +66,9 @@ namespace MathsSiege.Client.Entities
         /// </summary>
         /// <param name="tile">The tile to check.</param>
         /// <returns></returns>
-        public bool CheckContainsWall(Tile tile)
+        public bool CheckContainsWall(Tile tile, out Wall wall)
         {
-            return this.walls.ContainsKey(tile);
+            return this.walls.TryGetValue(tile, out wall);
         }
 
         public override void Draw(GameTime gameTime)

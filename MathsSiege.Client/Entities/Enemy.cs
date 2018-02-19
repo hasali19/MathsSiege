@@ -1,5 +1,4 @@
-﻿using MathsSiege.Client.Framework;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using MonoGame.Extended.Animations;
 using MonoGame.Extended.Animations.SpriteSheets;
@@ -55,11 +54,12 @@ namespace MathsSiege.Client.Entities
         public Direction Facing { get; private set; }
 
         private GameMap map;
+        private WallManager wallManager;
         private DefenceManager defenceManager;
 
         private AnimatedSprite sprite;
 
-        private Defence target;
+        private IWallOrDefence target;
         private IList<Tile> path;
 
         private Vector2 velocity;
@@ -79,6 +79,7 @@ namespace MathsSiege.Client.Entities
         public override void OnAddedToScene()
         {
             this.map = this.Scene.Services.GetService<GameMap>();
+            this.wallManager = this.Scene.Services.GetService<WallManager>();
             this.defenceManager = this.Scene.Services.GetService<DefenceManager>();
         }
 
@@ -131,16 +132,26 @@ namespace MathsSiege.Client.Entities
                 var targetTile = this.map[(int)this.target.Position.X, (int)this.target.Position.Y];
                 this.path = this.map.GetPath(tile, targetTile);
             }
-            // Move to the next tile in the path.
             else if (this.path.Count > 0)
             {
-                var displacement = this.TargetTilePosition - this.Position;
-                displacement.Normalize();
-                this.velocity = displacement * 0.03f * this.MovementSpeedMultiplier;
+                // If the next tile in the path contains a wall,
+                // set that as the target and attack it.
+                if (this.wallManager.CheckContainsWall(this.path.Last(), out Wall wall))
+                {
+                    this.target = wall;
+                    this.path.Clear();
+                }
+                // Move to the next tile in the path.
+                else
+                {
+                    var displacement = this.TargetTilePosition - this.Position;
+                    displacement.Normalize();
+                    this.velocity = displacement * 0.03f * this.MovementSpeedMultiplier;
 
-                this.State = EnemyState.Moving;
-                this.Facing = Utilities.GetDirectionFromVector(this.velocity);
-                this.sprite.Play(this.GetAnimationName(EnemyState.Moving, this.Facing));
+                    this.State = EnemyState.Moving;
+                    this.Facing = Utilities.GetDirectionFromVector(this.velocity);
+                    this.sprite.Play(this.GetAnimationName(EnemyState.Moving, this.Facing));
+                }
             }
             // Start attacking the target.
             else

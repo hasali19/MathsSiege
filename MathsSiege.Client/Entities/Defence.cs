@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace MathsSiege.Client.Entities
 {
-    public abstract class Defence : AttackableEntity
+    public abstract class Defence : AttackableEntity, IWallOrDefence
     {
         public Vector2 Position { get; set; }
 

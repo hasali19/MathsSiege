@@ -5,7 +5,7 @@ using System;
 
 namespace MathsSiege.Client.Entities
 {
-    public class AttackableEntity : DrawableEntity
+    public class AttackableEntity : DrawableEntity, IAttackable
     {
         private int maxHealth = 100;
         /// <summary>
@@ -28,7 +28,7 @@ namespace MathsSiege.Client.Entities
         public int Health
         {
             get => this.health;
-            set => this.health = MathHelper.Clamp(value, 0, this.MaxHealth);
+            private set => this.health = MathHelper.Clamp(value, 0, this.MaxHealth);
         }
 
         /// <summary>

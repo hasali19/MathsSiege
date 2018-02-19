@@ -53,6 +53,8 @@
     <Compile Include="Entities\EnemyManager.cs" />
     <Compile Include="Entities\GameMap.cs" />
     <Compile Include="Entities\HoveredTileOverlay.cs" />
+    <Compile Include="Entities\IAttackable.cs" />
+    <Compile Include="Entities\IWallOrDefence.cs" />
     <Compile Include="Entities\Projectile.cs" />
     <Compile Include="Entities\ProjectileManager.cs" />
     <Compile Include="Entities\Wall.cs" />
