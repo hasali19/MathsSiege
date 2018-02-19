@@ -81,6 +81,39 @@ namespace MathsSiege.Client.Entities
             this.map = this.Scene.Services.GetService<GameMap>();
             this.wallManager = this.Scene.Services.GetService<WallManager>();
             this.defenceManager = this.Scene.Services.GetService<DefenceManager>();
+
+            this.defenceManager.DefenceAdded += this.DefenceManager_DefenceAdded;
+            this.defenceManager.DefenceRemoved += this.DefenceManager_DefenceRemoved;
+        }
+
+        private void DefenceManager_DefenceAdded(Defence defence)
+        {
+            if (this.State != EnemyState.Attacking && this.target != null)
+            {
+                // Make the new defence the target if it is closer
+                // than the current one.
+                var oldDistance = (this.target.Position - this.Position).LengthSquared();
+                var newDistance = (defence.Position - this.Position).LengthSquared();
+                if (newDistance < oldDistance)
+                {
+                    this.target = defence;
+                    this.path = null;
+                    this.State = EnemyState.Idle;
+                }
+            }
+        }
+
+        private void DefenceManager_DefenceRemoved(Defence defence)
+        {
+            // Reset the target if the defence that was
+            // removed was the target.
+            if (this.target == defence)
+            {
+                this.target = null;
+                this.path = null;
+                this.State = EnemyState.Idle;
+                this.sprite.Play(this.GetAnimationName(EnemyState.Idle, this.Facing));
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -156,7 +189,7 @@ namespace MathsSiege.Client.Entities
             // Start attacking the target.
             else
             {
-                Vector2 displacement = this.target.Position - this.Position;
+                Vector2 displacement = this.target.Position - this.Position + new Vector2(0.5f);
                 this.Facing = Utilities.GetDirectionFromVector(displacement);
                 this.State = EnemyState.Attacking;
                 this.DoAttack();

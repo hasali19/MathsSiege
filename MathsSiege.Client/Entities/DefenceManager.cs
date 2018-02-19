@@ -1,12 +1,16 @@
 ﻿using MathsSiege.Client.Framework;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended.TextureAtlases;
+using System;
 using System.Collections.Generic;
 
 namespace MathsSiege.Client.Entities
 {
     public class DefenceManager : DrawableEntity
     {
+        public event Action<Defence> DefenceAdded;
+        public event Action<Defence> DefenceRemoved;
+
         private IDictionary<Tile, Defence> defences = new Dictionary<Tile, Defence>();
 
         private TextureAtlas cannonTextureAtlas;
@@ -44,6 +48,8 @@ namespace MathsSiege.Client.Entities
 
             defence.Destroyed += (attackable) => this.defences.Remove(tile);
 
+            this.DefenceAdded?.Invoke(defence);
+
             return true;
         }
 
@@ -59,9 +65,12 @@ namespace MathsSiege.Client.Entities
                 return false;
             }
 
-            this.defences[tile].Scene = null;
-            this.defences[tile].OnRemovedFromScene();
+            var defence = this.defences[tile];
+            defence.Scene = null;
+            defence.OnRemovedFromScene();
             this.defences.Remove(tile);
+
+            this.DefenceRemoved?.Invoke(defence);
 
             return true;
         }
