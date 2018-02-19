@@ -31,7 +31,8 @@ namespace MathsSiege.Client.Entities
         {
             this.sprite = new Sprite(texture)
             {
-                Origin = new Vector2(texture.Width / 2, texture.Height / 2)
+                Origin = new Vector2(texture.Width / 2, texture.Height / 2),
+                Depth = 1
             };
         }
 
