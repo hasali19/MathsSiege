@@ -41,17 +41,20 @@ namespace MathsSiege.Client.Scenes
             var wallManager = new WallManager(wall);
             var defenceManager = new DefenceManager();
             var enemyManager = new EnemyManager();
+            var projectileManager = new ProjectileManager();
 
             this.Services.AddService(gameMap);
             this.Services.AddService(wallManager);
             this.Services.AddService(defenceManager);
             this.Services.AddService(enemyManager);
+            this.Services.AddService(projectileManager);
 
             this.AddEntity(gameMap);
             this.AddEntity(hoveredTileOverlay);
             this.AddEntity(wallManager);
             this.AddEntity(defenceManager);
             this.AddEntity(enemyManager);
+            this.AddEntity(projectileManager);
 
             // Center the camera.
             this.Camera.LookAt(Vector2.Zero);
@@ -66,6 +69,10 @@ namespace MathsSiege.Client.Scenes
             #endregion
 
             enemyManager.CreateRandomEnemy(gameMap[2, 2]);
+            enemyManager.CreateRandomEnemy(gameMap[18, 3]);
+            enemyManager.CreateRandomEnemy(gameMap[3, 18]);
+            enemyManager.CreateRandomEnemy(gameMap[2, 14]);
+            enemyManager.CreateRandomEnemy(gameMap[14, 2]);
 
             var mouseListener = this.Game.Services.GetService<MouseListener>();
 

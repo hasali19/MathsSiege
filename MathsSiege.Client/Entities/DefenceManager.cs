@@ -29,7 +29,7 @@ namespace MathsSiege.Client.Entities
             switch (type)
             {
                 case DefenceTypes.Cannon:
-                    defence = new Defence(this.cannonTextureAtlas);
+                    defence = new Cannon(this.cannonTextureAtlas);
                     break;
 
                 default:
@@ -103,6 +103,14 @@ namespace MathsSiege.Client.Entities
         public override void OnAddedToScene()
         {
             this.cannonTextureAtlas = this.Scene.Content.Load<TextureAtlas>(ContentPaths.Textures.CannonAtlas);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            foreach (var defence in this.defences.Values)
+            {
+                defence.Update(gameTime);
+            }
         }
 
         public override void Draw(GameTime gameTime)

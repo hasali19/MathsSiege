@@ -46,12 +46,15 @@
     <Compile Include="ContentPaths.cs" />
     <Compile Include="DefenceTypes.cs" />
     <Compile Include="Entities\AttackableEntity.cs" />
+    <Compile Include="Entities\Cannon.cs" />
     <Compile Include="Entities\Defence.cs" />
     <Compile Include="Entities\DefenceManager.cs" />
     <Compile Include="Entities\Enemy.cs" />
     <Compile Include="Entities\EnemyManager.cs" />
     <Compile Include="Entities\GameMap.cs" />
     <Compile Include="Entities\HoveredTileOverlay.cs" />
+    <Compile Include="Entities\Projectile.cs" />
+    <Compile Include="Entities\ProjectileManager.cs" />
     <Compile Include="Entities\Wall.cs" />
     <Compile Include="Entities\WallManager.cs" />
     <Compile Include="Framework\DrawableEntity.cs" />

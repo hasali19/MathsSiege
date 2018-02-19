@@ -17,7 +17,7 @@ namespace MathsSiege.Client.Entities
         Attacking
     }
 
-    public class Enemy : DrawableEntity
+    public class Enemy : AttackableEntity
     {
         /// <summary>
         /// The tolerance level for vector equality comparisons.
@@ -109,6 +109,12 @@ namespace MathsSiege.Client.Entities
         {
             this.Scene.SpriteBatch.Draw(this.sprite);
             this.Scene.SpriteBatch.DrawPoint(this.sprite.Position, Color.Red, 3);
+
+            if (this.Health < this.MaxHealth)
+            {
+                var healthbar = new RectangleF(this.sprite.Position.X - 40, this.sprite.Position.Y - 96, 80, 10);
+                this.DrawHealthbar(healthbar, Color.Red);
+            }
         }
 
         private void Update_Idle(GameTime gameTime)

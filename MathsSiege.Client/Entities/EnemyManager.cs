@@ -5,6 +5,7 @@ using MonoGame.Extended.Animations.SpriteSheets;
 using MonoGame.Extended.Collections;
 using MonoGame.Extended.TextureAtlases;
 using System;
+using System.Collections.Generic;
 
 namespace MathsSiege.Client.Entities
 {
@@ -58,6 +59,8 @@ namespace MathsSiege.Client.Entities
             this.enemies.Add(enemy);
             enemy.OnAddedToScene();
 
+            enemy.Destroyed += (attackable) => enemies.Remove(enemy);
+
             return true;
         }
 
@@ -85,6 +88,52 @@ namespace MathsSiege.Client.Entities
 
             this.goblinAnimationFactory = this.LoadAnimationFactory(goblinAtlas, goblinAnimations);
             this.skeletonAnimationFactory = this.LoadAnimationFactory(skeletonAtlas, skeletonAnimations);
+        }
+
+        /// <summary>
+        /// Gets the nearest enemy within range of a particular position.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="range"></param>
+        /// <returns></returns>
+        public Enemy GetNearestEnemyInRange(Vector2 position, float range)
+        {
+            Enemy nearest = null;
+            float nearestDistance = float.MaxValue;
+
+            foreach (var enemy in this.enemies)
+            {
+                float distance = (enemy.Position - position).Length();
+                if (distance < range && (nearest == null || distance < nearestDistance))
+                {
+                    nearest = enemy;
+                    nearestDistance = distance;
+                }
+            }
+
+            return nearest;
+        }
+
+        /// <summary>
+        /// Gets all the enemies within range of a position.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="range"></param>
+        /// <returns></returns>
+        public IReadOnlyCollection<Enemy> GetEnemiesInRange(Vector2 position, float range)
+        {
+            var enemies = new List<Enemy>();
+
+            foreach (var enemy in this.enemies)
+            {
+                var distance = (enemy.Position - position).Length();
+                if (distance < range)
+                {
+                    enemies.Add(enemy);
+                }
+            }
+
+            return enemies;
         }
 
         public override void Update(GameTime gameTime)
