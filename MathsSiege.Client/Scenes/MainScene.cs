@@ -95,7 +95,8 @@ namespace MathsSiege.Client.Scenes
 
         private void MouseListener_MouseClicked(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButton.Left && this.gameMap.HoveredTile != null)
+            if (e.Button == MouseButton.Left && this.UserInterface.TargetEntity == null
+                && this.gameMap.HoveredTile != null)
             {
                 if (this.defenceMenu.SelectedItem?.Name == DefenceTypes.Wall)
                 {
