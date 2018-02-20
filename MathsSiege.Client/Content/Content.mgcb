@@ -1797,3 +1797,33 @@
 /processorParam:TextureFormat=Color
 /build:Textures/SpikesTrap.png
 
+#begin Sounds/Background.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/Background.wav
+
+#begin Sounds/ButtonClicked.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/ButtonClicked.wav
+
+#begin Sounds/CannonFire.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/CannonFire.wav
+
+#begin Sounds/ItemPlaced.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/ItemPlaced.wav
+
+#begin Sounds/SwordAttack.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/SwordAttack.wav
+

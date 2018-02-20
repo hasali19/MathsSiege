@@ -12,6 +12,11 @@ namespace MathsSiege.Client.Gui
         /// </summary>
         public DefenceMenuItem SelectedItem { get; private set; }
 
+        /// <summary>
+        /// Invoked when a menu item is clicked.
+        /// </summary>
+        public event Action ItemClicked;
+
         public DefenceMenu(Vector2 size, PanelSkin skin = PanelSkin.Simple, Anchor anchor = Anchor.CenterLeft, Vector2? offset = null)
             : base(size, skin, anchor, offset)
         {
@@ -30,6 +35,8 @@ namespace MathsSiege.Client.Gui
 
             item.Click += (e) =>
             {
+                this.ItemClicked?.Invoke();
+
                 if (this.SelectedItem != null)
                 {
                     this.SelectedItem.FillColor = Color.White;

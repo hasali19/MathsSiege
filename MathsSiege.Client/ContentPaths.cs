@@ -16,6 +16,15 @@
             public const string montserrat_32_0 = "Fonts/montserrat-32_0";
         }
 
+        public static class Sounds
+        {
+            public const string Background = "Sounds/Background";
+            public const string ButtonClicked = "Sounds/ButtonClicked";
+            public const string CannonFire = "Sounds/CannonFire";
+            public const string ItemPlaced = "Sounds/ItemPlaced";
+            public const string SwordAttack = "Sounds/SwordAttack";
+        }
+
         public static class Textures
         {
             public const string Background = "Textures/Background";

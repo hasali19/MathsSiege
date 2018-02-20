@@ -1,10 +1,13 @@
-﻿using MonoGame.Extended.TextureAtlases;
+﻿using Microsoft.Xna.Framework.Audio;
+using MonoGame.Extended.TextureAtlases;
 
 namespace MathsSiege.Client.Entities
 {
     public class Cannon : Defence
     {
         private ProjectileManager projectileManager;
+
+        private SoundEffect cannonFireSound;
 
         public Cannon(TextureAtlas atlas) : base(atlas)
         {
@@ -15,6 +18,7 @@ namespace MathsSiege.Client.Entities
             base.OnAddedToScene();
 
             this.projectileManager = this.Scene.Services.GetService<ProjectileManager>();
+            this.cannonFireSound = this.Scene.Content.Load<SoundEffect>(ContentPaths.Sounds.CannonFire);
         }
 
         protected override void DoAttack(Enemy target)
@@ -23,6 +27,8 @@ namespace MathsSiege.Client.Entities
             this.projectileManager
                 .CreateProjectile(ProjectileType.Cannonball)
                 .Fire(this.Position, target.Position, 60);
+
+            this.cannonFireSound.Play();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using MonoGame.Extended;
 using MonoGame.Extended.Animations;
 using MonoGame.Extended.Animations.SpriteSheets;
@@ -60,6 +61,8 @@ namespace MathsSiege.Client.Entities
 
         private AnimatedSprite sprite;
 
+        private SoundEffect swordAttackSound;
+
         private IWallOrDefence target;
         private IList<Tile> path;
 
@@ -82,6 +85,8 @@ namespace MathsSiege.Client.Entities
             this.map = this.Scene.Services.GetService<GameMap>();
             this.wallManager = this.Scene.Services.GetService<WallManager>();
             this.defenceManager = this.Scene.Services.GetService<DefenceManager>();
+
+            this.swordAttackSound = this.Scene.Content.Load<SoundEffect>(ContentPaths.Sounds.SwordAttack);
 
             this.defenceManager.DefenceAdded += this.DefenceManager_DefenceAdded;
             this.defenceManager.DefenceRemoved += this.DefenceManager_DefenceRemoved;
@@ -272,6 +277,7 @@ namespace MathsSiege.Client.Entities
         /// </summary>
         private void DoAttack()
         {
+            this.swordAttackSound.Play();
             this.PlayAnimationFor(EnemyState.Attacking, this.Facing, () =>
             {
                 if (!this.target.IsDestroyed)

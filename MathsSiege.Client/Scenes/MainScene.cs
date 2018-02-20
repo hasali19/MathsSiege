@@ -2,8 +2,10 @@
 using MathsSiege.Client.Framework;
 using MathsSiege.Client.Gui;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended.Input.InputListeners;
 using MonoGame.Extended.Tiled;
 using System;
@@ -30,6 +32,8 @@ namespace MathsSiege.Client.Scenes
 
         private DefenceMenu defenceMenu;
 
+        private SoundEffect itemPlacedSound;
+
         public MainScene(Game game) : base(game)
         {
             this.ClearColor = Color.White;
@@ -42,7 +46,10 @@ namespace MathsSiege.Client.Scenes
 
             #region Load content
             var background = this.Content.Load<Texture2D>(ContentPaths.Textures.Background);
+            var backgroundMusic = this.Content.Load<Song>(ContentPaths.Sounds.Background);
+            var buttonClickSound = this.Content.Load<SoundEffect>(ContentPaths.Sounds.ButtonClicked);
             var cannon = this.Content.Load<Texture2D>(ContentPaths.Textures.Cannon);
+            var itemPlacedSound = this.Content.Load<SoundEffect>(ContentPaths.Sounds.ItemPlaced);
             var map = this.Content.Load<TiledMap>(ContentPaths.TiledMap.Map);
             var spikes = this.Content.Load<Texture2D>(ContentPaths.Textures.SpikesTrap);
             var tileOverlay = this.Content.Load<Texture2D>(ContentPaths.Textures.TileOverlay);
@@ -79,6 +86,7 @@ namespace MathsSiege.Client.Scenes
             this.defenceManager = defenceManager;
             this.trapManager = trapManager;
             this.enemyManager = enemyManager;
+            this.itemPlacedSound = itemPlacedSound;
 
             // Center the camera.
             this.Camera.LookAt(Vector2.Zero);
@@ -90,12 +98,18 @@ namespace MathsSiege.Client.Scenes
             this.defenceMenu.AddItem(DefenceTypes.Cannon, cannon);
             this.defenceMenu.AddItem(DefenceTypes.Spikes, spikes);
 
+            this.defenceMenu.ItemClicked += () => buttonClickSound.Play();
+
             this.UserInterface.AddEntity(this.defenceMenu);
             #endregion
 
             var mouseListener = this.Game.Services.GetService<MouseListener>();
 
             mouseListener.MouseClicked += this.MouseListener_MouseClicked;
+
+            MediaPlayer.Volume = 0;
+            MediaPlayer.Play(backgroundMusic);
+            MediaPlayer.IsRepeating = true;
 
             this.stopwatch.Start();
         }
@@ -108,14 +122,17 @@ namespace MathsSiege.Client.Scenes
                 if (this.defenceMenu.SelectedItem?.Name == DefenceTypes.Wall)
                 {
                     this.wallManager.CreateWall(this.gameMap.HoveredTile);
+                    this.itemPlacedSound.Play();
                 }
                 else if (this.defenceMenu.SelectedItem?.Name == DefenceTypes.Cannon)
                 {
                     this.defenceManager.CreateDefence(DefenceTypes.Cannon, this.gameMap.HoveredTile);
+                    this.itemPlacedSound.Play();
                 }
                 else if (this.defenceMenu.SelectedItem?.Name == DefenceTypes.Spikes)
                 {
                     this.trapManager.CreateTrap(DefenceTypes.Spikes, this.gameMap.HoveredTile);
+                    this.itemPlacedSound.Play();
                 }
             }
             else if (e.Button == MouseButton.Right && this.gameMap.HoveredTile != null)
@@ -133,6 +150,11 @@ namespace MathsSiege.Client.Scenes
         public override void Update(GameTime gameTime)
         {
             this.UpdateCamera();
+
+            if (MediaPlayer.Volume < 1)
+            {
+                MediaPlayer.Volume = MathHelper.Min(MediaPlayer.Volume + 0.005f, 1);
+            }
 
             if (this.stopwatch.ElapsedMilliseconds > EnemySpawnInterval)
             {

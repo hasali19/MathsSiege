@@ -180,6 +180,11 @@
     <Content Include="Content\AnimatedSprites\GoblinSheet.png" />
     <Content Include="Content\AnimatedSprites\SkeletonAnimations.xml" />
     <Content Include="Content\AnimatedSprites\SkeletonSheet.png" />
+    <Content Include="Content\Sounds\Background.wav" />
+    <Content Include="Content\Sounds\ButtonClicked.wav" />
+    <Content Include="Content\Sounds\CannonFire.wav" />
+    <Content Include="Content\Sounds\ItemPlaced.wav" />
+    <Content Include="Content\Sounds\SwordAttack.wav" />
     <Content Include="Content\Textures\Cannon.png" />
     <Content Include="Content\Textures\Cannonball.png" />
     <Content Include="Content\Textures\CannonSheet.png" />
