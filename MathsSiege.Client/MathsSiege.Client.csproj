@@ -66,6 +66,7 @@
     <Compile Include="Framework\Scene.cs" />
     <Compile Include="Framework\SceneManager.cs" />
     <Compile Include="Gui\DefenceMenu.cs" />
+    <Compile Include="Gui\StatsView.cs" />
     <Compile Include="MainGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

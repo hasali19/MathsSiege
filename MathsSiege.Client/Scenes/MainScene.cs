@@ -31,6 +31,7 @@ namespace MathsSiege.Client.Scenes
         private EnemyManager enemyManager;
 
         private DefenceMenu defenceMenu;
+        private StatsView statsView;
 
         private SoundEffect itemPlacedSound;
 
@@ -101,6 +102,11 @@ namespace MathsSiege.Client.Scenes
             this.defenceMenu.ItemClicked += () => buttonClickSound.Play();
 
             this.UserInterface.AddEntity(this.defenceMenu);
+            #endregion
+
+            #region Initialise stats view
+            this.statsView = new StatsView(new Vector2(130, 50));
+            this.UserInterface.AddEntity(this.statsView);
             #endregion
 
             var mouseListener = this.Game.Services.GetService<MouseListener>();
