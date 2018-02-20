@@ -33,6 +33,7 @@
             public const string Cannonball = "Textures/Cannonball";
             public const string SpikesAtlas = "Textures/SpikesAtlas";
             public const string SpikesTrap = "Textures/SpikesTrap";
+            public const string SplashBackground = "Textures/SplashBackground";
             public const string TileOverlay = "Textures/TileOverlay";
             public const string Wall = "Textures/Wall";
         }

@@ -40,7 +40,7 @@ namespace MathsSiege.Client
 
             base.Initialize();
             
-            this.sceneManager.PushScene(new MainScene(this));
+            this.sceneManager.PushScene(new MainMenuScene(this));
         }
 
         protected override void Update(GameTime gameTime)
