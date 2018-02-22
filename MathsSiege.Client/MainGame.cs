@@ -38,6 +38,10 @@ namespace MathsSiege.Client
         {
             UserInterface.Initialize(this.Content, "custom");
 
+            var preferences = new UserPreferences();
+            preferences.Load();
+            this.Services.AddService(preferences);
+
             base.Initialize();
             
             this.sceneManager.PushScene(new MainMenuScene(this));

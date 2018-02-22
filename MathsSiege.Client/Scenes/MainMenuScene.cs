@@ -43,6 +43,7 @@ namespace MathsSiege.Client.Scenes
 
         private void Settings_OnClick(Entity entity)
         {
+            this.SceneManager.PushScene(new SettingsScene(this.Game));
         }
 
         private void Quit_OnClick(Entity entity)
