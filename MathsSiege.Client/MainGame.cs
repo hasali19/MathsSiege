@@ -40,7 +40,11 @@ namespace MathsSiege.Client
 
             var preferences = new UserPreferences();
             preferences.Load();
+
+            var dataClient = new DataClient(preferences);
+
             this.Services.AddService(preferences);
+            this.Services.AddService(dataClient);
 
             base.Initialize();
             
