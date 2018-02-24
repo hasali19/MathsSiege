@@ -12,6 +12,8 @@ namespace MathsSiege.Client.Gui
         /// </summary>
         public TimeSpan ElapsedTime { get; private set; }
 
+        public Button AddPointsButton;
+
         /// <summary>
         /// Gets a formatted string representation of <see cref="ElapsedTime"/>.
         /// </summary>
@@ -38,8 +40,16 @@ namespace MathsSiege.Client.Gui
             this.elapsedTimeView = new Paragraph(this.ElapsedTimeString, Anchor.Auto);
             this.pointsView = new Paragraph(this.PointsString, Anchor.Auto);
 
+            this.AddPointsButton = new Button("Add Points", size: new Vector2(size.X - this.Padding.X * 2, 60))
+            {
+                Padding = new Vector2(5f)
+            };
+
+            this.AddPointsButton.ButtonParagraph.Scale = 0.8f;
+
             this.AddChild(this.elapsedTimeView);
             this.AddChild(this.pointsView);
+            this.AddChild(this.AddPointsButton);
         }
 
         protected override void DoOnFirstUpdate()

@@ -20,7 +20,7 @@ namespace MathsSiege.Client.Scenes
     {
         private const int CameraMovementSpeed = 10;
         private const int EnemySpawnInterval = 10_000;
-        private const int QuestionInterval = 15_000;
+        private const int QuestionInterval = 10_000;
 
         private Stopwatch spawnStopwatch = new Stopwatch();
         private Stopwatch questionStopwatch = new Stopwatch();
@@ -119,6 +119,12 @@ namespace MathsSiege.Client.Scenes
             #region Initialise stats view
             this.statsView = new StatsView(this.stats, new Vector2(200, 50));
             this.UserInterface.AddEntity(this.statsView);
+            this.statsView.AddPointsButton.OnClick += (e) =>
+            {
+                e.Disabled = true;
+                this.questionStopwatch.Start();
+                this.SceneManager.PushScene(new QuestionScene(this.Game));
+            };
             #endregion
 
             var mouseListener = this.Game.Services.GetService<MouseListener>();
@@ -208,8 +214,8 @@ namespace MathsSiege.Client.Scenes
 
             if (this.questionStopwatch.ElapsedMilliseconds > QuestionInterval)
             {
-                this.questionStopwatch.Restart();
-                this.SceneManager.PushScene(new QuestionScene(this.Game));
+                this.questionStopwatch.Reset();
+                this.statsView.AddPointsButton.Disabled = false;
             }
 
             base.Update(gameTime);
