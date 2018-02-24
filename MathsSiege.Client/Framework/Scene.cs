@@ -217,13 +217,16 @@ namespace MathsSiege.Client.Framework
         /// </summary>
         protected virtual void DrawForeground()
         {
-            if (this.UserInterface.UseRenderTarget)
+            if (this.IsActive)
             {
-                this.UserInterface.DrawMainRenderTarget(this.SpriteBatch);
-            }
-            else
-            {
-                this.UserInterface.Draw(this.SpriteBatch);
+                if (this.UserInterface.UseRenderTarget)
+                {
+                    this.UserInterface.DrawMainRenderTarget(this.SpriteBatch);
+                }
+                else
+                {
+                    this.UserInterface.Draw(this.SpriteBatch);
+                }
             }
         }
     }
