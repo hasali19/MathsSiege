@@ -17,17 +17,29 @@ namespace MathsSiege.Client.Gui
         /// </summary>
         private string ElapsedTimeString => this.ElapsedTime.ToString(@"hh\:mm\:ss");
 
+        /// <summary>
+        /// Gets the string to display the player's current points.
+        /// </summary>
+        private string PointsString => $"{this.stats.Points} Points";
+
+        private PlayerStats stats;
+
         private DateTime startTime;
 
         private Paragraph elapsedTimeView;
+        private Paragraph pointsView;
 
-        public StatsView(Vector2 size, PanelSkin skin = PanelSkin.None, Anchor anchor = Anchor.TopRight)
+        public StatsView(PlayerStats stats, Vector2 size, PanelSkin skin = PanelSkin.None, Anchor anchor = Anchor.TopRight)
             : base(size, skin, anchor, null)
         {
+            this.stats = stats;
             this.Padding = new Vector2(5f);
 
-            this.elapsedTimeView = new Paragraph(this.ElapsedTimeString, Anchor.TopRight);
+            this.elapsedTimeView = new Paragraph(this.ElapsedTimeString, Anchor.Auto);
+            this.pointsView = new Paragraph(this.PointsString, Anchor.Auto);
+
             this.AddChild(this.elapsedTimeView);
+            this.AddChild(this.pointsView);
         }
 
         protected override void DoOnFirstUpdate()
@@ -42,6 +54,8 @@ namespace MathsSiege.Client.Gui
             
             this.ElapsedTime = DateTime.Now - this.startTime;
             this.elapsedTimeView.Text = this.ElapsedTimeString;
+
+            this.pointsView.Text = this.PointsString;
         }
     }
 }

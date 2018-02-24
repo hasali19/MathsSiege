@@ -20,8 +20,10 @@ namespace MathsSiege.Client.Scenes
     {
         private const int CameraMovementSpeed = 10;
         private const int EnemySpawnInterval = 10_000;
+        private const int QuestionInterval = 5_000;
 
-        private Stopwatch stopwatch = new Stopwatch();
+        private Stopwatch spawnStopwatch = new Stopwatch();
+        private Stopwatch questionStopwatch = new Stopwatch();
         private Random random = new Random();
 
         private GameMap gameMap;
@@ -29,6 +31,7 @@ namespace MathsSiege.Client.Scenes
         private DefenceManager defenceManager;
         private TrapManager trapManager;
         private EnemyManager enemyManager;
+        private PlayerStats stats;
 
         private DefenceMenu defenceMenu;
         private StatsView statsView;
@@ -39,6 +42,15 @@ namespace MathsSiege.Client.Scenes
         {
             this.ClearColor = Color.White;
             this.UserInterface.UseRenderTarget = true;
+
+            this.stats = new PlayerStats();
+            
+            if (this.Game.Services.GetService<PlayerStats>() != null)
+            {
+                this.Game.Services.RemoveService(typeof(PlayerStats));
+            }
+
+            this.Game.Services.AddService(this.stats);
         }
 
         public override void Initialise()
@@ -105,7 +117,7 @@ namespace MathsSiege.Client.Scenes
             #endregion
 
             #region Initialise stats view
-            this.statsView = new StatsView(new Vector2(130, 50));
+            this.statsView = new StatsView(this.stats, new Vector2(200, 50));
             this.UserInterface.AddEntity(this.statsView);
             #endregion
 
@@ -117,7 +129,8 @@ namespace MathsSiege.Client.Scenes
             MediaPlayer.Play(backgroundMusic);
             MediaPlayer.IsRepeating = true;
 
-            this.stopwatch.Start();
+            this.spawnStopwatch.Start();
+            this.questionStopwatch.Start();
         }
 
         private void MouseListener_MouseClicked(object sender, MouseEventArgs e)
@@ -153,6 +166,24 @@ namespace MathsSiege.Client.Scenes
             }
         }
 
+        public override void Pause()
+        {
+            base.Pause();
+
+            this.IsVisible = true;
+
+            this.spawnStopwatch.Stop();
+            this.questionStopwatch.Stop();
+        }
+
+        public override void Resume()
+        {
+            base.Resume();
+
+            this.spawnStopwatch.Start();
+            this.questionStopwatch.Start();
+        }
+
         public override void Update(GameTime gameTime)
         {
             this.UpdateCamera();
@@ -162,12 +193,18 @@ namespace MathsSiege.Client.Scenes
                 MediaPlayer.Volume = MathHelper.Min(MediaPlayer.Volume + 0.005f, 1);
             }
 
-            if (this.stopwatch.ElapsedMilliseconds > EnemySpawnInterval)
+            if (this.spawnStopwatch.ElapsedMilliseconds > EnemySpawnInterval)
             {
                 var i = this.random.Next(this.gameMap.SpawnableTiles.Count);
                 var tile = this.gameMap.SpawnableTiles[i];
                 this.enemyManager.CreateRandomEnemy(tile);
-                this.stopwatch.Restart();
+                this.spawnStopwatch.Restart();
+            }
+
+            if (this.questionStopwatch.ElapsedMilliseconds > QuestionInterval)
+            {
+                this.questionStopwatch.Restart();
+                this.SceneManager.PushScene(new QuestionScene(this.Game));
             }
 
             base.Update(gameTime);

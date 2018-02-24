@@ -90,14 +90,23 @@ namespace MathsSiege.Client.Scenes
             this.output.Text = "Logging in...";
             bool loginSuccess = await loginTask;
 
-            if (loginSuccess)
-            {
-                this.isLoggedIn = true;
-            }
-            else
+            if (!loginSuccess)
             {
                 this.output.Text = "Failed to login to the server.\nMake sure you are connected to the internet and check your username and password.";
+                return;
             }
+
+            var questionsTask = this.client.LoadQuestionsAsync();
+            this.output.Text = "Downloading questions...";
+            bool questionsSuccess = await questionsTask;
+
+            if (!questionsSuccess)
+            {
+                this.output.Text = "Failed to download questions from the server.\nMake sure you are connected to the internet and try again.";
+                return;
+            }
+
+            this.isLoggedIn = true;
         }
     }
 }

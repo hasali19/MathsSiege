@@ -1,8 +1,10 @@
 ﻿using MathsSiege.Models;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,8 +15,12 @@ namespace MathsSiege.Client
         private UserPreferences preferences;
 
         private HttpClient client = new HttpClient();
+        private Random random = new Random();
 
         private string token;
+        private List<Question> questions;
+
+        private List<Question> unusedQuestions = new List<Question>();
 
         public DataClient(UserPreferences preferences)
         {
@@ -37,7 +43,7 @@ namespace MathsSiege.Client
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
 
                 // Make the request to the server.
-                var response = await this.client.PostAsync(preferences.HostAddress + "/api/auth/authenticate", content);
+                var response = await this.client.PostAsync(this.preferences.HostAddress + "/api/auth/authenticate", content);
 
                 // Check if the request was successful.
                 if (!response.IsSuccessStatusCode)
@@ -49,6 +55,8 @@ namespace MathsSiege.Client
                 string responseBody = await response.Content.ReadAsStringAsync();
                 this.token = JsonConvert.DeserializeObject<TokenResponse>(responseBody).Token;
 
+                this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", this.token);
+
                 return true;
             }
             catch (Exception ex)
@@ -56,6 +64,64 @@ namespace MathsSiege.Client
                 Debug.WriteLine(ex.Message);
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Downloads a list of questions from the server.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<bool> LoadQuestionsAsync()
+        {
+            try
+            {
+                // Make the request to the server.
+                var response = await this.client.GetAsync(this.preferences.HostAddress + "/api/questions");
+
+                // Check if the request was successful.
+                if (!response.IsSuccessStatusCode)
+                {
+                    return false;
+                }
+
+                // Retrieve the questions from the response content.
+                string responseBody = await response.Content.ReadAsStringAsync();
+                this.questions = JsonConvert.DeserializeObject<List<Question>>(responseBody);
+
+                // Initialise the references from choices to questions.
+                foreach (var question in this.questions)
+                {
+                    foreach (var choice in question.Choices)
+                    {
+                        choice.Question = question;
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets a random unused question (unless all questions are used, in which
+        /// case it starts again).
+        /// </summary>
+        /// <returns></returns>
+        public Question GetRandomQuestion()
+        {
+            if (this.unusedQuestions.Count == 0)
+            {
+                this.unusedQuestions.AddRange(this.questions);
+            }
+
+            int i = this.random.Next(this.unusedQuestions.Count);
+            var question = this.unusedQuestions[i];
+            this.unusedQuestions.RemoveAt(i);
+
+            return question;
         }
 
         private class TokenResponse
