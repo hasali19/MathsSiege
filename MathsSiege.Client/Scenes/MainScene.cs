@@ -20,7 +20,7 @@ namespace MathsSiege.Client.Scenes
     {
         private const int CameraMovementSpeed = 10;
         private const int EnemySpawnInterval = 10_000;
-        private const int QuestionInterval = 5_000;
+        private const int QuestionInterval = 15_000;
 
         private Stopwatch spawnStopwatch = new Stopwatch();
         private Stopwatch questionStopwatch = new Stopwatch();
@@ -105,11 +105,11 @@ namespace MathsSiege.Client.Scenes
             this.Camera.LookAt(Vector2.Zero);
 
             #region Initialise defence menu
-            this.defenceMenu = new DefenceMenu(new Vector2(200, this.GraphicsDevice.Viewport.Height));
+            this.defenceMenu = new DefenceMenu(this.stats, new Vector2(200, this.GraphicsDevice.Viewport.Height));
 
-            this.defenceMenu.AddItem(DefenceTypes.Wall, wall);
-            this.defenceMenu.AddItem(DefenceTypes.Cannon, cannon);
-            this.defenceMenu.AddItem(DefenceTypes.Spikes, spikes);
+            this.defenceMenu.AddItem(DefenceTypes.Wall, wall, 50);
+            this.defenceMenu.AddItem(DefenceTypes.Cannon, cannon, 50);
+            this.defenceMenu.AddItem(DefenceTypes.Spikes, spikes, 50);
 
             this.defenceMenu.ItemClicked += () => buttonClickSound.Play();
 
@@ -136,22 +136,27 @@ namespace MathsSiege.Client.Scenes
         private void MouseListener_MouseClicked(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButton.Left && this.UserInterface.TargetEntity == null
-                && this.gameMap.HoveredTile != null)
+                && this.gameMap.HoveredTile != null && this.defenceMenu.SelectedItem != null)
             {
-                if (this.defenceMenu.SelectedItem?.Name == DefenceTypes.Wall)
+                if (this.defenceMenu.SelectedItem.Cost <= this.stats.Points)
                 {
-                    this.wallManager.CreateWall(this.gameMap.HoveredTile);
-                    this.itemPlacedSound.Play();
-                }
-                else if (this.defenceMenu.SelectedItem?.Name == DefenceTypes.Cannon)
-                {
-                    this.defenceManager.CreateDefence(DefenceTypes.Cannon, this.gameMap.HoveredTile);
-                    this.itemPlacedSound.Play();
-                }
-                else if (this.defenceMenu.SelectedItem?.Name == DefenceTypes.Spikes)
-                {
-                    this.trapManager.CreateTrap(DefenceTypes.Spikes, this.gameMap.HoveredTile);
-                    this.itemPlacedSound.Play();
+                    if (this.defenceMenu.SelectedItem.Name == DefenceTypes.Wall)
+                    {
+                        this.wallManager.CreateWall(this.gameMap.HoveredTile);
+                        this.itemPlacedSound.Play();
+                    }
+                    else if (this.defenceMenu.SelectedItem.Name == DefenceTypes.Cannon)
+                    {
+                        this.defenceManager.CreateDefence(DefenceTypes.Cannon, this.gameMap.HoveredTile);
+                        this.itemPlacedSound.Play();
+                    }
+                    else if (this.defenceMenu.SelectedItem.Name == DefenceTypes.Spikes)
+                    {
+                        this.trapManager.CreateTrap(DefenceTypes.Spikes, this.gameMap.HoveredTile);
+                        this.itemPlacedSound.Play();
+                    }
+
+                    this.stats.Points -= this.defenceMenu.SelectedItem.Cost;
                 }
             }
             else if (e.Button == MouseButton.Right && this.gameMap.HoveredTile != null)

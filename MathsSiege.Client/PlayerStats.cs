@@ -1,14 +1,23 @@
 ﻿using MathsSiege.Models;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
 namespace MathsSiege.Client
 {
     public class PlayerStats
     {
+        private int points = 200;
         /// <summary>
-        /// Gets the player's current points.
+        /// The player's current points count.
         /// </summary>
-        public int Points { get; private set; }
+        public int Points
+        {
+            get => this.points;
+            set
+            {
+                this.points = MathHelper.Max(value, 0);
+            }
+        }
 
         /// <summary>
         /// Gets all answers the player has submitted.
