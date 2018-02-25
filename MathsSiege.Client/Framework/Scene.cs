@@ -171,7 +171,7 @@ namespace MathsSiege.Client.Framework
         /// <param name="gameTime"></param>
         public virtual void Draw(GameTime gameTime)
         {
-            if (this.UserInterface.UseRenderTarget)
+            if (this.IsActive && this.UserInterface.UseRenderTarget)
             {
                 this.UserInterface.Draw(this.SpriteBatch);
                 this.GraphicsDevice.SetRenderTarget(this.RenderTarget);

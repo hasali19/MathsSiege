@@ -175,6 +175,11 @@ namespace MathsSiege.Client.Scenes
                 this.statsView.AddPointsButton.Disabled = false;
             }
 
+            if (InputHandler.IsKeyPressed(Keys.Escape))
+            {
+                this.SceneManager.PushScene(new PauseMenuScene(this.Game));
+            }
+
             if (InputHandler.IsMouseButtonPressed(MouseButton.Left))
             {
                 this.OnLeftMouseButtonPressed();

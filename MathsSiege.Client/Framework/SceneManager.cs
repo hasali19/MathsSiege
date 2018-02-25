@@ -11,6 +11,8 @@ namespace MathsSiege.Client.Framework
 
         private SpriteBatch spriteBatch;
 
+        private bool shouldClearScenes = false;
+
         public SceneManager(Game game) : base(game)
         {
         }
@@ -75,7 +77,7 @@ namespace MathsSiege.Client.Framework
                 s.Destroy();
             }
 
-            this.scenes.Clear();
+            this.shouldClearScenes = true;
             this.scenes.Add(scene);
             scene.Initialise();
         }
@@ -93,6 +95,16 @@ namespace MathsSiege.Client.Framework
                 {
                     scene.Update(gameTime);
                 }
+            }
+
+            if (this.shouldClearScenes)
+            {
+                while (this.scenes.Count > 1)
+                {
+                    this.scenes.RemoveAt(0);
+                }
+
+                this.shouldClearScenes = false;
             }
         }
 
