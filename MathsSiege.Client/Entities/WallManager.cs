@@ -27,7 +27,7 @@ namespace MathsSiege.Client.Entities
         /// <returns>True if the wall was created successfully.</returns>
         public bool CreateWall(Tile tile)
         {
-            if (!tile.IsPlaceable || this.CheckContainsWall(tile, out _))
+            if (!tile.IsPlaceable)
             {
                 return false;
             }

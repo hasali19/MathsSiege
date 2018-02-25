@@ -91,6 +91,26 @@ namespace MathsSiege.Client.Entities
         }
 
         /// <summary>
+        /// Checks if a tile currently contains an enemy.
+        /// </summary>
+        /// <param name="tile"></param>
+        /// <returns></returns>
+        public bool CheckTileContainsEnemy(Tile tile)
+        {
+            var area = new Rectangle(tile.X, tile.Y, 1, 1);
+
+            foreach (var enemy in this.enemies)
+            {
+                if (area.Contains(enemy.Position))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Gets the nearest enemy within range of a particular position.
         /// </summary>
         /// <param name="position"></param>

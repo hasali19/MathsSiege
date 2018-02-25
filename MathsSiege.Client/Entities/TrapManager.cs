@@ -21,7 +21,7 @@ namespace MathsSiege.Client.Entities
         /// <returns></returns>
         public bool CreateTrap(string type, Tile tile)
         {
-            if (!tile.IsPlaceable || this.CheckContainsTrap(tile))
+            if (!tile.IsPlaceable)
             {
                 return false;
             }

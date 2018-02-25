@@ -228,7 +228,13 @@ namespace MathsSiege.Client.Scenes
             if (this.UserInterface.TargetEntity == null && this.gameMap.HoveredTile != null
                 && this.defenceMenu.SelectedItem != null)
             {
-                if (this.defenceMenu.SelectedItem.Cost <= this.stats.Points)
+                var tile = this.gameMap.HoveredTile;
+                if (this.defenceMenu.SelectedItem.Cost <= this.stats.Points
+                    // Make sure the tile does not contain any objects
+                    && !(this.wallManager.CheckContainsWall(tile, out _)
+                    || this.defenceManager.CheckContainsDefence(tile)
+                    || this.trapManager.CheckContainsTrap(tile)
+                    || this.enemyManager.CheckTileContainsEnemy(tile)))
                 {
                     if (this.defenceMenu.SelectedItem.Name == DefenceTypes.Wall)
                     {

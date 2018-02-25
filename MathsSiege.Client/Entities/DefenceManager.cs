@@ -23,7 +23,7 @@ namespace MathsSiege.Client.Entities
         /// <returns>True if the defence was created successfully.</returns>
         public bool CreateDefence(string type, Tile tile)
         {
-            if (!tile.IsPlaceable || this.CheckContainsDefence(tile))
+            if (!tile.IsPlaceable)
             {
                 return false;
             }
