@@ -1839,3 +1839,10 @@
 /processorParam:TextureFormat=Color
 /build:Textures/SplashBackground.png
 
+#begin Fonts/gravedigger-42.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/gravedigger-42.spritefont
+

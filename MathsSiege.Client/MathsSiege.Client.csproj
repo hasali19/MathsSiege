@@ -80,6 +80,7 @@
     <Compile Include="Scenes\PauseMenuScene.cs" />
     <Compile Include="Scenes\QuestionScene.cs" />
     <Compile Include="Scenes\SettingsScene.cs" />
+    <Compile Include="Scenes\SplashScene.cs" />
     <Compile Include="SpriteBatchExtensions.cs" />
     <Compile Include="UserPreferences.cs" />
     <Compile Include="Utilities.cs" />
@@ -175,6 +176,7 @@
     <None Include="app.manifest" />
     <None Include="Content\AnimatedSprites\GoblinAtlas.json" />
     <None Include="Content\AnimatedSprites\SkeletonAtlas.json" />
+    <None Include="Content\Fonts\gravedigger-42.spritefont" />
     <None Include="Content\Textures\CannonAtlas.json" />
     <None Include="Content\Fonts\montserrat-32.fnt" />
     <None Include="Content\GeonBit.UI\themes\custom\fonts\Bold.spritefont" />
