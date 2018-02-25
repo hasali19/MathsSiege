@@ -3,7 +3,6 @@ using MathsSiege.Client.Framework;
 using MathsSiege.Client.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended.Input.InputListeners;
 
 namespace MathsSiege.Client
 {
@@ -21,16 +20,9 @@ namespace MathsSiege.Client
             };
 
             this.Content.RootDirectory = "Content";
-
-            var mouseListener = new MouseListener();
-            var keyboardListener = new KeyboardListener();
+            
             this.sceneManager = new SceneManager(this);
-
-            this.Components.Add(new InputListenerComponent(this, mouseListener, keyboardListener));
             this.Components.Add(this.sceneManager);
-
-            this.Services.AddService(mouseListener);
-            this.Services.AddService(keyboardListener);
             this.Services.AddService(this.sceneManager);
         }
 
@@ -57,6 +49,8 @@ namespace MathsSiege.Client
             {
                 Exit();
             }
+
+            InputHandler.Update();
 
             base.Update(gameTime);
         }

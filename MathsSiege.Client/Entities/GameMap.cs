@@ -334,8 +334,7 @@ namespace MathsSiege.Client.Entities
         {
             this.renderer.Update(this.TiledMap, gameTime);
 
-            var mouseState = Mouse.GetState();
-            var worldPosition = this.Scene.Camera.ScreenToWorld(mouseState.Position.ToVector2());
+            var worldPosition = this.Scene.Camera.ScreenToWorld(InputHandler.MousePosition);
             var tilePosition = this.ScreenToMap(worldPosition);
             this.HoveredTile = this[(int)tilePosition.X, (int)tilePosition.Y];
         }

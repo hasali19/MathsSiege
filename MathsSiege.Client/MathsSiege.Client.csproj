@@ -64,6 +64,7 @@
     <Compile Include="Entities\Wall.cs" />
     <Compile Include="Entities\WallManager.cs" />
     <Compile Include="Framework\DrawableEntity.cs" />
+    <Compile Include="Framework\InputHandler.cs" />
     <Compile Include="Framework\Scene.cs" />
     <Compile Include="Framework\SceneManager.cs" />
     <Compile Include="Gui\DefenceMenu.cs" />
@@ -97,9 +98,6 @@
     </Reference>
     <Reference Include="MonoGame.Extended.Graphics, Version=1.0.617.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MonoGame.Extended.Graphics.1.0.617\lib\portable-net45+win8+wpa81\MonoGame.Extended.Graphics.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoGame.Extended.Input, Version=1.0.617.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MonoGame.Extended.Input.1.0.617\lib\portable-net45+win8+wpa81\MonoGame.Extended.Input.dll</HintPath>
     </Reference>
     <Reference Include="MonoGame.Extended.Tiled, Version=1.0.617.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MonoGame.Extended.Tiled.1.0.617\lib\portable-net45+win8+wpa81\MonoGame.Extended.Tiled.dll</HintPath>

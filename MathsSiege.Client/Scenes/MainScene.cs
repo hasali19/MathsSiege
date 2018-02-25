@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using MonoGame.Extended.Input.InputListeners;
 using MonoGame.Extended.Tiled;
 using System;
 using System.Diagnostics;
@@ -127,54 +126,12 @@ namespace MathsSiege.Client.Scenes
             };
             #endregion
 
-            var mouseListener = this.Game.Services.GetService<MouseListener>();
-
-            mouseListener.MouseClicked += this.MouseListener_MouseClicked;
-
             MediaPlayer.Volume = 0;
             MediaPlayer.Play(backgroundMusic);
             MediaPlayer.IsRepeating = true;
 
             this.spawnStopwatch.Start();
             this.questionStopwatch.Start();
-        }
-
-        private void MouseListener_MouseClicked(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButton.Left && this.UserInterface.TargetEntity == null
-                && this.gameMap.HoveredTile != null && this.defenceMenu.SelectedItem != null)
-            {
-                if (this.defenceMenu.SelectedItem.Cost <= this.stats.Points)
-                {
-                    if (this.defenceMenu.SelectedItem.Name == DefenceTypes.Wall)
-                    {
-                        this.wallManager.CreateWall(this.gameMap.HoveredTile);
-                        this.itemPlacedSound.Play();
-                    }
-                    else if (this.defenceMenu.SelectedItem.Name == DefenceTypes.Cannon)
-                    {
-                        this.defenceManager.CreateDefence(DefenceTypes.Cannon, this.gameMap.HoveredTile);
-                        this.itemPlacedSound.Play();
-                    }
-                    else if (this.defenceMenu.SelectedItem.Name == DefenceTypes.Spikes)
-                    {
-                        this.trapManager.CreateTrap(DefenceTypes.Spikes, this.gameMap.HoveredTile);
-                        this.itemPlacedSound.Play();
-                    }
-
-                    this.stats.Points -= this.defenceMenu.SelectedItem.Cost;
-                }
-            }
-            else if (e.Button == MouseButton.Right && this.gameMap.HoveredTile != null)
-            {
-                if (!this.wallManager.RemoveWall(this.gameMap.HoveredTile))
-                {
-                    if (!this.defenceManager.RemoveDefence(this.gameMap.HoveredTile))
-                    {
-                        this.trapManager.RemoveTrap(this.gameMap.HoveredTile);
-                    }
-                }
-            }
         }
 
         public override void Pause()
@@ -218,6 +175,15 @@ namespace MathsSiege.Client.Scenes
                 this.statsView.AddPointsButton.Disabled = false;
             }
 
+            if (InputHandler.IsMouseButtonPressed(MouseButton.Left))
+            {
+                this.OnLeftMouseButtonPressed();
+            }
+            else if (InputHandler.IsMouseButtonPressed(MouseButton.Right))
+            {
+                this.OnRightMouseButtonPressed();
+            }
+
             base.Update(gameTime);
         }
 
@@ -227,25 +193,24 @@ namespace MathsSiege.Client.Scenes
         /// </summary>
         private void UpdateCamera()
         {
-            var keyboardState = Keyboard.GetState();
             var movementVector = Vector2.Zero;
 
-            if (keyboardState.IsKeyDown(Keys.D))
+            if (InputHandler.IsKeyDown(Keys.D))
             {
                 movementVector.X += 1;
             }
             
-            if (keyboardState.IsKeyDown(Keys.A))
+            if (InputHandler.IsKeyDown(Keys.A))
             {
                 movementVector.X -= 1;
             }
 
-            if (keyboardState.IsKeyDown(Keys.S))
+            if (InputHandler.IsKeyDown(Keys.S))
             {
                 movementVector.Y += 1;
             }
 
-            if (keyboardState.IsKeyDown(Keys.W))
+            if (InputHandler.IsKeyDown(Keys.W))
             {
                 movementVector.Y -= 1;
             }
@@ -255,6 +220,48 @@ namespace MathsSiege.Client.Scenes
                 movementVector.Normalize();
                 movementVector *= CameraMovementSpeed;
                 this.Camera.Move(movementVector);
+            }
+        }
+
+        private void OnLeftMouseButtonPressed()
+        {
+            if (this.UserInterface.TargetEntity == null && this.gameMap.HoveredTile != null
+                && this.defenceMenu.SelectedItem != null)
+            {
+                if (this.defenceMenu.SelectedItem.Cost <= this.stats.Points)
+                {
+                    if (this.defenceMenu.SelectedItem.Name == DefenceTypes.Wall)
+                    {
+                        this.wallManager.CreateWall(this.gameMap.HoveredTile);
+                        this.itemPlacedSound.Play();
+                    }
+                    else if (this.defenceMenu.SelectedItem.Name == DefenceTypes.Cannon)
+                    {
+                        this.defenceManager.CreateDefence(DefenceTypes.Cannon, this.gameMap.HoveredTile);
+                        this.itemPlacedSound.Play();
+                    }
+                    else if (this.defenceMenu.SelectedItem.Name == DefenceTypes.Spikes)
+                    {
+                        this.trapManager.CreateTrap(DefenceTypes.Spikes, this.gameMap.HoveredTile);
+                        this.itemPlacedSound.Play();
+                    }
+
+                    this.stats.Points -= this.defenceMenu.SelectedItem.Cost;
+                }
+            }
+        }
+
+        private void OnRightMouseButtonPressed()
+        {
+            if (this.gameMap.HoveredTile != null)
+            {
+                if (!this.wallManager.RemoveWall(this.gameMap.HoveredTile))
+                {
+                    if (!this.defenceManager.RemoveDefence(this.gameMap.HoveredTile))
+                    {
+                        this.trapManager.RemoveTrap(this.gameMap.HoveredTile);
+                    }
+                }
             }
         }
     }
