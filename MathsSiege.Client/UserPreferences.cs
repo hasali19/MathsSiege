@@ -40,6 +40,8 @@ namespace MathsSiege.Client
         {
             var fs = File.OpenWrite(Filename);
 
+            fs.SetLength(0);
+
             try
             {
                 this.document.Save(fs);
@@ -52,6 +54,8 @@ namespace MathsSiege.Client
 
         private XDocument Create(FileStream fs)
         {
+            fs.SetLength(0);
+
             var document = new XDocument(
                 new XElement("UserPreferences"));
 
