@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -14,6 +13,12 @@ namespace MathsSiege.Client
         {
             get => this.GetPreference(this.document, nameof(this.HostAddress));
             set => this.SetPreference(this.document, nameof(this.HostAddress), value);
+        }
+
+        public bool IsWindowFullScreen
+        {
+            get => bool.Parse(this.GetPreference(this.document, nameof(this.IsWindowFullScreen)));
+            set => this.SetPreference(this.document, nameof(this.IsWindowFullScreen), value.ToString());
         }
 
         private XDocument document;
@@ -60,6 +65,7 @@ namespace MathsSiege.Client
                 new XElement("UserPreferences"));
 
             this.SetPreference(document, nameof(this.HostAddress), "");
+            this.SetPreference(document, nameof(this.IsWindowFullScreen), false.ToString());
 
             document.Save(fs);
 

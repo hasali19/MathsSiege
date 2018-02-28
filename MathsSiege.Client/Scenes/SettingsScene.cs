@@ -34,6 +34,11 @@ namespace MathsSiege.Client.Scenes
                 PanelOverflowBehavior = PanelOverflowBehavior.VerticalScroll
             };
 
+            var fullscreenToggle = new CheckBox("Enable Fullscreen Mode (Requires restart)")
+            {
+                Checked = this.preferences.IsWindowFullScreen
+            };
+
             this.addressInput = new TextInput(false)
             {
                 PlaceholderText = "Enter the server address",
@@ -45,12 +50,15 @@ namespace MathsSiege.Client.Scenes
 
             titleContainer.AddChild(title);
 
+            contentContainer.AddChild(fullscreenToggle);
             contentContainer.AddChild(this.addressInput);
 
             this.UserInterface.AddEntity(titleContainer);
             this.UserInterface.AddEntity(contentContainer);
             this.UserInterface.AddEntity(back);
             this.UserInterface.AddEntity(save);
+
+            fullscreenToggle.OnValueChange = (e) => this.preferences.IsWindowFullScreen = fullscreenToggle.Checked;
 
             back.OnClick = this.Back_OnClick;
             save.OnClick = this.Save_OnClick;

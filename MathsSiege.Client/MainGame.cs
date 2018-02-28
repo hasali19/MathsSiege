@@ -2,7 +2,6 @@
 using MathsSiege.Client.Framework;
 using MathsSiege.Client.Scenes;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 namespace MathsSiege.Client
 {
@@ -32,6 +31,14 @@ namespace MathsSiege.Client
 
             var preferences = new UserPreferences();
             preferences.Load();
+
+            if (preferences.IsWindowFullScreen)
+            {
+                this.graphics.IsFullScreen = true;
+                this.graphics.PreferredBackBufferWidth = this.GraphicsDevice.DisplayMode.Width;
+                this.graphics.PreferredBackBufferHeight = this.GraphicsDevice.DisplayMode.Height;
+                this.graphics.ApplyChanges();
+            }
 
             var dataClient = new DataClient(preferences);
 
