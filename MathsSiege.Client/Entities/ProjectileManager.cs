@@ -28,7 +28,7 @@ namespace MathsSiege.Client.Entities
             switch (type)
             {
                 case ProjectileType.Cannonball:
-                    projectile = new Projectile(this.cannonball);
+                    projectile = new Projectile(this.cannonball) { Acceleration = new Vector3(0, 0, -30.0f) };
                     break;
 
                 default:

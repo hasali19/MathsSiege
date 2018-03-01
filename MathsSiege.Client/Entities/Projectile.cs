@@ -10,7 +10,7 @@ namespace MathsSiege.Client.Entities
 {
     public class Projectile : DrawableEntity
     {
-        private static readonly Vector3 Acceleration = new Vector3(0, 0, -10f);
+        public Vector3 Acceleration { get; set; } = new Vector3(0, 0, -10f);
 
         public event Action<Projectile> TargetReached;
 
