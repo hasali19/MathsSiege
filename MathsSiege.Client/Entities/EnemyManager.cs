@@ -42,11 +42,22 @@ namespace MathsSiege.Client.Entities
             switch (type)
             {
                 case EnemyType.Goblin:
-                    enemy = new Enemy(this.goblinAnimationFactory);
+                    enemy = new Enemy(this.goblinAnimationFactory)
+                    {
+                        MovementSpeedMultiplier = 1.2f,
+                        AttackDamage = 5,
+                        AttackInterval = 1000
+                    };
                     break;
 
                 case EnemyType.Skeleton:
-                    enemy = new Enemy(this.skeletonAnimationFactory);
+                    enemy = new Enemy(this.skeletonAnimationFactory)
+                    {
+                        MovementSpeedMultiplier = 0.7f,
+                        AttackDamage = 30,
+                        AttackInterval = 2000,
+                        MaxHealth = 150
+                    };
                     break;
 
                 default:
