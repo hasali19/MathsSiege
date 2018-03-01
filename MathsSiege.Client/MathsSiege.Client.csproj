@@ -46,6 +46,7 @@
     <Compile Include="ContentPaths.cs" />
     <Compile Include="DataClient.cs" />
     <Compile Include="DefenceTypes.cs" />
+    <Compile Include="EnemySpawner.cs" />
     <Compile Include="Entities\AttackableEntity.cs" />
     <Compile Include="Entities\Cannon.cs" />
     <Compile Include="Entities\Defence.cs" />

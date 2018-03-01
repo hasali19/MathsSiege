@@ -24,6 +24,7 @@ namespace MathsSiege.Client.Scenes
         private Stopwatch spawnStopwatch = new Stopwatch();
         private Stopwatch questionStopwatch = new Stopwatch();
         private Random random = new Random();
+        private EnemySpawner spawner;
 
         private GameMap gameMap;
         private WallManager wallManager;
@@ -130,6 +131,8 @@ namespace MathsSiege.Client.Scenes
             MediaPlayer.Play(backgroundMusic);
             MediaPlayer.IsRepeating = true;
 
+            this.spawner = new EnemySpawner(this.gameMap, this.enemyManager);
+
             this.spawnStopwatch.Start();
             this.questionStopwatch.Start();
         }
@@ -161,13 +164,7 @@ namespace MathsSiege.Client.Scenes
                 MediaPlayer.Volume = MathHelper.Min(MediaPlayer.Volume + 0.005f, 1);
             }
 
-            if (this.spawnStopwatch.ElapsedMilliseconds > EnemySpawnInterval)
-            {
-                var i = this.random.Next(this.gameMap.SpawnableTiles.Count);
-                var tile = this.gameMap.SpawnableTiles[i];
-                this.enemyManager.CreateRandomEnemy(tile);
-                this.spawnStopwatch.Restart();
-            }
+            this.spawner.Update(gameTime);
 
             if (this.questionStopwatch.ElapsedMilliseconds > QuestionInterval)
             {
