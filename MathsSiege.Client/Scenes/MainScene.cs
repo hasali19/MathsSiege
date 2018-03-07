@@ -1,6 +1,7 @@
 ﻿using MathsSiege.Client.Entities;
 using MathsSiege.Client.Framework;
 using MathsSiege.Client.Gui;
+using MathsSiege.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,7 +9,10 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended.Tiled;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MathsSiege.Client.Scenes
 {
@@ -20,6 +24,8 @@ namespace MathsSiege.Client.Scenes
         private const int CameraMovementSpeed = 10;
         private const int EnemySpawnInterval = 10_000;
         private const int QuestionInterval = 10_000;
+
+        private DataClient client;
 
         private Stopwatch spawnStopwatch = new Stopwatch();
         private Stopwatch questionStopwatch = new Stopwatch();
@@ -42,6 +48,8 @@ namespace MathsSiege.Client.Scenes
         {
             this.ClearColor = Color.White;
             this.UserInterface.UseRenderTarget = true;
+
+            this.client = this.Game.Services.GetService<DataClient>();
 
             this.stats = new PlayerStats();
             
@@ -135,6 +143,22 @@ namespace MathsSiege.Client.Scenes
 
             this.spawnStopwatch.Start();
             this.questionStopwatch.Start();
+
+            this.Game.Exiting += this.Game_Exiting;
+        }
+
+        public override void Destroy()
+        {
+            base.Destroy();
+
+            this.Game.Exiting -= this.Game_Exiting;
+
+            Task.Run(this.UploadSessionInfo).Wait();
+        }
+
+        private void Game_Exiting(object sender, EventArgs e)
+        {
+            Task.Run(this.UploadSessionInfo).Wait();
         }
 
         public override void Pause()
@@ -271,6 +295,18 @@ namespace MathsSiege.Client.Scenes
                     }
                 }
             }
+        }
+
+        private async Task<bool> UploadSessionInfo()
+        {
+            var session = new GameSession
+            {
+                StartTime = DateTime.Now - this.statsView.ElapsedTime,
+                EndTime = DateTime.Now,
+                Answers = (ICollection<Answer>)this.stats.Answers
+            };
+
+            return await this.client.PostGameSession(session);
         }
     }
 }

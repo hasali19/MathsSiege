@@ -124,6 +124,44 @@ namespace MathsSiege.Client
             return question;
         }
 
+        public async Task<bool> PostGameSession(GameSession session)
+        {
+            // Set the choice ID for each answer. This is necessary for the server
+            // to identify it as an existing choice.
+            foreach (var answer in session.Answers)
+            {
+                answer.ChoiceId = answer.Choice.Id;
+                answer.Choice = null;
+            }
+
+            try
+            {
+                // Serialize session data to json string.
+                string data = JsonConvert.SerializeObject(session, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                
+                // Create the request content object.
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
+                // Send the request to the server.
+                var response = await this.client.PostAsync(this.preferences.HostAddress + "/api/gamesessions", content);
+
+                // Check if the request was successful.
+                if (!response.IsSuccessStatusCode)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
         private class TokenResponse
         {
             public string Token { get; set; }
