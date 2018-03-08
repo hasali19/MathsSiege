@@ -12,7 +12,8 @@
             <p>Are you sure you want to delete this question?</p>
             <p>Deleting this question will delete any game session answers that depend on it.<br />Consider marking it inactive instead, to stop it being used in game.</p>
             <button type="submit" class="btn btn-danger float-right mt-4">Delete</button>
-            <a class="btn btn-warning float-right mt-4 mr-4" asp-page="/Questions/Edit" asp-route-id="@Model.Id">Mark Inactive</a>
+            <a class="btn btn-warning float-right mt-4 mr-2" asp-page="/Questions/Edit" asp-route-id="@Model.Id">Mark Inactive</a>
+            <a class="btn btn-success float-right mt-4 mr-2" asp-page="./Index">Cancel</a>
         </form>
     </div>
 </div>

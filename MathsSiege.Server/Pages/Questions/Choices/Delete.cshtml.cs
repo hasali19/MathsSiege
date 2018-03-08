@@ -1,3 +1,4 @@
+using MathsSiege.Models;
 using MathsSiege.Server.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,6 +10,8 @@ namespace MathsSiege.Server.Pages.Questions.Choices
     {
         private readonly IQuestionRepository questionRepository;
 
+        public Choice Choice { get; private set; }
+
         public DeleteModel(IQuestionRepository questionRepository)
         {
             this.questionRepository = questionRepository;
@@ -16,9 +19,9 @@ namespace MathsSiege.Server.Pages.Questions.Choices
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var choice = await questionRepository.GetChoiceAsync(id);
+            Choice = await questionRepository.GetChoiceAsync(id);
 
-            if (choice == null)
+            if (Choice == null)
             {
                 return NotFound();
             }
