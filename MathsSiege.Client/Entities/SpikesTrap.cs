@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended.TextureAtlases;
 
@@ -29,7 +30,7 @@ namespace MathsSiege.Client.Entities
         {
             this.SetTextureRegion(TrapState.Triggered);
 
-            foreach (var enemy in enemies)
+            foreach (var enemy in enemies.Where(e => !e.IsFlying))
             {
                 enemy.Attack(20);
             }

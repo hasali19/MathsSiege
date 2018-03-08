@@ -177,6 +177,7 @@
     <None Include="app.manifest" />
     <None Include="Content\AnimatedSprites\GoblinAtlas.json" />
     <None Include="Content\AnimatedSprites\SkeletonAtlas.json" />
+    <None Include="Content\AnimatedSprites\WyvernAtlas.json" />
     <None Include="Content\Fonts\gravedigger-42.spritefont" />
     <None Include="Content\Textures\CannonAtlas.json" />
     <None Include="Content\Fonts\montserrat-32.fnt" />
@@ -200,6 +201,8 @@
     <Content Include="Content\AnimatedSprites\GoblinSheet.png" />
     <Content Include="Content\AnimatedSprites\SkeletonAnimations.xml" />
     <Content Include="Content\AnimatedSprites\SkeletonSheet.png" />
+    <Content Include="Content\AnimatedSprites\WyvernSheet.png" />
+    <Content Include="Content\AnimatedSprites\WyvernAnimations.xml" />
     <Content Include="Content\Sounds\Background.wav" />
     <Content Include="Content\Sounds\ButtonClicked.wav" />
     <Content Include="Content\Sounds\CannonFire.wav" />

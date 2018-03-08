@@ -12,7 +12,8 @@ namespace MathsSiege.Client.Entities
     public enum EnemyType
     {
         Goblin,
-        Skeleton
+        Skeleton,
+        Wyvern
     }
 
     public class EnemyManager : DrawableEntity
@@ -23,6 +24,7 @@ namespace MathsSiege.Client.Entities
 
         private SpriteSheetAnimationFactory goblinAnimationFactory;
         private SpriteSheetAnimationFactory skeletonAnimationFactory;
+        private SpriteSheetAnimationFactory wyvernAnimationFactory;
 
         /// <summary>
         /// Creates a new enemy.
@@ -45,7 +47,7 @@ namespace MathsSiege.Client.Entities
                     enemy = new Enemy(this.goblinAnimationFactory)
                     {
                         MovementSpeedMultiplier = 1.2f,
-                        AttackDamage = 5,
+                        AttackDamage = 10,
                         AttackInterval = 1000
                     };
                     break;
@@ -54,9 +56,22 @@ namespace MathsSiege.Client.Entities
                     enemy = new Enemy(this.skeletonAnimationFactory)
                     {
                         MovementSpeedMultiplier = 0.7f,
-                        AttackDamage = 30,
+                        AttackDamage = 20,
                         AttackInterval = 2000,
                         MaxHealth = 150
+                    };
+                    break;
+
+                case EnemyType.Wyvern:
+                    enemy = new Enemy(this.wyvernAnimationFactory)
+                    {
+                        Origin = new Vector2(128, 192),
+                        Scale = new Vector2(0.625f),
+                        MovementSpeedMultiplier = 1.0f,
+                        AttackDamage = 30,
+                        AttackInterval = 2000,
+                        MaxHealth = 200,
+                        IsFlying = true
                     };
                     break;
 
@@ -93,12 +108,15 @@ namespace MathsSiege.Client.Entities
         {
             var goblinAnimations = this.Scene.Content.Load<Animation[]>(ContentPaths.AnimatedSprites.GoblinAnimations);
             var skeletonAnimations = this.Scene.Content.Load<Animation[]>(ContentPaths.AnimatedSprites.SkeletonAnimations);
+            var wyvernAnimations = this.Scene.Content.Load<Animation[]>(ContentPaths.AnimatedSprites.WyvernAnimations);
 
             var goblinAtlas = this.Scene.Content.Load<TextureAtlas>(ContentPaths.AnimatedSprites.GoblinAtlas);
             var skeletonAtlas = this.Scene.Content.Load<TextureAtlas>(ContentPaths.AnimatedSprites.SkeletonAtlas);
+            var wyvernAtlas = this.Scene.Content.Load<TextureAtlas>(ContentPaths.AnimatedSprites.WyvernAtlas);
 
             this.goblinAnimationFactory = this.LoadAnimationFactory(goblinAtlas, goblinAnimations);
             this.skeletonAnimationFactory = this.LoadAnimationFactory(skeletonAtlas, skeletonAnimations);
+            this.wyvernAnimationFactory = this.LoadAnimationFactory(wyvernAtlas, wyvernAnimations);
         }
 
         /// <summary>

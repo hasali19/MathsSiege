@@ -5,6 +5,7 @@ using MonoGame.Extended.TextureAtlases;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace MathsSiege.Client.Entities
 {
@@ -17,6 +18,8 @@ namespace MathsSiege.Client.Entities
     public abstract class Trap : DrawableEntity
     {
         public Vector2 Position { get; set; }
+
+        public bool IsTriggeredByFlying { get; set; }
 
         public event Action<Trap> Destroyed;
 
@@ -55,7 +58,7 @@ namespace MathsSiege.Client.Entities
                 var enemies = this.enemyManager.GetEnemiesInRange(this.Position, 1f);
 
                 // Trigger if there are enemies in range.
-                if (enemies.Count > 0)
+                if (enemies.Count > 0 && (this.IsTriggeredByFlying || enemies.Any(e => !e.IsFlying)))
                 {
                     this.stopwatch.Reset();
                     this.OnTrigger(enemies);

@@ -1846,3 +1846,25 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/gravedigger-42.spritefont
 
+#begin AnimatedSprites/WyvernAnimations.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:AnimatedSprites/WyvernAnimations.xml
+
+#begin AnimatedSprites/WyvernAtlas.json
+/importer:TexturePackerJsonImporter
+/processor:TexturePackerProcessor
+/build:AnimatedSprites/WyvernAtlas.json
+
+#begin AnimatedSprites/WyvernSheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:AnimatedSprites/WyvernSheet.png
+

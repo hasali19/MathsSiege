@@ -46,6 +46,26 @@ namespace MathsSiege.Client.Entities
         public Vector2 Position { get; set; }
 
         /// <summary>
+        /// Sets whether the enemy can fly over defences.
+        /// </summary>
+        public bool IsFlying { get; set; }
+
+        /// <summary>
+        /// Sets the sprite texture origin.
+        /// </summary>
+        public Vector2 Origin
+        {
+            get => this.sprite.Origin;
+            set => this.sprite.Origin = value;
+        }
+
+        public Vector2 Scale
+        {
+            get => this.sprite.Scale;
+            set => this.sprite.Scale = value;
+        }
+
+        /// <summary>
         /// The state of the enemy AI.
         /// </summary>
         public EnemyState State { get; private set; }
@@ -203,7 +223,7 @@ namespace MathsSiege.Client.Entities
             {
                 var tile = this.map[(int)this.Position.X, (int)this.Position.Y];
                 var targetTile = this.map[(int)this.target.Position.X, (int)this.target.Position.Y];
-                this.path = this.map.GetPath(tile, targetTile);
+                this.path = this.map.GetPath(tile, targetTile, !this.IsFlying);
             }
             else if (this.path.Count > 0)
             {

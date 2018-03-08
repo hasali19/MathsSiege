@@ -8,6 +8,8 @@
             public const string GoblinAtlas = "AnimatedSprites/GoblinAtlas";
             public const string SkeletonAnimations = "AnimatedSprites/SkeletonAnimations";
             public const string SkeletonAtlas = "AnimatedSprites/SkeletonAtlas";
+            public const string WyvernAnimations = "AnimatedSprites/WyvernAnimations";
+            public const string WyvernAtlas = "AnimatedSprites/WyvernAtlas";
         }
 
         public static class Fonts
