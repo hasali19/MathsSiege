@@ -24,7 +24,7 @@
             <table class="table table-striped mb-0">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        @*<th>#</th>*@
                         <th>Username</th>
                         <th>Role</th>
                         <th><!--Empty column header--></th>
@@ -34,7 +34,7 @@
                     @foreach (var user in Model.Users)
                     {
                         <tr>
-                            <td>@user.Id</td>
+                            @*<td>@user.Id</td>*@
                             <td>@user.Username</td>
                             <td>@user.Role.ToString()</td>
                             <td>

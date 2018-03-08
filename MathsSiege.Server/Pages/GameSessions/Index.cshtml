@@ -12,7 +12,7 @@
             <table class="table table-striped mb-0">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        @*<th>#</th>*@
                         <th>User</th>
                         <th>Time</th>
                         <th><!--Empty column header--></th>
@@ -22,7 +22,7 @@
                     @foreach (var gameSession in Model.GameSessions)
                     {
                         <tr>
-                            <td>@gameSession.Id</td>
+                            @*<td>@gameSession.Id</td>*@
                             <td>@gameSession.User.Username</td>
                             <td>@gameSession.EndTime.ToString()</td>
                             <td>

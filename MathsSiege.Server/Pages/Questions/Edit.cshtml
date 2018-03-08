@@ -49,7 +49,7 @@
             <table class="table table-striped mb-0">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        @*<th>#</th>*@
                         <th>Choice</th>
                         <th>Correct</th>
                         <th><!--Empty column header--></th>
@@ -59,7 +59,7 @@
                     @foreach (var choice in Model.Question.Choices)
                     {
                         <tr>
-                            <td>@choice.Id</td>
+                            @*<td>@choice.Id</td>*@
                             <td>@choice.Text</td>
                             <td>@(choice.IsCorrect ? "Yes" : "No")</td>
                             <td>

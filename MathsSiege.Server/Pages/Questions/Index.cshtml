@@ -27,7 +27,7 @@
             <table class="table table-striped mb-0">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        @*<th>#</th>*@
                         <th>Question</th>
                         <th>Difficulty</th>
                         @((bool)ViewData["InActive"] ? Html.Raw("<th>Active</th>") : Html.Raw(""))
@@ -38,7 +38,7 @@
                     @foreach (var question in Model.Questions)
                     {
                     <tr>
-                        <td>@question.Id</td>
+                        @*<td>@question.Id</td>*@
                         <td>@question.Text</td>
                         <td>@question.Difficulty.ToString()</td>
                         @((bool)ViewData["InActive"] ? Html.Raw($"<td>{(question.IsActive ? "Yes" : "No")}</td>") : Html.Raw(""))
