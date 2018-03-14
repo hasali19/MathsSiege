@@ -6,14 +6,15 @@ using MonoGame.Extended.Collections;
 using MonoGame.Extended.TextureAtlases;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace MathsSiege.Client.Entities
 {
     public enum EnemyType
     {
-        Goblin,
-        Skeleton,
-        Wyvern
+        Wyvern = 0,
+        Skeleton = 1,
+        Goblin = 2
     }
 
     public class EnemyManager : DrawableEntity
@@ -98,10 +99,32 @@ namespace MathsSiege.Client.Entities
         public bool CreateRandomEnemy(Tile tile)
         {
             var typeValues = typeof(EnemyType).GetEnumValues();
-            var typeIndex = this.random.Next(typeValues.Length);
-            var type = (EnemyType)typeValues.GetValue(typeIndex);
+            var type = null as EnemyType?;
 
-            return this.CreateEnemy(type, tile);
+            // Generate a random number between 0 and 1.
+            var r = this.random.NextDouble();
+
+            // Calculate the sum of the values for each type,
+            // e.g. For values of Goblin = 3, Skeleton = 2, Wyvern = 1,
+            // the sum is 3 + 2 + 1 = 6.
+            var max = (typeValues.Length / 2d) * (typeValues.Length + 1);
+
+            // Loop through all the enemy types.
+            for (int i = 0; i < typeValues.Length; i++)
+            {
+                // Check if the generated number is less than
+                // the threshold required to spawn that enemy.
+                // e.g. For values of Goblin = 3, Skeleton = 2, Wyvern = 1,
+                // the threshold for spawning a wyvern would be 1 / 6,
+                // while for a skeleton it would be (2 + 1) / 6 = 1 / 2.
+                if (r <= (((i + 1) / 2d) * (i + 2)) / max)
+                {
+                    type = (EnemyType)typeValues.GetValue(i);
+                    break;
+                }
+            }
+
+            return this.CreateEnemy(type.Value, tile);
         }
 
         public override void OnAddedToScene()
