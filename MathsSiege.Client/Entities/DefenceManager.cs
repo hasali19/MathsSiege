@@ -8,6 +8,8 @@ namespace MathsSiege.Client.Entities
 {
     public class DefenceManager : DrawableEntity
     {
+        public int DefenceCount => this.defences.Count;
+
         public event Action<Defence> DefenceAdded;
         public event Action<Defence> DefenceRemoved;
 

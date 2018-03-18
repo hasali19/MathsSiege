@@ -5,18 +5,20 @@ using MonoGame.Extended.Sprites;
 
 namespace MathsSiege.Client.Entities
 {
-    public class Wall : AttackableEntity, IEnemyTarget
+    public class Castle : AttackableEntity, IEnemyTarget
     {
         public Vector2 Position { get; set; }
-        
+
         private Sprite sprite;
 
-        public Wall(Texture2D texture)
+        public Castle(Texture2D texture)
         {
-            this.sprite = new Sprite(texture)
-            {
-                Origin = new Vector2(32, 32)
-            };
+            this.sprite = new Sprite(texture);
+        }
+
+        public bool ContainsTile(Tile tile)
+        {
+            return new RectangleF(this.Position.X, this.Position.Y, 3, 3).Contains(tile.Position);
         }
 
         public override void OnAddedToScene()

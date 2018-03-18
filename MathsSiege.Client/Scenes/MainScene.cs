@@ -29,7 +29,6 @@ namespace MathsSiege.Client.Scenes
 
         private Stopwatch spawnStopwatch = new Stopwatch();
         private Stopwatch questionStopwatch = new Stopwatch();
-        private Random random = new Random();
         private EnemySpawner spawner;
 
         private GameMap gameMap;
@@ -38,6 +37,7 @@ namespace MathsSiege.Client.Scenes
         private TrapManager trapManager;
         private EnemyManager enemyManager;
         private PlayerStats stats;
+        private Castle castle;
 
         private DefenceMenu defenceMenu;
         private StatsView statsView;
@@ -70,6 +70,7 @@ namespace MathsSiege.Client.Scenes
             var backgroundMusic = this.Content.Load<Song>(ContentPaths.Sounds.Background);
             var buttonClickSound = this.Content.Load<SoundEffect>(ContentPaths.Sounds.ButtonClicked);
             var cannon = this.Content.Load<Texture2D>(ContentPaths.Textures.Cannon);
+            var castleTexture = this.Content.Load<Texture2D>(ContentPaths.Textures.Castle);
             var itemPlacedSound = this.Content.Load<SoundEffect>(ContentPaths.Sounds.ItemPlaced);
             var map = this.Content.Load<TiledMap>(ContentPaths.TiledMap.Map);
             var spikes = this.Content.Load<Texture2D>(ContentPaths.Textures.SpikesTrap);
@@ -86,6 +87,7 @@ namespace MathsSiege.Client.Scenes
             var trapManager = new TrapManager();
             var enemyManager = new EnemyManager();
             var projectileManager = new ProjectileManager();
+            var castle = new Castle(castleTexture) { Position = gameMap[map.Width / 2, map.Height / 2].Position };
 
             this.Services.AddService(gameMap);
             this.Services.AddService(wallManager);
@@ -93,6 +95,7 @@ namespace MathsSiege.Client.Scenes
             this.Services.AddService(trapManager);
             this.Services.AddService(enemyManager);
             this.Services.AddService(projectileManager);
+            this.Services.AddService(castle);
 
             this.AddEntity(gameMap);
             this.AddEntity(hoveredTileOverlay);
@@ -101,12 +104,14 @@ namespace MathsSiege.Client.Scenes
             this.AddEntity(trapManager);
             this.AddEntity(enemyManager);
             this.AddEntity(projectileManager);
+            this.AddEntity(castle);
 
             this.gameMap = gameMap;
             this.wallManager = wallManager;
             this.defenceManager = defenceManager;
             this.trapManager = trapManager;
             this.enemyManager = enemyManager;
+            this.castle = castle;
             this.itemPlacedSound = itemPlacedSound;
 
             // Center the camera.
@@ -144,7 +149,14 @@ namespace MathsSiege.Client.Scenes
             this.spawnStopwatch.Start();
             this.questionStopwatch.Start();
 
+            this.castle.Destroyed += this.Castle_Destroyed;
+
             this.Game.Exiting += this.Game_Exiting;
+        }
+
+        private void Castle_Destroyed(AttackableEntity obj)
+        {
+            this.RemoveEntity(this.castle);
         }
 
         public override void Destroy()
@@ -210,6 +222,11 @@ namespace MathsSiege.Client.Scenes
                 this.OnRightMouseButtonPressed();
             }
 
+            if (this.castle.IsDestroyed && this.defenceManager.DefenceCount == 0)
+            {
+                this.OnGameOver();
+            }
+
             base.Update(gameTime);
         }
 
@@ -260,7 +277,8 @@ namespace MathsSiege.Client.Scenes
                     && !(this.wallManager.CheckContainsWall(tile, out _)
                     || this.defenceManager.CheckContainsDefence(tile)
                     || this.trapManager.CheckContainsTrap(tile)
-                    || this.enemyManager.CheckTileContainsEnemy(tile)))
+                    || this.enemyManager.CheckTileContainsEnemy(tile)
+                    || this.castle.ContainsTile(tile)))
                 {
                     if (this.defenceMenu.SelectedItem.Name == DefenceTypes.Wall)
                     {
@@ -297,7 +315,12 @@ namespace MathsSiege.Client.Scenes
             }
         }
 
-        private async Task<bool> UploadSessionInfo()
+        private void OnGameOver()
+        {
+            this.SceneManager.PushScene(new GameOverScene(this.Game));
+        }
+
+        private Task<bool> UploadSessionInfo()
         {
             var session = new GameSession
             {
@@ -306,7 +329,7 @@ namespace MathsSiege.Client.Scenes
                 Answers = (ICollection<Answer>)this.stats.Answers
             };
 
-            return await this.client.PostGameSession(session);
+            return this.client.PostGameSession(session);
         }
     }
 }

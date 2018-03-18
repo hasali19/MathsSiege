@@ -78,12 +78,13 @@ namespace MathsSiege.Client.Entities
         private GameMap map;
         private WallManager wallManager;
         private DefenceManager defenceManager;
+        private Castle castle;
 
         private AnimatedSprite sprite;
 
         private SoundEffect swordAttackSound;
 
-        private IWallOrDefence target;
+        private IEnemyTarget target;
         private IList<Tile> path;
 
         private Vector2 velocity;
@@ -105,6 +106,7 @@ namespace MathsSiege.Client.Entities
             this.map = this.Scene.Services.GetService<GameMap>();
             this.wallManager = this.Scene.Services.GetService<WallManager>();
             this.defenceManager = this.Scene.Services.GetService<DefenceManager>();
+            this.castle = this.Scene.Services.GetService<Castle>();
 
             this.swordAttackSound = this.Scene.Content.Load<SoundEffect>(ContentPaths.Sounds.SwordAttack);
 
@@ -217,6 +219,13 @@ namespace MathsSiege.Client.Entities
             if (this.target == null)
             {
                 this.target = this.defenceManager.GetNearestDefence(this.Position);
+
+                if ((this.target == null
+                    || (this.target.Position - this.Position).Length() < (this.castle.Position - this.Position).Length())
+                    && !this.castle.IsDestroyed)
+                {
+                    this.target = this.castle;
+                }
             }
             // Find a path to the target if no path has been found.
             else if (this.path == null)
