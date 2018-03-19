@@ -28,7 +28,7 @@ namespace MathsSiege.Client.Entities
         public int Health
         {
             get => this.health;
-            private set => this.health = MathHelper.Clamp(value, 0, this.MaxHealth);
+            protected set => this.health = MathHelper.Clamp(value, 0, this.MaxHealth);
         }
 
         /// <summary>

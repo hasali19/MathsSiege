@@ -120,9 +120,9 @@ namespace MathsSiege.Client.Scenes
             #region Initialise defence menu
             this.defenceMenu = new DefenceMenu(this.stats, new Vector2(200, this.GraphicsDevice.Viewport.Height));
 
-            this.defenceMenu.AddItem(DefenceTypes.Wall, wall, 50);
-            this.defenceMenu.AddItem(DefenceTypes.Cannon, cannon, 50);
-            this.defenceMenu.AddItem(DefenceTypes.Spikes, spikes, 50);
+            this.defenceMenu.AddItem(DefenceTypes.Wall, wall, 20);
+            this.defenceMenu.AddItem(DefenceTypes.Cannon, cannon, 80);
+            this.defenceMenu.AddItem(DefenceTypes.Spikes, spikes, 40);
 
             this.defenceMenu.ItemClicked += () => buttonClickSound.Play();
 
