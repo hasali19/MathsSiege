@@ -163,6 +163,8 @@ namespace MathsSiege.Client.Scenes
         {
             base.Destroy();
 
+            MediaPlayer.Stop();
+
             this.Game.Exiting -= this.Game_Exiting;
 
             Task.Run(this.UploadSessionInfo).Wait();
@@ -181,6 +183,8 @@ namespace MathsSiege.Client.Scenes
 
             this.spawnStopwatch.Stop();
             this.questionStopwatch.Stop();
+
+            MediaPlayer.Pause();
         }
 
         public override void Resume()
@@ -189,6 +193,8 @@ namespace MathsSiege.Client.Scenes
 
             this.spawnStopwatch.Start();
             this.questionStopwatch.Start();
+
+            MediaPlayer.Resume();
         }
 
         public override void Update(GameTime gameTime)
