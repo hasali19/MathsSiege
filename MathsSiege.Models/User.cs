@@ -14,6 +14,7 @@ namespace MathsSiege.Models
         [Required]
         [MinLength(8)]
         [DataType(DataType.Password)]
+        [RegularExpression("^(?=.*[a-zA-Z])(?=.*[0-9]).+$", ErrorMessage = "Password must contain at least one letter and number.")]
         [Column("PasswordHash")]
         public string Password { get; set; }
 
