@@ -13,7 +13,7 @@ namespace MathsSiege.Client.Entities
 
         public HoveredTileOverlay(Texture2D texture)
         {
-            this.sprite = new Sprite(texture)
+            sprite = new Sprite(texture)
             {
                 Origin = new Vector2(texture.Width / 2, 0)
             };
@@ -21,23 +21,23 @@ namespace MathsSiege.Client.Entities
 
         public override void OnAddedToScene()
         {
-            this.map = this.Scene.Services.GetService<GameMap>();
+            map = Scene.Services.GetService<GameMap>();
         }
 
         public override void Draw(GameTime gameTime)
         {
-            if (this.map.HoveredTile != null)
+            if (map.HoveredTile != null)
             {
-                var position = this.map.MapToScreen(this.map.HoveredTile.Position);
+                var position = map.MapToScreen(map.HoveredTile.Position);
 
-                var color = this.map.HoveredTile.IsPlaceable
+                var color = map.HoveredTile.IsPlaceable
                     ? Color.White * 0.5f
                     : Color.Red * 0.5f;
 
-                this.sprite.Position = position;
-                this.sprite.Color = color;
+                sprite.Position = position;
+                sprite.Color = color;
 
-                this.Scene.SpriteBatch.Draw(this.sprite);
+                Scene.SpriteBatch.Draw(sprite);
             }
         }
     }

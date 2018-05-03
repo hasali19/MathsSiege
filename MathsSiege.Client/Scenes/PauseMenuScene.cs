@@ -14,7 +14,7 @@ namespace MathsSiege.Client.Scenes
         {
             base.Initialise();
 
-            this.ClearColor = Color.Black * 0.5f;
+            ClearColor = Color.Black * 0.5f;
 
             var container = new Panel(new Vector2(300, 285), PanelSkin.None);
 
@@ -26,11 +26,11 @@ namespace MathsSiege.Client.Scenes
             container.AddChild(mainMenu);
             container.AddChild(exit);
 
-            this.UserInterface.AddEntity(container);
+            UserInterface.AddEntity(container);
 
-            resume.OnClick = (e) => this.SceneManager.PopScene();
-            mainMenu.OnClick = (e) => this.SceneManager.Clear(new MainMenuScene(this.Game));
-            exit.OnClick = (e) => this.Game.Exit();
+            resume.OnClick = (e) => SceneManager.PopScene();
+            mainMenu.OnClick = (e) => SceneManager.Clear(new MainMenuScene(Game));
+            exit.OnClick = (e) => Game.Exit();
         }
     }
 }

@@ -20,22 +20,22 @@ namespace MathsSiege.Client.Entities
 
             // Destoy the trap after some time has passed
             // since being triggered.
-            if (this.stopwatch.IsRunning && this.stopwatch.ElapsedMilliseconds > 2000)
+            if (stopwatch.IsRunning && stopwatch.ElapsedMilliseconds > 2000)
             {
-                this.OnDestroyed();
+                OnDestroyed();
             }
         }
 
         protected override void OnTrigger(IReadOnlyCollection<Enemy> enemies)
         {
-            this.SetTextureRegion(TrapState.Triggered);
+            SetTextureRegion(TrapState.Triggered);
 
             foreach (var enemy in enemies.Where(e => !e.IsFlying))
             {
                 enemy.Attack(20);
             }
 
-            this.stopwatch.Start();
+            stopwatch.Start();
         }
     }
 }

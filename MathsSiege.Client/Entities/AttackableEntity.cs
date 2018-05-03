@@ -13,11 +13,11 @@ namespace MathsSiege.Client.Entities
         /// </summary>
         public int MaxHealth
         {
-            get => this.maxHealth;
+            get => maxHealth;
             set
             {
-                this.maxHealth = MathHelper.Max(value, 1);
-                this.Health = this.MaxHealth;
+                maxHealth = MathHelper.Max(value, 1);
+                Health = MaxHealth;
             }
         }
 
@@ -27,14 +27,14 @@ namespace MathsSiege.Client.Entities
         /// </summary>
         public int Health
         {
-            get => this.health;
-            protected set => this.health = MathHelper.Clamp(value, 0, this.MaxHealth);
+            get => health;
+            protected set => health = MathHelper.Clamp(value, 0, MaxHealth);
         }
 
         /// <summary>
         /// Whether the entity has been destroyed (health is zero).
         /// </summary>
-        public bool IsDestroyed => this.Health == 0;
+        public bool IsDestroyed => Health == 0;
 
         /// <summary>
         /// Invoked when the entity is destroyed.
@@ -43,7 +43,7 @@ namespace MathsSiege.Client.Entities
 
         public AttackableEntity()
         {
-            this.Health = this.MaxHealth;
+            Health = MaxHealth;
         }
 
         /// <summary>
@@ -52,30 +52,30 @@ namespace MathsSiege.Client.Entities
         /// <param name="damage">The amount of damage to deal.</param>
         public void Attack(int damage)
         {
-            if (this.IsDestroyed)
+            if (IsDestroyed)
             {
                 return;
             }
 
-            this.Health -= damage;
+            Health -= damage;
 
-            if (this.IsDestroyed)
+            if (IsDestroyed)
             {
-                this.OnDestroyed();
+                OnDestroyed();
             }
         }
 
         protected virtual void OnDestroyed()
         {
-            this.Destroyed?.Invoke(this);
+            Destroyed?.Invoke(this);
         }
 
         protected virtual void DrawHealthbar(RectangleF rectangle, Color color)
         {
-            var normalisedHealth = (float)this.Health / this.MaxHealth;
+            var normalisedHealth = (float)Health / MaxHealth;
 
-            this.Scene.SpriteBatch.DrawRectangle(rectangle, color, 1);
-            this.Scene.SpriteBatch.FillRectangle(new RectangleF(rectangle.X, rectangle.Y,
+            Scene.SpriteBatch.DrawRectangle(rectangle, color, 1);
+            Scene.SpriteBatch.FillRectangle(new RectangleF(rectangle.X, rectangle.Y,
                 normalisedHealth * rectangle.Width, rectangle.Height), color, 1);
         }
     }

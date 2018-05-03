@@ -19,41 +19,41 @@ namespace MathsSiege.Client.Entities
 
         public Castle(Texture2D texture)
         {
-            this.sprite = new Sprite(texture);
+            sprite = new Sprite(texture);
         }
 
         public bool ContainsTile(Tile tile)
         {
-            return new RectangleF(this.Position.X, this.Position.Y, 3, 3).Contains(tile.Position);
+            return new RectangleF(Position.X, Position.Y, 3, 3).Contains(tile.Position);
         }
 
         public override void OnAddedToScene()
         {
-            var map = this.Scene.Services.GetService<GameMap>();
-            this.sprite.Position = map.MapToScreen(this.Position);
-            this.sprite.Depth = (this.Position.Y / map.TiledMap.Height) * (this.Position.X / map.TiledMap.Width);
-            this.stopwatch.Start();
+            var map = Scene.Services.GetService<GameMap>();
+            sprite.Position = map.MapToScreen(Position);
+            sprite.Depth = (Position.Y / map.TiledMap.Height) * (Position.X / map.TiledMap.Width);
+            stopwatch.Start();
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
-            if (this.stopwatch.ElapsedMilliseconds > HEAL_INTERVAL)
+            if (stopwatch.ElapsedMilliseconds > HEAL_INTERVAL)
             {
-                this.Health += HEAL_AMOUNT;
-                this.stopwatch.Restart();
+                Health += HEAL_AMOUNT;
+                stopwatch.Restart();
             }
         }
 
         public override void Draw(GameTime gameTime)
         {
-            this.Scene.SpriteBatch.Draw(this.sprite);
+            Scene.SpriteBatch.Draw(sprite);
 
-            if (this.Health < this.MaxHealth)
+            if (Health < MaxHealth)
             {
-                var healthbar = new RectangleF(this.sprite.Position.X - 40, this.sprite.Position.Y - 32, 80, 10);
-                this.DrawHealthbar(healthbar, Color.Red);
+                var healthbar = new RectangleF(sprite.Position.X - 40, sprite.Position.Y - 32, 80, 10);
+                DrawHealthbar(healthbar, Color.Red);
             }
         }
     }

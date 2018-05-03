@@ -15,7 +15,7 @@ namespace MathsSiege.Client.Scenes
         {
             base.Initialise();
 
-            var background = this.Content.Load<Texture2D>(ContentPaths.Textures.SplashBackground);
+            var background = Content.Load<Texture2D>(ContentPaths.Textures.SplashBackground);
 
             var container = new Panel(new Vector2(300, 285), PanelSkin.None);
 
@@ -27,28 +27,28 @@ namespace MathsSiege.Client.Scenes
             container.AddChild(settings);
             container.AddChild(quit);
 
-            this.UserInterface.AddEntity(container);
+            UserInterface.AddEntity(container);
 
-            play.OnClick = this.Play_OnClick;
-            settings.OnClick = this.Settings_OnClick;
-            quit.OnClick = this.Quit_OnClick;
+            play.OnClick = Play_OnClick;
+            settings.OnClick = Settings_OnClick;
+            quit.OnClick = Quit_OnClick;
 
-            this.BackgroundImage = background;
+            BackgroundImage = background;
         }
 
         private void Play_OnClick(Entity entity)
         {
-            this.SceneManager.PushScene(new LoginScene(this.Game));
+            SceneManager.PushScene(new LoginScene(Game));
         }
 
         private void Settings_OnClick(Entity entity)
         {
-            this.SceneManager.PushScene(new SettingsScene(this.Game));
+            SceneManager.PushScene(new SettingsScene(Game));
         }
 
         private void Quit_OnClick(Entity entity)
         {
-            this.Game.Exit();
+            Game.Exit();
         }
     }
 }

@@ -32,43 +32,43 @@ namespace MathsSiege.Client.Scenes
         {
             base.Initialise();
 
-            this.BackgroundImage = this.Content.Load<Texture2D>(ContentPaths.Textures.SplashBackground);
-            this.font = this.Content.Load<SpriteFont>(ContentPaths.Fonts.gravedigger_42);
+            BackgroundImage = Content.Load<Texture2D>(ContentPaths.Textures.SplashBackground);
+            font = Content.Load<SpriteFont>(ContentPaths.Fonts.gravedigger_42);
 
-            this.titlePosition = new Vector2(this.GraphicsDevice.Viewport.Width, this.GraphicsDevice.Viewport.Height) / 2
-                - this.font.MeasureString(Title) / 2;
+            titlePosition = new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height) / 2
+                - font.MeasureString(Title) / 2;
 
-            this.stopwatch.Start();
+            stopwatch.Start();
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
-            if (this.stopwatch.ElapsedMilliseconds < EnterDuration)
+            if (stopwatch.ElapsedMilliseconds < EnterDuration)
             {
                 // Fade in text and overlay, increasing alpha between 0 and 1 following a sine curve.
-                var alpha = (float)Math.Sin((this.stopwatch.ElapsedMilliseconds / EnterDuration) * MathHelper.PiOver2);
-                this.titleColor = Color.White * alpha;
-                this.overlayColor = Color.Black * 0.5f * alpha;
+                var alpha = (float)Math.Sin((stopwatch.ElapsedMilliseconds / EnterDuration) * MathHelper.PiOver2);
+                titleColor = Color.White * alpha;
+                overlayColor = Color.Black * 0.5f * alpha;
             }
-            else if (this.stopwatch.ElapsedMilliseconds >= EnterDuration
-                && this.stopwatch.ElapsedMilliseconds <= EnterDuration + IdleDuration)
+            else if (stopwatch.ElapsedMilliseconds >= EnterDuration
+                && stopwatch.ElapsedMilliseconds <= EnterDuration + IdleDuration)
             {
-                this.titleColor = Color.White;
-                this.overlayColor = Color.Black * 0.5f;
+                titleColor = Color.White;
+                overlayColor = Color.Black * 0.5f;
             }
-            else if (this.stopwatch.ElapsedMilliseconds > EnterDuration + IdleDuration
-                && this.stopwatch.ElapsedMilliseconds < EnterDuration + IdleDuration + ExitDuration)
+            else if (stopwatch.ElapsedMilliseconds > EnterDuration + IdleDuration
+                && stopwatch.ElapsedMilliseconds < EnterDuration + IdleDuration + ExitDuration)
             {
                 // Fade out text and overlay, decreasing alpha between 1 and 0 following a cosine curve.
-                var alpha = (float)Math.Cos(((this.stopwatch.ElapsedMilliseconds - EnterDuration - IdleDuration) / ExitDuration) * MathHelper.PiOver2);
-                this.titleColor = Color.White * alpha;
-                this.overlayColor = Color.Black * 0.5f * alpha;
+                var alpha = (float)Math.Cos(((stopwatch.ElapsedMilliseconds - EnterDuration - IdleDuration) / ExitDuration) * MathHelper.PiOver2);
+                titleColor = Color.White * alpha;
+                overlayColor = Color.Black * 0.5f * alpha;
             }
             else
             {
-                this.SceneManager.ReplaceScene(new MainMenuScene(this.Game));
+                SceneManager.ReplaceScene(new MainMenuScene(Game));
             }
         }
 
@@ -76,12 +76,12 @@ namespace MathsSiege.Client.Scenes
         {
             base.DrawForeground();
 
-            this.SpriteBatch.Begin();
+            SpriteBatch.Begin();
 
-            this.SpriteBatch.FillRectangle(this.GraphicsDevice.Viewport.Bounds, this.overlayColor);
-            this.SpriteBatch.DrawString(this.font, Title, this.titlePosition, this.titleColor);
+            SpriteBatch.FillRectangle(GraphicsDevice.Viewport.Bounds, overlayColor);
+            SpriteBatch.DrawString(font, Title, titlePosition, titleColor);
 
-            this.SpriteBatch.End();
+            SpriteBatch.End();
         }
     }
 }

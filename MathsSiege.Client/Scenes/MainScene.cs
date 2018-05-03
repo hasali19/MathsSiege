@@ -46,19 +46,19 @@ namespace MathsSiege.Client.Scenes
 
         public MainScene(Game game) : base(game)
         {
-            this.ClearColor = Color.White;
-            this.UserInterface.UseRenderTarget = true;
+            ClearColor = Color.White;
+            UserInterface.UseRenderTarget = true;
 
-            this.client = this.Game.Services.GetService<DataClient>();
+            client = Game.Services.GetService<DataClient>();
 
-            this.stats = new PlayerStats();
+            stats = new PlayerStats();
             
-            if (this.Game.Services.GetService<PlayerStats>() != null)
+            if (Game.Services.GetService<PlayerStats>() != null)
             {
-                this.Game.Services.RemoveService(typeof(PlayerStats));
+                Game.Services.RemoveService(typeof(PlayerStats));
             }
 
-            this.Game.Services.AddService(this.stats);
+            Game.Services.AddService(stats);
         }
 
         public override void Initialise()
@@ -66,19 +66,19 @@ namespace MathsSiege.Client.Scenes
             base.Initialise();
 
             #region Load content
-            var background = this.Content.Load<Texture2D>(ContentPaths.Textures.Background);
-            var backgroundMusic = this.Content.Load<Song>(ContentPaths.Sounds.Background);
-            var buttonClickSound = this.Content.Load<SoundEffect>(ContentPaths.Sounds.ButtonClicked);
-            var cannon = this.Content.Load<Texture2D>(ContentPaths.Textures.Cannon);
-            var castleTexture = this.Content.Load<Texture2D>(ContentPaths.Textures.Castle);
-            var itemPlacedSound = this.Content.Load<SoundEffect>(ContentPaths.Sounds.ItemPlaced);
-            var map = this.Content.Load<TiledMap>(ContentPaths.TiledMap.Map);
-            var spikes = this.Content.Load<Texture2D>(ContentPaths.Textures.SpikesTrap);
-            var tileOverlay = this.Content.Load<Texture2D>(ContentPaths.Textures.TileOverlay);
-            var wall = this.Content.Load<Texture2D>(ContentPaths.Textures.Wall);
+            var background = Content.Load<Texture2D>(ContentPaths.Textures.Background);
+            var backgroundMusic = Content.Load<Song>(ContentPaths.Sounds.Background);
+            var buttonClickSound = Content.Load<SoundEffect>(ContentPaths.Sounds.ButtonClicked);
+            var cannon = Content.Load<Texture2D>(ContentPaths.Textures.Cannon);
+            var castleTexture = Content.Load<Texture2D>(ContentPaths.Textures.Castle);
+            var itemPlacedSound = Content.Load<SoundEffect>(ContentPaths.Sounds.ItemPlaced);
+            var map = Content.Load<TiledMap>(ContentPaths.TiledMap.Map);
+            var spikes = Content.Load<Texture2D>(ContentPaths.Textures.SpikesTrap);
+            var tileOverlay = Content.Load<Texture2D>(ContentPaths.Textures.TileOverlay);
+            var wall = Content.Load<Texture2D>(ContentPaths.Textures.Wall);
             #endregion
 
-            this.BackgroundImage = background;
+            BackgroundImage = background;
             
             var gameMap = new GameMap(map);
             var hoveredTileOverlay = new HoveredTileOverlay(tileOverlay);
@@ -89,22 +89,22 @@ namespace MathsSiege.Client.Scenes
             var projectileManager = new ProjectileManager();
             var castle = new Castle(castleTexture) { Position = gameMap[map.Width / 2, map.Height / 2].Position };
 
-            this.Services.AddService(gameMap);
-            this.Services.AddService(wallManager);
-            this.Services.AddService(defenceManager);
-            this.Services.AddService(trapManager);
-            this.Services.AddService(enemyManager);
-            this.Services.AddService(projectileManager);
-            this.Services.AddService(castle);
+            Services.AddService(gameMap);
+            Services.AddService(wallManager);
+            Services.AddService(defenceManager);
+            Services.AddService(trapManager);
+            Services.AddService(enemyManager);
+            Services.AddService(projectileManager);
+            Services.AddService(castle);
 
-            this.AddEntity(gameMap);
-            this.AddEntity(hoveredTileOverlay);
-            this.AddEntity(wallManager);
-            this.AddEntity(defenceManager);
-            this.AddEntity(trapManager);
-            this.AddEntity(enemyManager);
-            this.AddEntity(projectileManager);
-            this.AddEntity(castle);
+            AddEntity(gameMap);
+            AddEntity(hoveredTileOverlay);
+            AddEntity(wallManager);
+            AddEntity(defenceManager);
+            AddEntity(trapManager);
+            AddEntity(enemyManager);
+            AddEntity(projectileManager);
+            AddEntity(castle);
 
             this.gameMap = gameMap;
             this.wallManager = wallManager;
@@ -115,28 +115,28 @@ namespace MathsSiege.Client.Scenes
             this.itemPlacedSound = itemPlacedSound;
 
             // Center the camera.
-            this.Camera.LookAt(Vector2.Zero);
+            Camera.LookAt(Vector2.Zero);
 
             #region Initialise defence menu
-            this.defenceMenu = new DefenceMenu(this.stats, new Vector2(200, this.GraphicsDevice.Viewport.Height));
+            defenceMenu = new DefenceMenu(stats, new Vector2(200, GraphicsDevice.Viewport.Height));
 
-            this.defenceMenu.AddItem(DefenceTypes.Wall, wall, 20);
-            this.defenceMenu.AddItem(DefenceTypes.Cannon, cannon, 80);
-            this.defenceMenu.AddItem(DefenceTypes.Spikes, spikes, 40);
+            defenceMenu.AddItem(DefenceTypes.Wall, wall, 20);
+            defenceMenu.AddItem(DefenceTypes.Cannon, cannon, 80);
+            defenceMenu.AddItem(DefenceTypes.Spikes, spikes, 40);
 
-            this.defenceMenu.ItemClicked += () => buttonClickSound.Play();
+            defenceMenu.ItemClicked += () => buttonClickSound.Play();
 
-            this.UserInterface.AddEntity(this.defenceMenu);
+            UserInterface.AddEntity(defenceMenu);
             #endregion
 
             #region Initialise stats view
-            this.statsView = new StatsView(this.stats, new Vector2(200, 50));
-            this.UserInterface.AddEntity(this.statsView);
-            this.statsView.AddPointsButton.OnClick += (e) =>
+            statsView = new StatsView(stats, new Vector2(200, 50));
+            UserInterface.AddEntity(statsView);
+            statsView.AddPointsButton.OnClick += (e) =>
             {
                 e.Disabled = true;
-                this.questionStopwatch.Start();
-                this.SceneManager.PushScene(new QuestionScene(this.Game));
+                questionStopwatch.Start();
+                SceneManager.PushScene(new QuestionScene(Game));
             };
             #endregion
 
@@ -144,19 +144,19 @@ namespace MathsSiege.Client.Scenes
             MediaPlayer.Play(backgroundMusic);
             MediaPlayer.IsRepeating = true;
 
-            this.spawner = new EnemySpawner(this.gameMap, this.enemyManager);
+            spawner = new EnemySpawner(this.gameMap, this.enemyManager);
 
-            this.spawnStopwatch.Start();
-            this.questionStopwatch.Start();
+            spawnStopwatch.Start();
+            questionStopwatch.Start();
 
-            this.castle.Destroyed += this.Castle_Destroyed;
+            this.castle.Destroyed += Castle_Destroyed;
 
-            this.Game.Exiting += this.Game_Exiting;
+            Game.Exiting += Game_Exiting;
         }
 
         private void Castle_Destroyed(AttackableEntity obj)
         {
-            this.RemoveEntity(this.castle);
+            RemoveEntity(castle);
         }
 
         public override void Destroy()
@@ -165,24 +165,24 @@ namespace MathsSiege.Client.Scenes
 
             MediaPlayer.Stop();
 
-            this.Game.Exiting -= this.Game_Exiting;
+            Game.Exiting -= Game_Exiting;
 
-            Task.Run(this.UploadSessionInfo).Wait();
+            Task.Run(UploadSessionInfo).Wait();
         }
 
         private void Game_Exiting(object sender, EventArgs e)
         {
-            Task.Run(this.UploadSessionInfo).Wait();
+            Task.Run(UploadSessionInfo).Wait();
         }
 
         public override void Pause()
         {
             base.Pause();
 
-            this.IsVisible = true;
+            IsVisible = true;
 
-            this.spawnStopwatch.Stop();
-            this.questionStopwatch.Stop();
+            spawnStopwatch.Stop();
+            questionStopwatch.Stop();
 
             MediaPlayer.Pause();
         }
@@ -191,46 +191,46 @@ namespace MathsSiege.Client.Scenes
         {
             base.Resume();
 
-            this.spawnStopwatch.Start();
-            this.questionStopwatch.Start();
+            spawnStopwatch.Start();
+            questionStopwatch.Start();
 
             MediaPlayer.Resume();
         }
 
         public override void Update(GameTime gameTime)
         {
-            this.UpdateCamera();
+            UpdateCamera();
 
             if (MediaPlayer.Volume < 1)
             {
                 MediaPlayer.Volume = MathHelper.Min(MediaPlayer.Volume + 0.005f, 1);
             }
 
-            this.spawner.Update(gameTime);
+            spawner.Update(gameTime);
 
-            if (this.questionStopwatch.ElapsedMilliseconds > QuestionInterval)
+            if (questionStopwatch.ElapsedMilliseconds > QuestionInterval)
             {
-                this.questionStopwatch.Reset();
-                this.statsView.AddPointsButton.Disabled = false;
+                questionStopwatch.Reset();
+                statsView.AddPointsButton.Disabled = false;
             }
 
             if (InputHandler.IsKeyPressed(Keys.Escape))
             {
-                this.SceneManager.PushScene(new PauseMenuScene(this.Game));
+                SceneManager.PushScene(new PauseMenuScene(Game));
             }
 
             if (InputHandler.IsMouseButtonPressed(MouseButton.Left))
             {
-                this.OnLeftMouseButtonPressed();
+                OnLeftMouseButtonPressed();
             }
             else if (InputHandler.IsMouseButtonPressed(MouseButton.Right))
             {
-                this.OnRightMouseButtonPressed();
+                OnRightMouseButtonPressed();
             }
 
-            if (this.castle.IsDestroyed && this.defenceManager.DefenceCount == 0)
+            if (castle.IsDestroyed && defenceManager.DefenceCount == 0)
             {
-                this.OnGameOver();
+                OnGameOver();
             }
 
             base.Update(gameTime);
@@ -268,54 +268,54 @@ namespace MathsSiege.Client.Scenes
             {
                 movementVector.Normalize();
                 movementVector *= CameraMovementSpeed;
-                this.Camera.Move(movementVector);
+                Camera.Move(movementVector);
             }
         }
 
         private void OnLeftMouseButtonPressed()
         {
-            if (this.UserInterface.TargetEntity == null && this.gameMap.HoveredTile != null
-                && this.defenceMenu.SelectedItem != null)
+            if (UserInterface.TargetEntity == null && gameMap.HoveredTile != null
+                && defenceMenu.SelectedItem != null)
             {
-                var tile = this.gameMap.HoveredTile;
-                if (this.defenceMenu.SelectedItem.Cost <= this.stats.Points
+                var tile = gameMap.HoveredTile;
+                if (defenceMenu.SelectedItem.Cost <= stats.Points
                     // Make sure the tile does not contain any objects
-                    && !(this.wallManager.CheckContainsWall(tile, out _)
-                    || this.defenceManager.CheckContainsDefence(tile)
-                    || this.trapManager.CheckContainsTrap(tile)
-                    || this.enemyManager.CheckTileContainsEnemy(tile)
-                    || this.castle.ContainsTile(tile)))
+                    && !(wallManager.CheckContainsWall(tile, out _)
+                    || defenceManager.CheckContainsDefence(tile)
+                    || trapManager.CheckContainsTrap(tile)
+                    || enemyManager.CheckTileContainsEnemy(tile)
+                    || castle.ContainsTile(tile)))
                 {
-                    if (this.defenceMenu.SelectedItem.Name == DefenceTypes.Wall)
+                    if (defenceMenu.SelectedItem.Name == DefenceTypes.Wall)
                     {
-                        this.wallManager.CreateWall(this.gameMap.HoveredTile);
-                        this.itemPlacedSound.Play();
+                        wallManager.CreateWall(gameMap.HoveredTile);
+                        itemPlacedSound.Play();
                     }
-                    else if (this.defenceMenu.SelectedItem.Name == DefenceTypes.Cannon)
+                    else if (defenceMenu.SelectedItem.Name == DefenceTypes.Cannon)
                     {
-                        this.defenceManager.CreateDefence(DefenceTypes.Cannon, this.gameMap.HoveredTile);
-                        this.itemPlacedSound.Play();
+                        defenceManager.CreateDefence(DefenceTypes.Cannon, gameMap.HoveredTile);
+                        itemPlacedSound.Play();
                     }
-                    else if (this.defenceMenu.SelectedItem.Name == DefenceTypes.Spikes)
+                    else if (defenceMenu.SelectedItem.Name == DefenceTypes.Spikes)
                     {
-                        this.trapManager.CreateTrap(DefenceTypes.Spikes, this.gameMap.HoveredTile);
-                        this.itemPlacedSound.Play();
+                        trapManager.CreateTrap(DefenceTypes.Spikes, gameMap.HoveredTile);
+                        itemPlacedSound.Play();
                     }
 
-                    this.stats.Points -= this.defenceMenu.SelectedItem.Cost;
+                    stats.Points -= defenceMenu.SelectedItem.Cost;
                 }
             }
         }
 
         private void OnRightMouseButtonPressed()
         {
-            if (this.gameMap.HoveredTile != null)
+            if (gameMap.HoveredTile != null)
             {
-                if (!this.wallManager.RemoveWall(this.gameMap.HoveredTile))
+                if (!wallManager.RemoveWall(gameMap.HoveredTile))
                 {
-                    if (!this.defenceManager.RemoveDefence(this.gameMap.HoveredTile))
+                    if (!defenceManager.RemoveDefence(gameMap.HoveredTile))
                     {
-                        this.trapManager.RemoveTrap(this.gameMap.HoveredTile);
+                        trapManager.RemoveTrap(gameMap.HoveredTile);
                     }
                 }
             }
@@ -323,19 +323,19 @@ namespace MathsSiege.Client.Scenes
 
         private void OnGameOver()
         {
-            this.SceneManager.PushScene(new GameOverScene(this.Game));
+            SceneManager.PushScene(new GameOverScene(Game));
         }
 
         private Task<bool> UploadSessionInfo()
         {
             var session = new GameSession
             {
-                StartTime = DateTime.Now - this.statsView.ElapsedTime,
+                StartTime = DateTime.Now - statsView.ElapsedTime,
                 EndTime = DateTime.Now,
-                Answers = (ICollection<Answer>)this.stats.Answers
+                Answers = (ICollection<Answer>)stats.Answers
             };
 
-            return this.client.PostGameSession(session);
+            return client.PostGameSession(session);
         }
     }
 }

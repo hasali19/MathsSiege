@@ -24,8 +24,8 @@ namespace MathsSiege.Client.Gui
         {
             this.stats = stats;
 
-            this.Padding = new Vector2(10);
-            this.PanelOverflowBehavior = PanelOverflowBehavior.VerticalScroll;
+            Padding = new Vector2(10);
+            PanelOverflowBehavior = PanelOverflowBehavior.VerticalScroll;
         }
 
         /// <summary>
@@ -35,33 +35,33 @@ namespace MathsSiege.Client.Gui
         /// <param name="image">The image of the defence.</param>
         public void AddItem(string name, Texture2D image, int cost)
         {
-            var item = new DefenceMenuItem(new Vector2(this.Size.X - this.Padding.X * 2 - this.Scrollbar.Size.X),
+            var item = new DefenceMenuItem(new Vector2(Size.X - Padding.X * 2 - Scrollbar.Size.X),
                 name, image, cost);
 
             item.Click += (e) =>
             {
-                this.ItemClicked?.Invoke();
+                ItemClicked?.Invoke();
 
                 // Set the current selection to the default color if not null.
-                if (this.SelectedItem != null)
+                if (SelectedItem != null)
                 {
-                    this.SelectedItem.FillColor = Color.White;
+                    SelectedItem.FillColor = Color.White;
                 }
 
                 // If this is the current selection, clear it.
-                if (e == this.SelectedItem)
+                if (e == SelectedItem)
                 {
-                    this.SelectedItem = null;
+                    SelectedItem = null;
                 }
                 // If the player has enough points, select this item.
-                else if (this.stats.Points >= e.Cost)
+                else if (stats.Points >= e.Cost)
                 {
-                    this.SelectedItem = e;
-                    this.SelectedItem.FillColor = Color.RoyalBlue;
+                    SelectedItem = e;
+                    SelectedItem.FillColor = Color.RoyalBlue;
                 }
             };
 
-            this.AddChild(item);
+            AddChild(item);
         }
     }
 
@@ -88,26 +88,26 @@ namespace MathsSiege.Client.Gui
         public DefenceMenuItem(Vector2 size, string name, Texture2D image, int cost, PanelSkin skin = PanelSkin.Default, Anchor anchor = Anchor.Auto)
             : base(size, skin, anchor, null)
         {
-            this.Name = name;
-            this.Cost = cost;
-            this.Padding = new Vector2(10);
+            Name = name;
+            Cost = cost;
+            Padding = new Vector2(10);
 
-            this.AddChild(new Image(image, this.Size - this.Padding * 2, ImageDrawMode.Stretch, Anchor.TopCenter)
+            AddChild(new Image(image, Size - Padding * 2, ImageDrawMode.Stretch, Anchor.TopCenter)
             {
                 ClickThrough = true
             });
 
-            this.AddChild(new Paragraph(name, Anchor.TopLeft)
+            AddChild(new Paragraph(name, Anchor.TopLeft)
             {
                 ClickThrough = true
             });
 
-            this.AddChild(new Label(cost.ToString() + " Points", Anchor.BottomRight)
+            AddChild(new Label(cost.ToString() + " Points", Anchor.BottomRight)
             {
                 ClickThrough = true
             });
 
-            this.OnClick = (e) => this.Click?.Invoke(this);
+            OnClick = (e) => Click?.Invoke(this);
         }
     }
 }

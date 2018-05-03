@@ -12,42 +12,42 @@ namespace MathsSiege.Client
         
         public MainGame()
         {
-            this.graphics = new GraphicsDeviceManager(this)
+            graphics = new GraphicsDeviceManager(this)
             {
                 PreferredBackBufferWidth = 1280,
                 PreferredBackBufferHeight = 720,
             };
 
-            this.Content.RootDirectory = "Content";
-            
-            this.sceneManager = new SceneManager(this);
-            this.Components.Add(this.sceneManager);
-            this.Services.AddService(this.sceneManager);
+            Content.RootDirectory = "Content";
+
+            sceneManager = new SceneManager(this);
+            Components.Add(sceneManager);
+            Services.AddService(sceneManager);
         }
 
         protected override void Initialize()
         {
-            UserInterface.Initialize(this.Content, "custom");
+            UserInterface.Initialize(Content, "custom");
 
             var preferences = new UserPreferences();
             preferences.Load();
 
             if (preferences.IsWindowFullScreen)
             {
-                this.graphics.IsFullScreen = true;
-                this.graphics.PreferredBackBufferWidth = this.GraphicsDevice.DisplayMode.Width;
-                this.graphics.PreferredBackBufferHeight = this.GraphicsDevice.DisplayMode.Height;
-                this.graphics.ApplyChanges();
+                graphics.IsFullScreen = true;
+                graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+                graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+                graphics.ApplyChanges();
             }
 
             var dataClient = new DataClient(preferences);
 
-            this.Services.AddService(preferences);
-            this.Services.AddService(dataClient);
+            Services.AddService(preferences);
+            Services.AddService(dataClient);
 
             base.Initialize();
-            
-            this.sceneManager.PushScene(new SplashScene(this));
+
+            sceneManager.PushScene(new SplashScene(this));
         }
 
         protected override void Update(GameTime gameTime)

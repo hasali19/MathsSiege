@@ -79,27 +79,27 @@ namespace MathsSiege.Client.Framework
 
         public Scene(Game game)
         {
-            this.Game = game;
-            this.GraphicsDevice = game.GraphicsDevice;
-            this.Content = new ContentManager(game.Services, game.Content.RootDirectory);
-            this.Services = new GameServiceContainer();
-            this.SpriteBatch = new SpriteBatch(this.GraphicsDevice);
-            this.SceneManager = game.Services.GetService<SceneManager>();
-            this.Camera = new Camera2D(this.GraphicsDevice);
-            this.UserInterface = new UserInterface();
+            Game = game;
+            GraphicsDevice = game.GraphicsDevice;
+            Content = new ContentManager(game.Services, game.Content.RootDirectory);
+            Services = new GameServiceContainer();
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
+            SceneManager = game.Services.GetService<SceneManager>();
+            Camera = new Camera2D(GraphicsDevice);
+            UserInterface = new UserInterface();
         }
 
         public void AddEntity(DrawableEntity entity)
         {
             entity.Scene = this;
-            this.entities.Add(entity);
+            entities.Add(entity);
             entity.OnAddedToScene();
         }
 
         public void RemoveEntity(DrawableEntity entity)
         {
             entity.Scene = null;
-            this.entities.Remove(entity);
+            entities.Remove(entity);
             entity.OnRemovedFromScene();
         }
 
@@ -108,14 +108,14 @@ namespace MathsSiege.Client.Framework
         /// </summary>
         public virtual void Initialise()
         {
-            UserInterface.Active = this.UserInterface;
+            UserInterface.Active = UserInterface;
 
-            this.RenderTarget = new RenderTarget2D(
-                this.GraphicsDevice,
-                this.GraphicsDevice.PresentationParameters.BackBufferWidth,
-                this.GraphicsDevice.PresentationParameters.BackBufferHeight,
+            RenderTarget = new RenderTarget2D(
+                GraphicsDevice,
+                GraphicsDevice.PresentationParameters.BackBufferWidth,
+                GraphicsDevice.PresentationParameters.BackBufferHeight,
                 false,
-                this.GraphicsDevice.PresentationParameters.BackBufferFormat,
+                GraphicsDevice.PresentationParameters.BackBufferFormat,
                 DepthFormat.Depth24);
         }
 
@@ -126,7 +126,7 @@ namespace MathsSiege.Client.Framework
         {
             UserInterface.Active = null;
 
-            this.RenderTarget.Dispose();
+            RenderTarget.Dispose();
         }
 
         /// <summary>
@@ -134,8 +134,8 @@ namespace MathsSiege.Client.Framework
         /// </summary>
         public virtual void Pause()
         {
-            this.IsActive = false;
-            this.IsVisible = false;
+            IsActive = false;
+            IsVisible = false;
 
             UserInterface.Active = null;
         }
@@ -145,10 +145,10 @@ namespace MathsSiege.Client.Framework
         /// </summary>
         public virtual void Resume()
         {
-            this.IsActive = true;
-            this.IsVisible = true;
+            IsActive = true;
+            IsVisible = true;
 
-            UserInterface.Active = this.UserInterface;
+            UserInterface.Active = UserInterface;
         }
 
         /// <summary>
@@ -157,9 +157,9 @@ namespace MathsSiege.Client.Framework
         /// <param name="gameTime"></param>
         public virtual void Update(GameTime gameTime)
         {
-            this.UserInterface.Update(gameTime);
+            UserInterface.Update(gameTime);
 
-            foreach (var entity in this.entities.Where(entity => entity.IsActive))
+            foreach (var entity in entities.Where(entity => entity.IsActive))
             {
                 entity.Update(gameTime);
             }
@@ -171,32 +171,32 @@ namespace MathsSiege.Client.Framework
         /// <param name="gameTime"></param>
         public virtual void Draw(GameTime gameTime)
         {
-            if (this.IsActive && this.UserInterface.UseRenderTarget)
+            if (IsActive && UserInterface.UseRenderTarget)
             {
-                this.UserInterface.Draw(this.SpriteBatch);
-                this.GraphicsDevice.SetRenderTarget(this.RenderTarget);
+                UserInterface.Draw(SpriteBatch);
+                GraphicsDevice.SetRenderTarget(RenderTarget);
             }
 
             // Clear the render target.
-            this.GraphicsDevice.Clear(this.ClearColor);
+            GraphicsDevice.Clear(ClearColor);
 
             // Draw background content.
-            this.SpriteBatch.Begin();
-            this.DrawBackground();
-            this.SpriteBatch.End();
+            SpriteBatch.Begin();
+            DrawBackground();
+            SpriteBatch.End();
 
-            this.SpriteBatch.Begin(SpriteSortMode.FrontToBack, transformMatrix: this.Camera.GetViewMatrix());
+            SpriteBatch.Begin(SpriteSortMode.FrontToBack, transformMatrix: Camera.GetViewMatrix());
 
             // Draw visible entities.
-            foreach (var entity in this.entities.Where(entity => entity.IsVisible))
+            foreach (var entity in entities.Where(entity => entity.IsVisible))
             {
                 entity.Draw(gameTime);
             }
 
-            this.SpriteBatch.End();
+            SpriteBatch.End();
 
             // Draw foreground content.
-            this.DrawForeground();
+            DrawForeground();
         }
 
         /// <summary>
@@ -205,9 +205,9 @@ namespace MathsSiege.Client.Framework
         /// </summary>
         protected virtual void DrawBackground()
         {
-            if (this.BackgroundImage != null)
+            if (BackgroundImage != null)
             {
-                this.SpriteBatch.Draw(this.BackgroundImage, this.GraphicsDevice.Viewport.Bounds, Color.White);
+                SpriteBatch.Draw(BackgroundImage, GraphicsDevice.Viewport.Bounds, Color.White);
             }
         }
 
@@ -217,15 +217,15 @@ namespace MathsSiege.Client.Framework
         /// </summary>
         protected virtual void DrawForeground()
         {
-            if (this.IsActive)
+            if (IsActive)
             {
-                if (this.UserInterface.UseRenderTarget)
+                if (UserInterface.UseRenderTarget)
                 {
-                    this.UserInterface.DrawMainRenderTarget(this.SpriteBatch);
+                    UserInterface.DrawMainRenderTarget(SpriteBatch);
                 }
                 else
                 {
-                    this.UserInterface.Draw(this.SpriteBatch);
+                    UserInterface.Draw(SpriteBatch);
                 }
             }
         }

@@ -13,36 +13,36 @@ namespace MathsSiege.Client.Scenes
 
         public SettingsScene(Game game) : base(game)
         {
-            this.UserInterface.UseRenderTarget = true;
-            this.preferences = this.Game.Services.GetService<UserPreferences>();
+            UserInterface.UseRenderTarget = true;
+            preferences = Game.Services.GetService<UserPreferences>();
         }
 
         public override void Initialise()
         {
             base.Initialise();
 
-            var background = this.Content.Load<Texture2D>(ContentPaths.Textures.SplashBackground);
+            var background = Content.Load<Texture2D>(ContentPaths.Textures.SplashBackground);
 
-            this.UserInterface.Root.Padding = new Vector2(30f);
+            UserInterface.Root.Padding = new Vector2(30f);
 
-            var titleContainer = new Panel(new Vector2(this.GraphicsDevice.Viewport.Width - 60, 120), PanelSkin.None, Anchor.TopCenter);
+            var titleContainer = new Panel(new Vector2(GraphicsDevice.Viewport.Width - 60, 120), PanelSkin.None, Anchor.TopCenter);
             var title = new Header("Settings", Anchor.Center) { FillColor = Color.White };
 
-            var contentContainer = new Panel(new Vector2(this.GraphicsDevice.Viewport.Width - 60,
-                this.GraphicsDevice.Viewport.Height - 280), PanelSkin.None, Anchor.AutoCenter)
+            var contentContainer = new Panel(new Vector2(GraphicsDevice.Viewport.Width - 60,
+                GraphicsDevice.Viewport.Height - 280), PanelSkin.None, Anchor.AutoCenter)
             {
                 PanelOverflowBehavior = PanelOverflowBehavior.VerticalScroll
             };
 
             var fullscreenToggle = new CheckBox("Enable Fullscreen Mode (Requires restart)")
             {
-                Checked = this.preferences.IsWindowFullScreen
+                Checked = preferences.IsWindowFullScreen
             };
 
-            this.addressInput = new TextInput(false)
+            addressInput = new TextInput(false)
             {
                 PlaceholderText = "Enter the server address",
-                Value = string.IsNullOrWhiteSpace(this.preferences.HostAddress) ? "" : this.preferences.HostAddress
+                Value = string.IsNullOrWhiteSpace(preferences.HostAddress) ? "" : preferences.HostAddress
             };
 
             var back = new Button("Back", anchor: Anchor.BottomLeft, size: new Vector2(200, 70));
@@ -51,31 +51,31 @@ namespace MathsSiege.Client.Scenes
             titleContainer.AddChild(title);
 
             contentContainer.AddChild(fullscreenToggle);
-            contentContainer.AddChild(this.addressInput);
+            contentContainer.AddChild(addressInput);
 
-            this.UserInterface.AddEntity(titleContainer);
-            this.UserInterface.AddEntity(contentContainer);
-            this.UserInterface.AddEntity(back);
-            this.UserInterface.AddEntity(save);
+            UserInterface.AddEntity(titleContainer);
+            UserInterface.AddEntity(contentContainer);
+            UserInterface.AddEntity(back);
+            UserInterface.AddEntity(save);
 
-            fullscreenToggle.OnValueChange = (e) => this.preferences.IsWindowFullScreen = fullscreenToggle.Checked;
+            fullscreenToggle.OnValueChange = (e) => preferences.IsWindowFullScreen = fullscreenToggle.Checked;
 
-            back.OnClick = this.Back_OnClick;
-            save.OnClick = this.Save_OnClick;
+            back.OnClick = Back_OnClick;
+            save.OnClick = Save_OnClick;
 
-            this.BackgroundImage = background;
+            BackgroundImage = background;
         }
 
         private void Back_OnClick(Entity entity)
         {
-            this.SceneManager.PopScene();
+            SceneManager.PopScene();
         }
 
         private void Save_OnClick(Entity entity)
         {
-            this.preferences.HostAddress = this.addressInput.Value;
-            this.preferences.Save();
-            this.SceneManager.PopScene();
+            preferences.HostAddress = addressInput.Value;
+            preferences.Save();
+            SceneManager.PopScene();
         }
     }
 }

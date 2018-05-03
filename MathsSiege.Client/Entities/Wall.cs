@@ -13,7 +13,7 @@ namespace MathsSiege.Client.Entities
 
         public Wall(Texture2D texture)
         {
-            this.sprite = new Sprite(texture)
+            sprite = new Sprite(texture)
             {
                 Origin = new Vector2(32, 32)
             };
@@ -21,19 +21,19 @@ namespace MathsSiege.Client.Entities
 
         public override void OnAddedToScene()
         {
-            var map = this.Scene.Services.GetService<GameMap>();
-            this.sprite.Position = map.MapToScreen(this.Position);
-            this.sprite.Depth = (this.Position.Y / map.TiledMap.Height) * (this.Position.X / map.TiledMap.Width);
+            var map = Scene.Services.GetService<GameMap>();
+            sprite.Position = map.MapToScreen(Position);
+            sprite.Depth = (Position.Y / map.TiledMap.Height) * (Position.X / map.TiledMap.Width);
         }
 
         public override void Draw(GameTime gameTime)
         {
-            this.Scene.SpriteBatch.Draw(this.sprite);
+            Scene.SpriteBatch.Draw(sprite);
 
-            if (this.Health < this.MaxHealth)
+            if (Health < MaxHealth)
             {
-                var healthbar = new RectangleF(this.sprite.Position.X - 40, this.sprite.Position.Y - 32, 80, 10);
-                this.DrawHealthbar(healthbar, Color.Red);
+                var healthbar = new RectangleF(sprite.Position.X - 40, sprite.Position.Y - 32, 80, 10);
+                DrawHealthbar(healthbar, Color.Red);
             }
         }
     }

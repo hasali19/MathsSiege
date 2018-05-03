@@ -12,17 +12,17 @@ namespace MathsSiege.Client
         /// </summary>
         public int Points
         {
-            get => this.points;
+            get => points;
             set
             {
-                this.points = MathHelper.Max(value, 0);
+                points = MathHelper.Max(value, 0);
             }
         }
 
         /// <summary>
         /// Gets all answers the player has submitted.
         /// </summary>
-        public IReadOnlyCollection<Answer> Answers => this.answers;
+        public IReadOnlyCollection<Answer> Answers => answers;
 
         private List<Answer> answers = new List<Answer>();
 
@@ -32,12 +32,12 @@ namespace MathsSiege.Client
         /// <param name="answer"></param>
         public void AddAnswer(Choice answer)
         {
-            this.answers.Add(new Answer { Choice = answer });
+            answers.Add(new Answer { Choice = answer });
 
             // Add points if it was correct.
             if (answer.IsCorrect)
             {
-                this.Points += answer.Question.GetPoints();
+                Points += answer.Question.GetPoints();
             }
         }
     }

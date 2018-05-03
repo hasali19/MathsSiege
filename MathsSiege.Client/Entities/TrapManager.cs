@@ -31,20 +31,20 @@ namespace MathsSiege.Client.Entities
             switch (type)
             {
                 case DefenceTypes.Spikes:
-                    trap = new SpikesTrap(this.spikesTextureAtlas);
+                    trap = new SpikesTrap(spikesTextureAtlas);
                     break;
 
                 default:
                     return false;
             }
 
-            trap.Scene = this.Scene;
+            trap.Scene = Scene;
             trap.Position = tile.Position;
 
-            this.traps.Add(tile, trap);
+            traps.Add(tile, trap);
             trap.OnAddedToScene();
 
-            trap.Destroyed += (t) => this.trapsToRemove.Add(tile);
+            trap.Destroyed += (t) => trapsToRemove.Add(tile);
 
             return true;
         }
@@ -56,15 +56,15 @@ namespace MathsSiege.Client.Entities
         /// <returns>True if a trap was successfully removed.</returns>
         public bool RemoveTrap(Tile tile)
         {
-            if (!this.CheckContainsTrap(tile))
+            if (!CheckContainsTrap(tile))
             {
                 return false;
             }
 
-            var defence = this.traps[tile];
+            var defence = traps[tile];
             defence.Scene = null;
             defence.OnRemovedFromScene();
-            this.traps.Remove(tile);
+            traps.Remove(tile);
 
             return true;
         }
@@ -76,32 +76,32 @@ namespace MathsSiege.Client.Entities
         /// <returns></returns>
         public bool CheckContainsTrap(Tile tile)
         {
-            return this.traps.ContainsKey(tile);
+            return traps.ContainsKey(tile);
         }
 
         public override void OnAddedToScene()
         {
-            this.spikesTextureAtlas = this.Scene.Content.Load<TextureAtlas>(ContentPaths.Textures.SpikesAtlas);
+            spikesTextureAtlas = Scene.Content.Load<TextureAtlas>(ContentPaths.Textures.SpikesAtlas);
         }
 
         public override void Update(GameTime gameTime)
         {
-            foreach (var trap in this.traps.Values)
+            foreach (var trap in traps.Values)
             {
                 trap.Update(gameTime);
             }
 
-            foreach (var tile in this.trapsToRemove)
+            foreach (var tile in trapsToRemove)
             {
-                this.RemoveTrap(tile);
+                RemoveTrap(tile);
             }
 
-            this.trapsToRemove.Clear();
+            trapsToRemove.Clear();
         }
 
         public override void Draw(GameTime gameTime)
         {
-            foreach (var trap in this.traps.Values)
+            foreach (var trap in traps.Values)
             {
                 trap.Draw(gameTime);
             }

@@ -17,12 +17,12 @@ namespace MathsSiege.Client.Gui
         /// <summary>
         /// Gets a formatted string representation of <see cref="ElapsedTime"/>.
         /// </summary>
-        private string ElapsedTimeString => this.ElapsedTime.ToString(@"hh\:mm\:ss");
+        private string ElapsedTimeString => ElapsedTime.ToString(@"hh\:mm\:ss");
 
         /// <summary>
         /// Gets the string to display the player's current points.
         /// </summary>
-        private string PointsString => $"{this.stats.Points} Points";
+        private string PointsString => $"{stats.Points} Points";
 
         private PlayerStats stats;
 
@@ -35,37 +35,37 @@ namespace MathsSiege.Client.Gui
             : base(size, skin, anchor, null)
         {
             this.stats = stats;
-            this.Padding = new Vector2(5f);
+            Padding = new Vector2(5f);
 
-            this.elapsedTimeView = new Paragraph(this.ElapsedTimeString, Anchor.Auto);
-            this.pointsView = new Paragraph(this.PointsString, Anchor.Auto);
+            elapsedTimeView = new Paragraph(ElapsedTimeString, Anchor.Auto);
+            pointsView = new Paragraph(PointsString, Anchor.Auto);
 
-            this.AddPointsButton = new Button("Add Points", size: new Vector2(size.X - this.Padding.X * 2, 60))
+            AddPointsButton = new Button("Add Points", size: new Vector2(size.X - Padding.X * 2, 60))
             {
                 Padding = new Vector2(5f)
             };
 
-            this.AddPointsButton.ButtonParagraph.Scale = 0.8f;
+            AddPointsButton.ButtonParagraph.Scale = 0.8f;
 
-            this.AddChild(this.elapsedTimeView);
-            this.AddChild(this.pointsView);
-            this.AddChild(this.AddPointsButton);
+            AddChild(elapsedTimeView);
+            AddChild(pointsView);
+            AddChild(AddPointsButton);
         }
 
         protected override void DoOnFirstUpdate()
         {
             base.DoOnFirstUpdate();
-            this.startTime = DateTime.Now;
+            startTime = DateTime.Now;
         }
 
         public override void Update(ref Entity targetEntity, ref Entity dragTargetEntity, ref bool wasEventHandled, Point scrollVal)
         {
             base.Update(ref targetEntity, ref dragTargetEntity, ref wasEventHandled, scrollVal);
-            
-            this.ElapsedTime = DateTime.Now - this.startTime;
-            this.elapsedTimeView.Text = this.ElapsedTimeString;
 
-            this.pointsView.Text = this.PointsString;
+            ElapsedTime = DateTime.Now - startTime;
+            elapsedTimeView.Text = ElapsedTimeString;
+
+            pointsView.Text = PointsString;
         }
     }
 }

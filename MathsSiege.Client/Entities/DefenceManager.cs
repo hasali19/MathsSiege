@@ -8,7 +8,7 @@ namespace MathsSiege.Client.Entities
 {
     public class DefenceManager : DrawableEntity
     {
-        public int DefenceCount => this.defences.Count;
+        public int DefenceCount => defences.Count;
 
         public event Action<Defence> DefenceAdded;
         public event Action<Defence> DefenceRemoved;
@@ -35,22 +35,22 @@ namespace MathsSiege.Client.Entities
             switch (type)
             {
                 case DefenceTypes.Cannon:
-                    defence = new Cannon(this.cannonTextureAtlas);
+                    defence = new Cannon(cannonTextureAtlas);
                     break;
 
                 default:
                     return false;
             }
 
-            defence.Scene = this.Scene;
+            defence.Scene = Scene;
             defence.Position = tile.Position;
 
-            this.defences.Add(tile, defence);
+            defences.Add(tile, defence);
             defence.OnAddedToScene();
 
-            defence.Destroyed += (attackable) => this.RemoveDefence(tile);
+            defence.Destroyed += (attackable) => RemoveDefence(tile);
 
-            this.DefenceAdded?.Invoke(defence);
+            DefenceAdded?.Invoke(defence);
 
             return true;
         }
@@ -62,17 +62,17 @@ namespace MathsSiege.Client.Entities
         /// <returns>True if a defence was successfully removed.</returns>
         public bool RemoveDefence(Tile tile)
         {
-            if (!this.CheckContainsDefence(tile))
+            if (!CheckContainsDefence(tile))
             {
                 return false;
             }
 
-            var defence = this.defences[tile];
+            var defence = defences[tile];
             defence.Scene = null;
             defence.OnRemovedFromScene();
-            this.defences.Remove(tile);
+            defences.Remove(tile);
 
-            this.DefenceRemoved?.Invoke(defence);
+            DefenceRemoved?.Invoke(defence);
 
             return true;
         }
@@ -84,7 +84,7 @@ namespace MathsSiege.Client.Entities
         /// <returns></returns>
         public bool CheckContainsDefence(Tile tile)
         {
-            return this.defences.ContainsKey(tile);
+            return defences.ContainsKey(tile);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace MathsSiege.Client.Entities
             Defence nearest = null;
             float nearestDistance = float.MaxValue;
 
-            foreach (var defence in this.defences.Values)
+            foreach (var defence in defences.Values)
             {
                 // Use the square of length to avoid square roots.
                 float distance = (defence.Position - position).LengthSquared();
@@ -113,12 +113,12 @@ namespace MathsSiege.Client.Entities
 
         public override void OnAddedToScene()
         {
-            this.cannonTextureAtlas = this.Scene.Content.Load<TextureAtlas>(ContentPaths.Textures.CannonAtlas);
+            cannonTextureAtlas = Scene.Content.Load<TextureAtlas>(ContentPaths.Textures.CannonAtlas);
         }
 
         public override void Update(GameTime gameTime)
         {
-            foreach (var defence in this.defences.Values)
+            foreach (var defence in defences.Values)
             {
                 defence.Update(gameTime);
             }
@@ -126,7 +126,7 @@ namespace MathsSiege.Client.Entities
 
         public override void Draw(GameTime gameTime)
         {
-            foreach (var defence in this.defences.Values)
+            foreach (var defence in defences.Values)
             {
                 defence.Draw(gameTime);
             }

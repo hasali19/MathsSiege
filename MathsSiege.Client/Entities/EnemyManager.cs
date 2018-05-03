@@ -45,7 +45,7 @@ namespace MathsSiege.Client.Entities
             switch (type)
             {
                 case EnemyType.Goblin:
-                    enemy = new Enemy(this.goblinAnimationFactory)
+                    enemy = new Enemy(goblinAnimationFactory)
                     {
                         MovementSpeedMultiplier = 1.2f,
                         AttackDamage = 10,
@@ -54,7 +54,7 @@ namespace MathsSiege.Client.Entities
                     break;
 
                 case EnemyType.Skeleton:
-                    enemy = new Enemy(this.skeletonAnimationFactory)
+                    enemy = new Enemy(skeletonAnimationFactory)
                     {
                         MovementSpeedMultiplier = 0.7f,
                         AttackDamage = 20,
@@ -64,7 +64,7 @@ namespace MathsSiege.Client.Entities
                     break;
 
                 case EnemyType.Wyvern:
-                    enemy = new Enemy(this.wyvernAnimationFactory)
+                    enemy = new Enemy(wyvernAnimationFactory)
                     {
                         Origin = new Vector2(128, 192),
                         Scale = new Vector2(0.625f),
@@ -80,10 +80,10 @@ namespace MathsSiege.Client.Entities
                     return false;
             }
 
-            enemy.Scene = this.Scene;
+            enemy.Scene = Scene;
             enemy.Position = tile.Position + new Vector2(0.5f);
 
-            this.enemies.Add(enemy);
+            enemies.Add(enemy);
             enemy.OnAddedToScene();
 
             enemy.Destroyed += (attackable) => enemies.Remove(enemy);
@@ -102,7 +102,7 @@ namespace MathsSiege.Client.Entities
             var type = null as EnemyType?;
 
             // Generate a random number between 0 and 1.
-            var r = this.random.NextDouble();
+            var r = random.NextDouble();
 
             // Calculate the sum of the values for each type,
             // e.g. For values of Goblin = 3, Skeleton = 2, Wyvern = 1,
@@ -124,22 +124,22 @@ namespace MathsSiege.Client.Entities
                 }
             }
 
-            return this.CreateEnemy(type.Value, tile);
+            return CreateEnemy(type.Value, tile);
         }
 
         public override void OnAddedToScene()
         {
-            var goblinAnimations = this.Scene.Content.Load<Animation[]>(ContentPaths.AnimatedSprites.GoblinAnimations);
-            var skeletonAnimations = this.Scene.Content.Load<Animation[]>(ContentPaths.AnimatedSprites.SkeletonAnimations);
-            var wyvernAnimations = this.Scene.Content.Load<Animation[]>(ContentPaths.AnimatedSprites.WyvernAnimations);
+            var goblinAnimations = Scene.Content.Load<Animation[]>(ContentPaths.AnimatedSprites.GoblinAnimations);
+            var skeletonAnimations = Scene.Content.Load<Animation[]>(ContentPaths.AnimatedSprites.SkeletonAnimations);
+            var wyvernAnimations = Scene.Content.Load<Animation[]>(ContentPaths.AnimatedSprites.WyvernAnimations);
 
-            var goblinAtlas = this.Scene.Content.Load<TextureAtlas>(ContentPaths.AnimatedSprites.GoblinAtlas);
-            var skeletonAtlas = this.Scene.Content.Load<TextureAtlas>(ContentPaths.AnimatedSprites.SkeletonAtlas);
-            var wyvernAtlas = this.Scene.Content.Load<TextureAtlas>(ContentPaths.AnimatedSprites.WyvernAtlas);
+            var goblinAtlas = Scene.Content.Load<TextureAtlas>(ContentPaths.AnimatedSprites.GoblinAtlas);
+            var skeletonAtlas = Scene.Content.Load<TextureAtlas>(ContentPaths.AnimatedSprites.SkeletonAtlas);
+            var wyvernAtlas = Scene.Content.Load<TextureAtlas>(ContentPaths.AnimatedSprites.WyvernAtlas);
 
-            this.goblinAnimationFactory = this.LoadAnimationFactory(goblinAtlas, goblinAnimations);
-            this.skeletonAnimationFactory = this.LoadAnimationFactory(skeletonAtlas, skeletonAnimations);
-            this.wyvernAnimationFactory = this.LoadAnimationFactory(wyvernAtlas, wyvernAnimations);
+            goblinAnimationFactory = LoadAnimationFactory(goblinAtlas, goblinAnimations);
+            skeletonAnimationFactory = LoadAnimationFactory(skeletonAtlas, skeletonAnimations);
+            wyvernAnimationFactory = LoadAnimationFactory(wyvernAtlas, wyvernAnimations);
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace MathsSiege.Client.Entities
         {
             var area = new Rectangle(tile.X, tile.Y, 1, 1);
 
-            foreach (var enemy in this.enemies)
+            foreach (var enemy in enemies)
             {
                 if (area.Contains(enemy.Position))
                 {
@@ -173,7 +173,7 @@ namespace MathsSiege.Client.Entities
             Enemy nearest = null;
             float nearestDistance = float.MaxValue;
 
-            foreach (var enemy in this.enemies)
+            foreach (var enemy in enemies)
             {
                 float distance = (enemy.Position - position).Length();
                 if (distance < range && (nearest == null || distance < nearestDistance))
@@ -210,7 +210,7 @@ namespace MathsSiege.Client.Entities
 
         public override void Update(GameTime gameTime)
         {
-            foreach (var enemy in this.enemies)
+            foreach (var enemy in enemies)
             {
                 enemy.Update(gameTime);
             }
@@ -218,7 +218,7 @@ namespace MathsSiege.Client.Entities
 
         public override void Draw(GameTime gameTime)
         {
-            foreach (var enemy in this.enemies)
+            foreach (var enemy in enemies)
             {
                 enemy.Draw(gameTime);
             }

@@ -14,9 +14,9 @@ namespace MathsSiege.Client.Scenes
         {
             base.Initialise();
 
-            this.ClearColor = Color.Black * 0.5f;
+            ClearColor = Color.Black * 0.5f;
 
-            this.UserInterface.Root.Padding = new Vector2(0, 100);
+            UserInterface.Root.Padding = new Vector2(0, 100);
 
             var title = new Header("Game Over");
             var sub = new Paragraph("Your defences have all been destroyed!") { AlignToCenter = true };
@@ -29,12 +29,12 @@ namespace MathsSiege.Client.Scenes
             container.AddChild(mainMenu);
             container.AddChild(exit);
 
-            this.UserInterface.AddEntity(title);
-            this.UserInterface.AddEntity(sub);
-            this.UserInterface.AddEntity(container);
+            UserInterface.AddEntity(title);
+            UserInterface.AddEntity(sub);
+            UserInterface.AddEntity(container);
             
-            mainMenu.OnClick = (e) => this.SceneManager.Clear(new MainMenuScene(this.Game));
-            exit.OnClick = (e) => this.Game.Exit();
+            mainMenu.OnClick = (e) => SceneManager.Clear(new MainMenuScene(Game));
+            exit.OnClick = (e) => Game.Exit();
         }
     }
 }

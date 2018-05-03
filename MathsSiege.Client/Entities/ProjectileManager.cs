@@ -28,31 +28,31 @@ namespace MathsSiege.Client.Entities
             switch (type)
             {
                 case ProjectileType.Cannonball:
-                    projectile = new Projectile(this.cannonball) { Acceleration = new Vector3(0, 0, -30.0f) };
+                    projectile = new Projectile(cannonball) { Acceleration = new Vector3(0, 0, -30.0f) };
                     break;
 
                 default:
                     return null;
             }
 
-            projectile.Scene = this.Scene;
+            projectile.Scene = Scene;
 
-            this.projectiles.Add(projectile);
+            projectiles.Add(projectile);
             projectile.OnAddedToScene();
 
-            projectile.TargetReached += (p) => this.projectiles.Remove(projectile);
+            projectile.TargetReached += (p) => projectiles.Remove(projectile);
 
             return projectile;
         }
 
         public override void OnAddedToScene()
         {
-            this.cannonball = this.Scene.Content.Load<Texture2D>(ContentPaths.Textures.Cannonball);
+            cannonball = Scene.Content.Load<Texture2D>(ContentPaths.Textures.Cannonball);
         }
 
         public override void Update(GameTime gameTime)
         {
-            foreach (var projectile in this.projectiles)
+            foreach (var projectile in projectiles)
             {
                 projectile.Update(gameTime);
             }
@@ -60,7 +60,7 @@ namespace MathsSiege.Client.Entities
 
         public override void Draw(GameTime gameTime)
         {
-            foreach (var project in this.projectiles)
+            foreach (var project in projectiles)
             {
                 project.Draw(gameTime);
             }

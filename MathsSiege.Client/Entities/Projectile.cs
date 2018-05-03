@@ -29,7 +29,7 @@ namespace MathsSiege.Client.Entities
 
         public Projectile(Texture2D texture)
         {
-            this.sprite = new Sprite(texture)
+            sprite = new Sprite(texture)
             {
                 Origin = new Vector2(texture.Width / 2, texture.Height / 2),
                 Depth = 1
@@ -38,9 +38,9 @@ namespace MathsSiege.Client.Entities
 
         public void Fire(Vector2 initial, Vector2 target, float angle = 30)
         {
-            this.initialPosition = new Vector3(initial, 0);
-            this.targetPosition = new Vector3(target, 0);
-            this.position = this.initialPosition;
+            initialPosition = new Vector3(initial, 0);
+            targetPosition = new Vector3(target, 0);
+            position = initialPosition;
 
             // Calculate the distance between the initial
             // position and the target.
@@ -53,48 +53,48 @@ namespace MathsSiege.Client.Entities
 
             // Calculate the initial velocity according to
             // the calculated speed and given angle.
-            this.initialVelocity = new Vector3(
+            initialVelocity = new Vector3(
                 (target - initial).NormalizedCopy() * speed * (float)Math.Cos(radians),
                 speed * (float)Math.Sin(radians));
 
-            this.stopwatch.Start();
+            stopwatch.Start();
         }
 
         public override void OnAddedToScene()
         {
-            this.map = this.Scene.Services.GetService<GameMap>();
-            this.enemyManager = this.Scene.Services.GetService<EnemyManager>();
+            map = Scene.Services.GetService<GameMap>();
+            enemyManager = Scene.Services.GetService<EnemyManager>();
         }
 
         public override void Update(GameTime gameTime)
         {
             // Check if the projectile has reached the ground.
-            if (this.position.Z < 0)
+            if (position.Z < 0)
             {
-                var enemies = this.enemyManager.GetEnemiesInRange(new Vector2(this.position.X, this.position.Y), 1.5f);
+                var enemies = enemyManager.GetEnemiesInRange(new Vector2(position.X, position.Y), 1.5f);
 
                 foreach (var enemy in enemies)
                 {
                     enemy.Attack(20);
                 }
 
-                this.stopwatch.Stop();
-                this.TargetReached?.Invoke(this);
+                stopwatch.Stop();
+                TargetReached?.Invoke(this);
             }
 
             // Calculate the current position from the elapsed time.
-            var time = (float)this.stopwatch.Elapsed.TotalSeconds;
-            this.displacement = (this.initialVelocity * time) + (0.5f * (Acceleration * (float)Math.Pow(time, 2)));
-            this.position = this.initialPosition + this.displacement;
+            var time = (float)stopwatch.Elapsed.TotalSeconds;
+            displacement = (initialVelocity * time) + (0.5f * (Acceleration * (float)Math.Pow(time, 2)));
+            position = initialPosition + displacement;
 
             // Update the actual position on the screen.
-            this.sprite.Position = this.map.MapToScreen(new Vector2(this.position.X, this.position.Y))
-                + new Vector2(0, -this.position.Z * (this.map.TiledMap.TileHeight / 2));
+            sprite.Position = map.MapToScreen(new Vector2(position.X, position.Y))
+                + new Vector2(0, -position.Z * (map.TiledMap.TileHeight / 2));
         }
 
         public override void Draw(GameTime gameTime)
         {
-            this.Scene.SpriteBatch.Draw(this.sprite);
+            Scene.SpriteBatch.Draw(sprite);
         }
     }
 }

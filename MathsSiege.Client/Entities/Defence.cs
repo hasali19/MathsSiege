@@ -27,7 +27,7 @@ namespace MathsSiege.Client.Entities
         public Defence(TextureAtlas atlas)
         {
             this.atlas = atlas;
-            this.sprite = new Sprite(this.GetAtlasRegion(this.Facing))
+            sprite = new Sprite(GetAtlasRegion(Facing))
             {
                 Origin = new Vector2(32, 32)
             };
@@ -35,49 +35,49 @@ namespace MathsSiege.Client.Entities
 
         public override void OnAddedToScene()
         {
-            var map = this.Scene.Services.GetService<GameMap>();
-            this.enemyManager = this.Scene.Services.GetService<EnemyManager>();
+            var map = Scene.Services.GetService<GameMap>();
+            enemyManager = Scene.Services.GetService<EnemyManager>();
 
-            this.sprite.Position = map.MapToScreen(this.Position);
-            this.sprite.Depth = (this.Position.Y / map.TiledMap.Height) * (this.Position.X / map.TiledMap.Width);
+            sprite.Position = map.MapToScreen(Position);
+            sprite.Depth = (Position.Y / map.TiledMap.Height) * (Position.X / map.TiledMap.Width);
 
-            this.stopwatch.Start();
+            stopwatch.Start();
         }
 
         public override void Update(GameTime gameTime)
         {
             // Search for the nearest enemy in range. Do this every tick
             // so that the target is always the closest possible one.
-            this.target = this.enemyManager.GetNearestEnemyInRange(this.Position, this.AttackRange);
+            target = enemyManager.GetNearestEnemyInRange(Position, AttackRange);
 
-            if (this.target != null)
+            if (target != null)
             {
-                var displacement = this.target.Position - this.Position;
+                var displacement = target.Position - Position;
                 var direction = Utilities.GetDirectionFromVector(displacement);
 
-                if (this.Facing != direction)
+                if (Facing != direction)
                 {
-                    this.Facing = direction;
-                    this.sprite.TextureRegion = this.GetAtlasRegion(this.Facing);
+                    Facing = direction;
+                    sprite.TextureRegion = GetAtlasRegion(Facing);
                 }
 
                 // Perform an attack if enough time has passed.
-                if (this.stopwatch.ElapsedMilliseconds > this.AttackInterval)
+                if (stopwatch.ElapsedMilliseconds > AttackInterval)
                 {
-                    this.DoAttack(this.target);
-                    this.stopwatch.Restart();
+                    DoAttack(target);
+                    stopwatch.Restart();
                 }
             }
         }
 
         public override void Draw(GameTime gameTime)
         {
-            this.Scene.SpriteBatch.Draw(this.sprite);
+            Scene.SpriteBatch.Draw(sprite);
 
-            if (this.Health < this.MaxHealth)
+            if (Health < MaxHealth)
             {
-                var healthbar = new RectangleF(this.sprite.Position.X - 40, this.sprite.Position.Y - 32, 80, 10);
-                this.DrawHealthbar(healthbar, Color.Red);
+                var healthbar = new RectangleF(sprite.Position.X - 40, sprite.Position.Y - 32, 80, 10);
+                DrawHealthbar(healthbar, Color.Red);
             }
         }
 
@@ -95,7 +95,7 @@ namespace MathsSiege.Client.Entities
         /// <returns></returns>
         private TextureRegion2D GetAtlasRegion(Direction direction)
         {
-            return this.atlas.GetRegion(direction.ToString());
+            return atlas.GetRegion(direction.ToString());
         }
     }
 }

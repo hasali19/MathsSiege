@@ -19,13 +19,13 @@ namespace MathsSiege.Client.Framework
 
         public override void Initialize()
         {
-            this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         /// <summary>
         /// Gets the current topmost scene on the stack.
         /// </summary>
-        public Scene CurrentScene => this.scenes.LastOrDefault();
+        public Scene CurrentScene => scenes.LastOrDefault();
 
         /// <summary>
         /// Pushes a new scene onto the stack.
@@ -33,8 +33,8 @@ namespace MathsSiege.Client.Framework
         /// <param name="scene"></param>
         public void PushScene(Scene scene)
         {
-            this.CurrentScene?.Pause();
-            this.scenes.Add(scene);
+            CurrentScene?.Pause();
+            scenes.Add(scene);
             scene.Initialise();
         }
 
@@ -43,11 +43,11 @@ namespace MathsSiege.Client.Framework
         /// </summary>
         public void PopScene()
         {
-            if (this.scenes.Count > 0)
+            if (scenes.Count > 0)
             {
-                this.CurrentScene.Destroy();
-                this.scenes.RemoveAt(this.scenes.Count - 1);
-                this.CurrentScene?.Resume();
+                CurrentScene.Destroy();
+                scenes.RemoveAt(scenes.Count - 1);
+                CurrentScene?.Resume();
             }
         }
 
@@ -57,11 +57,11 @@ namespace MathsSiege.Client.Framework
         /// <param name="scene"></param>
         public void ReplaceScene(Scene scene)
         {
-            if (this.scenes.Count > 0)
+            if (scenes.Count > 0)
             {
-                this.CurrentScene.Destroy();
-                this.scenes.RemoveAt(this.scenes.Count - 1);
-                this.scenes.Add(scene);
+                CurrentScene.Destroy();
+                scenes.RemoveAt(scenes.Count - 1);
+                scenes.Add(scene);
                 scene.Initialise();
             }
         }
@@ -72,13 +72,13 @@ namespace MathsSiege.Client.Framework
         /// <param name="scene"></param>
         public void Clear(Scene scene)
         {
-            foreach (var s in this.scenes)
+            foreach (var s in scenes)
             {
                 s.Destroy();
             }
 
-            this.shouldClearScenes = true;
-            this.scenes.Add(scene);
+            shouldClearScenes = true;
+            scenes.Add(scene);
             scene.Initialise();
         }
 
@@ -88,23 +88,23 @@ namespace MathsSiege.Client.Framework
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
-            for (int i = this.scenes.Count - 1; i >= 0; i--)
+            for (int i = scenes.Count - 1; i >= 0; i--)
             {
-                var scene = this.scenes[i];
+                var scene = scenes[i];
                 if (scene.IsActive)
                 {
                     scene.Update(gameTime);
                 }
             }
 
-            if (this.shouldClearScenes)
+            if (shouldClearScenes)
             {
-                while (this.scenes.Count > 1)
+                while (scenes.Count > 1)
                 {
-                    this.scenes.RemoveAt(0);
+                    scenes.RemoveAt(0);
                 }
 
-                this.shouldClearScenes = false;
+                shouldClearScenes = false;
             }
         }
 
@@ -115,9 +115,9 @@ namespace MathsSiege.Client.Framework
         public override void Draw(GameTime gameTime)
         {
             // Draw scenes to their respective render targets.
-            for (int i = 0; i < this.scenes.Count; i++)
+            for (int i = 0; i < scenes.Count; i++)
             {
-                var scene = this.scenes[i];
+                var scene = scenes[i];
                 if (scene.IsVisible)
                 {
                     scene.GraphicsDevice.SetRenderTarget(scene.RenderTarget);
@@ -126,22 +126,22 @@ namespace MathsSiege.Client.Framework
             }
 
             // Clear the screen.
-            this.GraphicsDevice.SetRenderTarget(null);
-            this.GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.SetRenderTarget(null);
+            GraphicsDevice.Clear(Color.Black);
 
-            this.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
             // Draw all the render targets to the back buffer.
-            for (int i = 0; i < this.scenes.Count; i++)
+            for (int i = 0; i < scenes.Count; i++)
             {
-                var scene = this.scenes[i];
+                var scene = scenes[i];
                 if (scene.IsVisible)
                 {
-                    this.spriteBatch.Draw(scene.RenderTarget, this.GraphicsDevice.Viewport.Bounds, Color.White);
+                    spriteBatch.Draw(scene.RenderTarget, GraphicsDevice.Viewport.Bounds, Color.White);
                 }
             }
 
-            this.spriteBatch.End();
+            spriteBatch.End();
         }
     }
 }

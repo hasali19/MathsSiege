@@ -43,7 +43,7 @@ namespace MathsSiege.Client
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
 
                 // Make the request to the server.
-                var response = await this.client.PostAsync(this.preferences.HostAddress + "/api/auth/authenticate", content);
+                var response = await client.PostAsync(preferences.HostAddress + "/api/auth/authenticate", content);
 
                 // Check if the request was successful.
                 if (!response.IsSuccessStatusCode)
@@ -53,9 +53,9 @@ namespace MathsSiege.Client
 
                 // Retrieve the token from the response content.
                 string responseBody = await response.Content.ReadAsStringAsync();
-                this.token = JsonConvert.DeserializeObject<TokenResponse>(responseBody).Token;
+                token = JsonConvert.DeserializeObject<TokenResponse>(responseBody).Token;
 
-                this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", this.token);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
 
                 return true;
             }
@@ -75,7 +75,7 @@ namespace MathsSiege.Client
             try
             {
                 // Make the request to the server.
-                var response = await this.client.GetAsync(this.preferences.HostAddress + "/api/questions");
+                var response = await client.GetAsync(preferences.HostAddress + "/api/questions");
 
                 // Check if the request was successful.
                 if (!response.IsSuccessStatusCode)
@@ -85,10 +85,10 @@ namespace MathsSiege.Client
 
                 // Retrieve the questions from the response content.
                 string responseBody = await response.Content.ReadAsStringAsync();
-                this.questions = JsonConvert.DeserializeObject<List<Question>>(responseBody);
+                questions = JsonConvert.DeserializeObject<List<Question>>(responseBody);
 
                 // Initialise the references from choices to questions.
-                foreach (var question in this.questions)
+                foreach (var question in questions)
                 {
                     foreach (var choice in question.Choices)
                     {
@@ -112,14 +112,14 @@ namespace MathsSiege.Client
         /// <returns></returns>
         public Question GetRandomQuestion()
         {
-            if (this.unusedQuestions.Count == 0)
+            if (unusedQuestions.Count == 0)
             {
-                this.unusedQuestions.AddRange(this.questions);
+                unusedQuestions.AddRange(questions);
             }
 
-            int i = this.random.Next(this.unusedQuestions.Count);
-            var question = this.unusedQuestions[i];
-            this.unusedQuestions.RemoveAt(i);
+            int i = random.Next(unusedQuestions.Count);
+            var question = unusedQuestions[i];
+            unusedQuestions.RemoveAt(i);
 
             return question;
         }
@@ -145,7 +145,7 @@ namespace MathsSiege.Client
                 // Create the request content object.
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
                 // Send the request to the server.
-                var response = await this.client.PostAsync(this.preferences.HostAddress + "/api/gamesessions", content);
+                var response = await client.PostAsync(preferences.HostAddress + "/api/gamesessions", content);
 
                 // Check if the request was successful.
                 if (!response.IsSuccessStatusCode)

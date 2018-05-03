@@ -17,18 +17,18 @@ namespace MathsSiege.Client.Entities
         {
             base.OnAddedToScene();
 
-            this.projectileManager = this.Scene.Services.GetService<ProjectileManager>();
-            this.cannonFireSound = this.Scene.Content.Load<SoundEffect>(ContentPaths.Sounds.CannonFire);
+            projectileManager = Scene.Services.GetService<ProjectileManager>();
+            cannonFireSound = Scene.Content.Load<SoundEffect>(ContentPaths.Sounds.CannonFire);
         }
 
         protected override void DoAttack(Enemy target)
         {
             // Fire a cannonball at the target.
-            this.projectileManager
+            projectileManager
                 .CreateProjectile(ProjectileType.Cannonball)
-                .Fire(this.Position, target.Position, 60);
+                .Fire(Position, target.Position, 60);
 
-            this.cannonFireSound.Play();
+            cannonFireSound.Play();
         }
     }
 }

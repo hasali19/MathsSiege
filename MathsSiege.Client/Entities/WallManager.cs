@@ -32,18 +32,18 @@ namespace MathsSiege.Client.Entities
                 return false;
             }
 
-            Wall wall = new Wall(this.texture)
+            Wall wall = new Wall(texture)
             {
-                Scene = this.Scene,
+                Scene = Scene,
                 Position = tile.Position,
             };
 
-            this.walls.Add(tile, wall);
+            walls.Add(tile, wall);
             wall.OnAddedToScene();
 
-            wall.Destroyed += (attackable) => this.RemoveWall(tile);
+            wall.Destroyed += (attackable) => RemoveWall(tile);
 
-            this.WallAdded?.Invoke(wall);
+            WallAdded?.Invoke(wall);
 
             return true;
         }
@@ -55,17 +55,17 @@ namespace MathsSiege.Client.Entities
         /// <returns>True if a wall was successfully removed.</returns>
         public bool RemoveWall(Tile tile)
         {
-            if (!this.CheckContainsWall(tile, out _))
+            if (!CheckContainsWall(tile, out _))
             {
                 return false;
             }
 
-            var wall = this.walls[tile];
+            var wall = walls[tile];
             wall.Scene = null;
             wall.OnRemovedFromScene();
-            this.walls.Remove(tile);
+            walls.Remove(tile);
 
-            this.WallRemoved?.Invoke(wall);
+            WallRemoved?.Invoke(wall);
 
             return true;
         }
@@ -77,12 +77,12 @@ namespace MathsSiege.Client.Entities
         /// <returns></returns>
         public bool CheckContainsWall(Tile tile, out Wall wall)
         {
-            return this.walls.TryGetValue(tile, out wall);
+            return walls.TryGetValue(tile, out wall);
         }
 
         public override void Draw(GameTime gameTime)
         {
-            foreach (var wall in this.walls.Values)
+            foreach (var wall in walls.Values)
             {
                 wall.Draw(gameTime);
             }

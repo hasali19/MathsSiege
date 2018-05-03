@@ -33,7 +33,7 @@ namespace MathsSiege.Client.Entities
         public Trap(TextureAtlas atlas)
         {
             this.atlas = atlas;
-            this.sprite = new Sprite(this.GetTextureAtlasRegion(TrapState.Idle))
+            sprite = new Sprite(GetTextureAtlasRegion(TrapState.Idle))
             {
                 Origin = new Vector2(32, 0)
             };
@@ -41,38 +41,38 @@ namespace MathsSiege.Client.Entities
 
         public override void OnAddedToScene()
         {
-            var map = this.Scene.Services.GetService<GameMap>();
-            this.enemyManager = this.Scene.Services.GetService<EnemyManager>();
+            var map = Scene.Services.GetService<GameMap>();
+            enemyManager = Scene.Services.GetService<EnemyManager>();
 
-            this.sprite.Position = map.MapToScreen(this.Position);
-            this.sprite.Depth = (this.Position.Y / map.TiledMap.Height) * (this.Position.X / map.TiledMap.Width);
+            sprite.Position = map.MapToScreen(Position);
+            sprite.Depth = (Position.Y / map.TiledMap.Height) * (Position.X / map.TiledMap.Width);
 
-            this.stopwatch.Start();
+            stopwatch.Start();
         }
 
         public override void Update(GameTime gameTime)
         {
             // Check for enemies in range every half a second.
-            if (this.stopwatch.ElapsedMilliseconds > 500)
+            if (stopwatch.ElapsedMilliseconds > 500)
             {
-                var enemies = this.enemyManager.GetEnemiesInRange(this.Position, 1f);
+                var enemies = enemyManager.GetEnemiesInRange(Position, 1f);
 
                 // Trigger if there are enemies in range.
-                if (enemies.Count > 0 && (this.IsTriggeredByFlying || enemies.Any(e => !e.IsFlying)))
+                if (enemies.Count > 0 && (IsTriggeredByFlying || enemies.Any(e => !e.IsFlying)))
                 {
-                    this.stopwatch.Reset();
-                    this.OnTrigger(enemies);
+                    stopwatch.Reset();
+                    OnTrigger(enemies);
                 }
                 else
                 {
-                    this.stopwatch.Restart();
+                    stopwatch.Restart();
                 }
             }
         }
 
         public override void Draw(GameTime gameTime)
         {
-            this.Scene.SpriteBatch.Draw(this.sprite);
+            Scene.SpriteBatch.Draw(sprite);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace MathsSiege.Client.Entities
         /// <param name="state"></param>
         protected void SetTextureRegion(TrapState state)
         {
-            this.sprite.TextureRegion = this.GetTextureAtlasRegion(state);
+            sprite.TextureRegion = GetTextureAtlasRegion(state);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace MathsSiege.Client.Entities
         /// </summary>
         protected virtual void OnDestroyed()
         {
-            this.Destroyed?.Invoke(this);
+            Destroyed?.Invoke(this);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace MathsSiege.Client.Entities
         /// <returns></returns>
         private TextureRegion2D GetTextureAtlasRegion(TrapState state)
         {
-            return this.atlas.GetRegion(state.ToString());
+            return atlas.GetRegion(state.ToString());
         }
     }
 }

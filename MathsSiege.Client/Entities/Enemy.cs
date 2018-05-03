@@ -55,14 +55,14 @@ namespace MathsSiege.Client.Entities
         /// </summary>
         public Vector2 Origin
         {
-            get => this.sprite.Origin;
-            set => this.sprite.Origin = value;
+            get => sprite.Origin;
+            set => sprite.Origin = value;
         }
 
         public Vector2 Scale
         {
-            get => this.sprite.Scale;
-            set => this.sprite.Scale = value;
+            get => sprite.Scale;
+            set => sprite.Scale = value;
         }
 
         /// <summary>
@@ -91,11 +91,11 @@ namespace MathsSiege.Client.Entities
 
         private Stopwatch stopwatch = new Stopwatch();
 
-        private Vector2 TargetTilePosition => this.path.Last().Position + new Vector2(0.5f);
+        private Vector2 TargetTilePosition => path.Last().Position + new Vector2(0.5f);
 
         public Enemy(SpriteSheetAnimationFactory animationFactory)
         {
-            this.sprite = new AnimatedSprite(animationFactory, "IdleDown")
+            sprite = new AnimatedSprite(animationFactory, "IdleDown")
             {
                 Origin = new Vector2(64, 96)
             };
@@ -103,33 +103,33 @@ namespace MathsSiege.Client.Entities
 
         public override void OnAddedToScene()
         {
-            this.map = this.Scene.Services.GetService<GameMap>();
-            this.wallManager = this.Scene.Services.GetService<WallManager>();
-            this.defenceManager = this.Scene.Services.GetService<DefenceManager>();
-            this.castle = this.Scene.Services.GetService<Castle>();
+            map = Scene.Services.GetService<GameMap>();
+            wallManager = Scene.Services.GetService<WallManager>();
+            defenceManager = Scene.Services.GetService<DefenceManager>();
+            castle = Scene.Services.GetService<Castle>();
 
-            this.swordAttackSound = this.Scene.Content.Load<SoundEffect>(ContentPaths.Sounds.SwordAttack);
+            swordAttackSound = Scene.Content.Load<SoundEffect>(ContentPaths.Sounds.SwordAttack);
 
-            this.defenceManager.DefenceAdded += this.DefenceManager_DefenceAdded;
-            this.defenceManager.DefenceRemoved += this.DefenceManager_DefenceRemoved;
+            defenceManager.DefenceAdded += DefenceManager_DefenceAdded;
+            defenceManager.DefenceRemoved += DefenceManager_DefenceRemoved;
 
-            this.wallManager.WallAdded += this.WallManager_WallAdded;
-            this.wallManager.WallRemoved += this.WallManager_WallRemoved;
+            wallManager.WallAdded += WallManager_WallAdded;
+            wallManager.WallRemoved += WallManager_WallRemoved;
         }
 
         private void DefenceManager_DefenceAdded(Defence defence)
         {
-            if (this.State != EnemyState.Attacking && this.target != null)
+            if (State != EnemyState.Attacking && target != null)
             {
                 // Make the new defence the target if it is closer
                 // than the current one.
-                var oldDistance = (this.target.Position - this.Position).LengthSquared();
-                var newDistance = (defence.Position - this.Position).LengthSquared();
+                var oldDistance = (target.Position - Position).LengthSquared();
+                var newDistance = (defence.Position - Position).LengthSquared();
                 if (newDistance < oldDistance)
                 {
-                    this.target = defence;
-                    this.path = null;
-                    this.State = EnemyState.Idle;
+                    target = defence;
+                    path = null;
+                    State = EnemyState.Idle;
                 }
             }
         }
@@ -138,23 +138,23 @@ namespace MathsSiege.Client.Entities
         {
             // Reset the target if the defence that was
             // removed was the target.
-            if (this.target == defence)
+            if (target == defence)
             {
-                this.target = null;
-                this.path = null;
-                this.State = EnemyState.Idle;
-                this.PlayAnimationFor(EnemyState.Idle, this.Facing);
-                this.stopwatch.Reset();
+                target = null;
+                path = null;
+                State = EnemyState.Idle;
+                PlayAnimationFor(EnemyState.Idle, Facing);
+                stopwatch.Reset();
             }
         }
 
         private void WallManager_WallAdded(Wall wall)
         {
             // If not currently attacking, reset the path.
-            if (this.State != EnemyState.Attacking)
+            if (State != EnemyState.Attacking)
             {
-                this.path = null;
-                this.State = EnemyState.Idle;
+                path = null;
+                State = EnemyState.Idle;
             }
         }
 
@@ -162,106 +162,106 @@ namespace MathsSiege.Client.Entities
         {
             // Reset the target if it is currently set to
             // the wall that was just removed.
-            if (this.target == wall)
+            if (target == wall)
             {
-                this.target = null;
-                this.path = null;
-                this.State = EnemyState.Idle;
-                this.PlayAnimationFor(EnemyState.Idle, this.Facing);
-                this.stopwatch.Reset();
+                target = null;
+                path = null;
+                State = EnemyState.Idle;
+                PlayAnimationFor(EnemyState.Idle, Facing);
+                stopwatch.Reset();
             }
             // If not currently attacking, reset the path.
-            else if (this.State != EnemyState.Attacking)
+            else if (State != EnemyState.Attacking)
             {
-                this.path = null;
-                this.State = EnemyState.Idle;
+                path = null;
+                State = EnemyState.Idle;
             }
         }
 
         public override void Update(GameTime gameTime)
         {
-            this.sprite.Update(gameTime);
+            sprite.Update(gameTime);
 
-            switch (this.State)
+            switch (State)
             {
                 case EnemyState.Idle:
-                    this.Update_Idle(gameTime);
+                    Update_Idle(gameTime);
                     break;
 
                 case EnemyState.Moving:
-                    this.Update_Moving(gameTime);
+                    Update_Moving(gameTime);
                     break;
 
                 case EnemyState.Attacking:
-                    this.Update_Attacking(gameTime);
+                    Update_Attacking(gameTime);
                     break;
             }
 
-            this.sprite.Position = this.map.MapToScreen(this.Position);
-            this.sprite.Depth = (this.Position.Y / this.map.TiledMap.Height) * (this.Position.X / this.map.TiledMap.Width);
+            sprite.Position = map.MapToScreen(Position);
+            sprite.Depth = (Position.Y / map.TiledMap.Height) * (Position.X / map.TiledMap.Width);
         }
 
         public override void Draw(GameTime gameTime)
         {
-            this.Scene.SpriteBatch.Draw(this.sprite);
-            this.Scene.SpriteBatch.DrawPoint(this.sprite.Position, Color.Red, 3);
+            Scene.SpriteBatch.Draw(sprite);
+            Scene.SpriteBatch.DrawPoint(sprite.Position, Color.Red, 3);
 
-            if (this.Health < this.MaxHealth)
+            if (Health < MaxHealth)
             {
-                var healthbar = new RectangleF(this.sprite.Position.X - 40, this.sprite.Position.Y - 96, 80, 10);
-                this.DrawHealthbar(healthbar, Color.Red);
+                var healthbar = new RectangleF(sprite.Position.X - 40, sprite.Position.Y - 96, 80, 10);
+                DrawHealthbar(healthbar, Color.Red);
             }
         }
 
         private void Update_Idle(GameTime gameTime)
         {
             // Find a target if none is set.
-            if (this.target == null)
+            if (target == null)
             {
-                this.target = this.defenceManager.GetNearestDefence(this.Position);
+                target = defenceManager.GetNearestDefence(Position);
 
-                if ((this.target == null
-                    || (this.target.Position - this.Position).Length() < (this.castle.Position - this.Position).Length())
-                    && !this.castle.IsDestroyed)
+                if ((target == null
+                    || (target.Position - Position).Length() < (castle.Position - Position).Length())
+                    && !castle.IsDestroyed)
                 {
-                    this.target = this.castle;
+                    target = castle;
                 }
             }
             // Find a path to the target if no path has been found.
-            else if (this.path == null)
+            else if (path == null)
             {
-                var tile = this.map[(int)this.Position.X, (int)this.Position.Y];
-                var targetTile = this.map[(int)this.target.Position.X, (int)this.target.Position.Y];
-                this.path = this.map.GetPath(tile, targetTile, !this.IsFlying);
+                var tile = map[(int)Position.X, (int)Position.Y];
+                var targetTile = map[(int)target.Position.X, (int)target.Position.Y];
+                path = map.GetPath(tile, targetTile, !IsFlying);
             }
-            else if (this.path.Count > 0)
+            else if (path.Count > 0)
             {
                 // If the next tile in the path contains a wall,
                 // set that as the target and attack it.
-                if (this.wallManager.CheckContainsWall(this.path.Last(), out Wall wall))
+                if (wallManager.CheckContainsWall(path.Last(), out Wall wall))
                 {
-                    this.target = wall;
-                    this.path.Clear();
+                    target = wall;
+                    path.Clear();
                 }
                 // Move to the next tile in the path.
                 else
                 {
-                    var displacement = this.TargetTilePosition - this.Position;
+                    var displacement = TargetTilePosition - Position;
                     displacement.Normalize();
-                    this.velocity = displacement * 0.03f * this.MovementSpeedMultiplier;
+                    velocity = displacement * 0.03f * MovementSpeedMultiplier;
 
-                    this.State = EnemyState.Moving;
-                    this.Facing = Utilities.GetDirectionFromVector(this.velocity);
-                    this.PlayAnimationFor(EnemyState.Moving, this.Facing);
+                    State = EnemyState.Moving;
+                    Facing = Utilities.GetDirectionFromVector(velocity);
+                    PlayAnimationFor(EnemyState.Moving, Facing);
                 }
             }
             // Start attacking the target.
             else
             {
-                Vector2 displacement = this.target.Position - this.Position + new Vector2(0.5f);
-                this.Facing = Utilities.GetDirectionFromVector(displacement);
-                this.State = EnemyState.Attacking;
-                this.DoAttack();
+                Vector2 displacement = target.Position - Position + new Vector2(0.5f);
+                Facing = Utilities.GetDirectionFromVector(displacement);
+                State = EnemyState.Attacking;
+                DoAttack();
             }
         }
 
@@ -269,34 +269,34 @@ namespace MathsSiege.Client.Entities
         {
             // Check if the enemy has approximately reached
             // the destination.
-            if (this.Position.EqualsWithTolerence(this.TargetTilePosition, VectorEqualityTolerance))
+            if (Position.EqualsWithTolerence(TargetTilePosition, VectorEqualityTolerance))
             {
-                this.path.RemoveAt(this.path.Count - 1);
-                this.State = EnemyState.Idle;
+                path.RemoveAt(path.Count - 1);
+                State = EnemyState.Idle;
             }
             else
             {
-                this.Position += this.velocity;
+                Position += velocity;
             }
         }
 
         private void Update_Attacking(GameTime gameTime)
         {
             // Reset the target if it has been destroyed.
-            if (this.target.IsDestroyed)
+            if (target.IsDestroyed)
             {
-                this.target = null;
-                this.path = null;
-                this.stopwatch.Reset();
+                target = null;
+                path = null;
+                stopwatch.Reset();
 
-                this.PlayAnimationFor(EnemyState.Idle, this.Facing);
-                this.State = EnemyState.Idle;
+                PlayAnimationFor(EnemyState.Idle, Facing);
+                State = EnemyState.Idle;
             }
             // Do an attack if enough time has passed since the last one.
-            else if (this.stopwatch.ElapsedMilliseconds > this.AttackInterval)
+            else if (stopwatch.ElapsedMilliseconds > AttackInterval)
             {
-                this.DoAttack();
-                this.stopwatch.Reset();
+                DoAttack();
+                stopwatch.Reset();
             }
         }
 
@@ -306,14 +306,14 @@ namespace MathsSiege.Client.Entities
         /// </summary>
         private void DoAttack()
         {
-            this.swordAttackSound.Play();
-            this.PlayAnimationFor(EnemyState.Attacking, this.Facing, () =>
+            swordAttackSound.Play();
+            PlayAnimationFor(EnemyState.Attacking, Facing, () =>
             {
-                if (!this.target.IsDestroyed)
+                if (!target.IsDestroyed)
                 {
-                    this.target.Attack(this.AttackDamage);
-                    this.PlayAnimationFor(EnemyState.Idle, this.Facing);
-                    this.stopwatch.Start();
+                    target.Attack(AttackDamage);
+                    PlayAnimationFor(EnemyState.Idle, Facing);
+                    stopwatch.Start();
                 }
             });
         }
@@ -325,7 +325,7 @@ namespace MathsSiege.Client.Entities
         /// <param name="direction"></param>
         private void PlayAnimationFor(EnemyState state, Direction direction, Action onCompleted = null)
         {
-            this.sprite.Play(state.ToString() + direction.ToString(), onCompleted);
+            sprite.Play(state.ToString() + direction.ToString(), onCompleted);
         }
     }
 }

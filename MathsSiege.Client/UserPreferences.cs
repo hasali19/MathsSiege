@@ -11,14 +11,14 @@ namespace MathsSiege.Client
 
         public string HostAddress
         {
-            get => this.GetPreference(this.document, nameof(this.HostAddress));
-            set => this.SetPreference(this.document, nameof(this.HostAddress), value);
+            get => GetPreference(document, nameof(HostAddress));
+            set => SetPreference(document, nameof(HostAddress), value);
         }
 
         public bool IsWindowFullScreen
         {
-            get => bool.Parse(this.GetPreference(this.document, nameof(this.IsWindowFullScreen)));
-            set => this.SetPreference(this.document, nameof(this.IsWindowFullScreen), value.ToString());
+            get => bool.Parse(GetPreference(document, nameof(IsWindowFullScreen)));
+            set => SetPreference(document, nameof(IsWindowFullScreen), value.ToString());
         }
 
         private XDocument document;
@@ -29,11 +29,11 @@ namespace MathsSiege.Client
 
             try
             {
-                this.document = XDocument.Load(fs);
+                document = XDocument.Load(fs);
             }
             catch (XmlException)
             {
-                this.document = this.Create(fs);
+                document = Create(fs);
             }
             finally
             {
@@ -49,7 +49,7 @@ namespace MathsSiege.Client
 
             try
             {
-                this.document.Save(fs);
+                document.Save(fs);
             }
             finally
             {
@@ -64,8 +64,8 @@ namespace MathsSiege.Client
             var document = new XDocument(
                 new XElement("UserPreferences"));
 
-            this.SetPreference(document, nameof(this.HostAddress), "");
-            this.SetPreference(document, nameof(this.IsWindowFullScreen), false.ToString());
+            SetPreference(document, nameof(HostAddress), "");
+            SetPreference(document, nameof(IsWindowFullScreen), false.ToString());
 
             document.Save(fs);
 

@@ -19,22 +19,22 @@ namespace MathsSiege.Client
         {
             this.gameMap = gameMap;
             this.enemyManager = enemyManager;
-            this.nextSpawnTime = DateTime.Now.AddMilliseconds(this.GetNextDelay());
+            nextSpawnTime = DateTime.Now.AddMilliseconds(GetNextDelay());
         }
 
         public void Update(GameTime gameTime)
         {
-            this.elapsedTime += gameTime.ElapsedGameTime;
+            elapsedTime += gameTime.ElapsedGameTime;
 
             // Check if enough time has passed.
-            if (DateTime.Now >= this.nextSpawnTime)
+            if (DateTime.Now >= nextSpawnTime)
             {
                 // Call the registered spawn action.
-                this.SpawnEnemy();
+                SpawnEnemy();
 
                 // Reset the next spawn time.
-                var nextDelay = this.GetNextDelay();
-                this.nextSpawnTime = DateTime.Now.AddMilliseconds(nextDelay);
+                var nextDelay = GetNextDelay();
+                nextSpawnTime = DateTime.Now.AddMilliseconds(nextDelay);
             }
         }
 
@@ -43,9 +43,9 @@ namespace MathsSiege.Client
         /// </summary>
         private void SpawnEnemy()
         {
-            var i = this.random.Next(this.gameMap.SpawnableTiles.Count);
-            var tile = this.gameMap.SpawnableTiles[i];
-            this.enemyManager.CreateRandomEnemy(tile);
+            var i = random.Next(gameMap.SpawnableTiles.Count);
+            var tile = gameMap.SpawnableTiles[i];
+            enemyManager.CreateRandomEnemy(tile);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace MathsSiege.Client
         /// <returns></returns>
         private double GetNextDelay()
         {
-            var elapsedTimeNormalized = (float)Math.Floor(this.elapsedTime.TotalMinutes / 0.5);
+            var elapsedTimeNormalized = (float)Math.Floor(elapsedTime.TotalMinutes / 0.5);
             return MathHelper.Max(15_000 - elapsedTimeNormalized * 500, 5_000);
         }
     }
