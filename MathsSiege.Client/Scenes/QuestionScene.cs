@@ -25,54 +25,54 @@ namespace MathsSiege.Client.Scenes
 
         public QuestionScene(Game game) : base(game)
         {
-            this.client = this.Game.Services.GetService<DataClient>();
-            this.stats = this.Game.Services.GetService<PlayerStats>();
+            client = Game.Services.GetService<DataClient>();
+            stats = Game.Services.GetService<PlayerStats>();
 
-            this.question = this.client.GetRandomQuestion();
+            question = client.GetRandomQuestion();
 
-            this.UserInterface.UseRenderTarget = true;
+            UserInterface.UseRenderTarget = true;
         }
 
         public override void Initialise()
         {
             base.Initialise();
 
-            this.ClearColor = Color.Transparent;
+            ClearColor = Color.Transparent;
 
-            this.UserInterface.Root.Padding = new Vector2(30f);
+            UserInterface.Root.Padding = new Vector2(30f);
 
-            var question = new Header(this.question.Text);
-            this.points = new Label(this.question.GetPoints().ToString() + " Points") { AlignToCenter = true };
+            var question = new Header(this.question.Text) { Scale = 1.5f };
+            points = new Label(this.question.GetPoints().ToString() + " Points") { AlignToCenter = true };
 
-            this.choicesContainer = new Panel(new Vector2(500, 0), PanelSkin.None, Anchor.AutoCenter);
+            choicesContainer = new Panel(new Vector2(500, 0), PanelSkin.None, Anchor.AutoCenter);
             
             foreach (var choice in this.question.GetRandomizedChoices())
             {
                 var button = new Button(choice.Text, ButtonSkin.Alternative);
-                this.choicesContainer.AddChild(button);
-                button.OnClick = (e) => this.ChoiceButton_OnClick(button, choice);
+                choicesContainer.AddChild(button);
+                button.OnClick = (e) => ChoiceButton_OnClick(button, choice);
             }
 
-            this.UserInterface.AddEntity(question);
-            this.UserInterface.AddEntity(this.points);
-            this.UserInterface.AddEntity(this.choicesContainer);
+            UserInterface.AddEntity(question);
+            UserInterface.AddEntity(points);
+            UserInterface.AddEntity(choicesContainer);
         }
 
         private void ChoiceButton_OnClick(Button button, Choice choice)
         {
             if (choice.IsCorrect)
             {
-                this.stopwatch.Start();
+                stopwatch.Start();
 
                 // Add the answer if it was the first one picked.
-                if (!this.isAnswered)
+                if (!isAnswered)
                 {
-                    this.points.FillColor = Color.Green;
-                    this.stats.AddAnswer(choice);
+                    points.FillColor = Color.Green;
+                    stats.AddAnswer(choice);
                 }
 
                 // Disable all other buttons.
-                foreach (var b in this.choicesContainer.GetChildren()
+                foreach (var b in choicesContainer.GetChildren()
                     .Where(entity => entity is Button btn && btn != button))
                 {
                     b.Disabled = true;
@@ -83,14 +83,14 @@ namespace MathsSiege.Client.Scenes
                 button.Disabled = true;
 
                 // Add the answer if it was the first one picked.
-                if (!this.isAnswered)
+                if (!isAnswered)
                 {
-                    this.points.FillColor = Color.Red;
-                    this.stats.AddAnswer(choice);
+                    points.FillColor = Color.Red;
+                    stats.AddAnswer(choice);
                 }
             }
 
-            this.isAnswered = true;
+            isAnswered = true;
         }
 
         public override void Update(GameTime gameTime)
@@ -98,15 +98,15 @@ namespace MathsSiege.Client.Scenes
             base.Update(gameTime);
 
             // Go back to the previous scene after a short delay.
-            if (this.stopwatch.ElapsedMilliseconds > PauseAfterAnswer)
+            if (stopwatch.ElapsedMilliseconds > PauseAfterAnswer)
             {
-                this.SceneManager.PopScene();
+                SceneManager.PopScene();
             }
         }
 
         protected override void DrawBackground()
         {
-            this.SpriteBatch.FillRectangle(this.GraphicsDevice.Viewport.Bounds, Color.Black * 0.5f);
+            SpriteBatch.FillRectangle(GraphicsDevice.Viewport.Bounds, Color.Black * 0.5f);
         }
     }
 }
