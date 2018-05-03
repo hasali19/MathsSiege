@@ -11,9 +11,9 @@ namespace MathsSiege.Client.Scenes
     {
         private const string Title = "MathsSiege";
 
-        private const float EnterDuration = 3000;
+        private const float EnterDuration = 2000;
         private const float IdleDuration = 1000;
-        private const float ExitDuration = 3000;
+        private const float ExitDuration = 2000;
 
         private SpriteFont font;
 
