@@ -39,6 +39,11 @@ namespace MathsSiege.Client.Scenes
                 Checked = preferences.IsWindowFullScreen
             };
 
+            var audioToggle = new CheckBox("Enable music and sound effects")
+            {
+                Checked = preferences.IsAudioEnabled
+            };
+
             addressInput = new TextInput(false)
             {
                 PlaceholderText = "Enter the server address",
@@ -51,6 +56,7 @@ namespace MathsSiege.Client.Scenes
             titleContainer.AddChild(title);
 
             contentContainer.AddChild(fullscreenToggle);
+            contentContainer.AddChild(audioToggle);
             contentContainer.AddChild(addressInput);
 
             UserInterface.AddEntity(titleContainer);
@@ -59,6 +65,7 @@ namespace MathsSiege.Client.Scenes
             UserInterface.AddEntity(save);
 
             fullscreenToggle.OnValueChange = (e) => preferences.IsWindowFullScreen = fullscreenToggle.Checked;
+            audioToggle.OnValueChange = (e) => preferences.IsAudioEnabled = audioToggle.Checked;
 
             back.OnClick = Back_OnClick;
             save.OnClick = Save_OnClick;

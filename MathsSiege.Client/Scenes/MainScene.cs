@@ -26,6 +26,7 @@ namespace MathsSiege.Client.Scenes
         private const int QuestionInterval = 10_000;
 
         private DataClient client;
+        private UserPreferences preferences;
 
         private Stopwatch spawnStopwatch = new Stopwatch();
         private Stopwatch questionStopwatch = new Stopwatch();
@@ -50,6 +51,7 @@ namespace MathsSiege.Client.Scenes
             UserInterface.UseRenderTarget = true;
 
             client = Game.Services.GetService<DataClient>();
+            preferences = Game.Services.GetService<UserPreferences>();
 
             stats = new PlayerStats();
             
@@ -140,9 +142,13 @@ namespace MathsSiege.Client.Scenes
             };
             #endregion
 
-            MediaPlayer.Volume = 0;
-            MediaPlayer.Play(backgroundMusic);
-            MediaPlayer.IsRepeating = true;
+
+            if (preferences.IsAudioEnabled)
+            {
+                MediaPlayer.Volume = 0;
+                MediaPlayer.Play(backgroundMusic);
+                MediaPlayer.IsRepeating = true;
+            }
 
             spawner = new EnemySpawner(this.gameMap, this.enemyManager);
 
@@ -289,35 +295,33 @@ namespace MathsSiege.Client.Scenes
                     if (defenceMenu.SelectedItem.Name == DefenceTypes.Wall)
                     {
                         wallManager.CreateWall(gameMap.HoveredTile);
-                        itemPlacedSound.Play();
                     }
                     else if (defenceMenu.SelectedItem.Name == DefenceTypes.Cannon)
                     {
                         defenceManager.CreateDefence(DefenceTypes.Cannon, gameMap.HoveredTile);
-                        itemPlacedSound.Play();
                     }
                     else if (defenceMenu.SelectedItem.Name == DefenceTypes.Spikes)
                     {
                         trapManager.CreateTrap(DefenceTypes.Spikes, gameMap.HoveredTile);
-                        itemPlacedSound.Play();
                     }
 
                     stats.Points -= defenceMenu.SelectedItem.Cost;
+
+                    if (preferences.IsAudioEnabled)
+                    {
+                        itemPlacedSound.Play();
+                    }
                 }
             }
         }
 
         private void OnRightMouseButtonPressed()
         {
-            if (gameMap.HoveredTile != null)
+            if (gameMap.HoveredTile != null
+                && !wallManager.RemoveWall(gameMap.HoveredTile)
+                && !defenceManager.RemoveDefence(gameMap.HoveredTile))
             {
-                if (!wallManager.RemoveWall(gameMap.HoveredTile))
-                {
-                    if (!defenceManager.RemoveDefence(gameMap.HoveredTile))
-                    {
-                        trapManager.RemoveTrap(gameMap.HoveredTile);
-                    }
-                }
+                trapManager.RemoveTrap(gameMap.HoveredTile);
             }
         }
 

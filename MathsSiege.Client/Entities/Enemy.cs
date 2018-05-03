@@ -75,6 +75,7 @@ namespace MathsSiege.Client.Entities
         /// </summary>
         public Direction Facing { get; private set; }
 
+        private UserPreferences preferences;
         private GameMap map;
         private WallManager wallManager;
         private DefenceManager defenceManager;
@@ -103,6 +104,7 @@ namespace MathsSiege.Client.Entities
 
         public override void OnAddedToScene()
         {
+            preferences = Scene.Services.GetService<UserPreferences>();
             map = Scene.Services.GetService<GameMap>();
             wallManager = Scene.Services.GetService<WallManager>();
             defenceManager = Scene.Services.GetService<DefenceManager>();
@@ -306,7 +308,11 @@ namespace MathsSiege.Client.Entities
         /// </summary>
         private void DoAttack()
         {
-            swordAttackSound.Play();
+            if (preferences.IsAudioEnabled)
+            {
+                swordAttackSound.Play();
+            }
+
             PlayAnimationFor(EnemyState.Attacking, Facing, () =>
             {
                 if (!target.IsDestroyed)

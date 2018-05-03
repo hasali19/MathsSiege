@@ -5,6 +5,7 @@ namespace MathsSiege.Client.Entities
 {
     public class Cannon : Defence
     {
+        private UserPreferences preferences;
         private ProjectileManager projectileManager;
 
         private SoundEffect cannonFireSound;
@@ -17,6 +18,7 @@ namespace MathsSiege.Client.Entities
         {
             base.OnAddedToScene();
 
+            preferences = Scene.Services.GetService<UserPreferences>();
             projectileManager = Scene.Services.GetService<ProjectileManager>();
             cannonFireSound = Scene.Content.Load<SoundEffect>(ContentPaths.Sounds.CannonFire);
         }
@@ -28,7 +30,10 @@ namespace MathsSiege.Client.Entities
                 .CreateProjectile(ProjectileType.Cannonball)
                 .Fire(Position, target.Position, 60);
 
-            cannonFireSound.Play();
+            if (preferences.IsAudioEnabled)
+            {
+                cannonFireSound.Play();
+            }
         }
     }
 }

@@ -17,8 +17,22 @@ namespace MathsSiege.Client
 
         public bool IsWindowFullScreen
         {
-            get => bool.Parse(GetPreference(document, nameof(IsWindowFullScreen)));
+            get
+            {
+                string value = GetPreference(document, nameof(IsWindowFullScreen));
+                return value is null ? false : bool.Parse(value);
+            }
             set => SetPreference(document, nameof(IsWindowFullScreen), value.ToString());
+        }
+
+        public bool IsAudioEnabled
+        {
+            get
+            {
+                string value = GetPreference(document, nameof(IsAudioEnabled));
+                return value is null ? true : bool.Parse(value);
+            }
+            set => SetPreference(document, nameof(IsAudioEnabled), value.ToString());
         }
 
         private XDocument document;
@@ -66,6 +80,7 @@ namespace MathsSiege.Client
 
             SetPreference(document, nameof(HostAddress), "");
             SetPreference(document, nameof(IsWindowFullScreen), false.ToString());
+            SetPreference(document, nameof(IsAudioEnabled), false.ToString());
 
             document.Save(fs);
 
