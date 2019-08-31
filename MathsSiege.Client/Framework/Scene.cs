@@ -110,6 +110,9 @@ namespace MathsSiege.Client.Framework
         {
             UserInterface.Active = UserInterface;
 
+            var preferences = Game.Services.GetService<UserPreferences>();
+            Services.AddService(preferences);
+
             RenderTarget = new RenderTarget2D(
                 GraphicsDevice,
                 GraphicsDevice.PresentationParameters.BackBufferWidth,
